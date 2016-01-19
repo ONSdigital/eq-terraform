@@ -87,7 +87,7 @@ resource "null_resource" "ansible" {
 
 resource "aws_route53_record" "rabbitmq1" {
   zone_id = "${var.dns_zone_id}"
-  name = "${var.env}-rabbitmq.0.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq1.${var.dns_zone_name}"
   type = "CNAME"
   ttl = "60"
   records = ["${aws_instance.rabbitmq.0.public_dns}"]
@@ -95,7 +95,7 @@ resource "aws_route53_record" "rabbitmq1" {
 
 resource "aws_route53_record" "rabbitmq2" {
   zone_id = "${var.dns_zone_id}"
-  name = "${var.env}-rabbitmq.1.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq2.${var.dns_zone_name}"
   type = "CNAME"
   ttl = "60"
   records = ["${aws_instance.rabbitmq.1.public_dns}"]
