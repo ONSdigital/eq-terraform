@@ -20,3 +20,10 @@ Also the pre-prod.pem key must exist in this directory.
 4. Run `terraform plan` to check the output of terraform.
 
 5. Run `terraform apply` to create your infrastructure environment.
+
+## Troubleshooting
+
+1. If your build fails make sure the tmp directory has been deleted.
+2. If the build stalls on the ssh step waiting for user input set the following in your ~/.ssh/config file
+    `StrictHostKeyChecking no`
+    `UserKnownHostsFile /dev/null`

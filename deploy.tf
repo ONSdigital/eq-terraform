@@ -10,7 +10,7 @@ resource "aws_instance" "rabbitmq1" {
     key_name = "${var.aws_key_pair}"
 
     tags {
-        Name = "RabbitMQ 1"
+        Name = "RabbitMQ 1 ${var.env}"
     }
 
     security_groups = ["${aws_security_group.allow_all.name}"]
@@ -23,7 +23,7 @@ resource "aws_instance" "rabbitmq2" {
     key_name = "${var.aws_key_pair}"
 
     tags {
-        Name = "RabbitMQ 2"
+        Name = "RabbitMQ 2 ${var.env}"
     }
 
     security_groups = ["${aws_security_group.allow_all.name}"]
@@ -150,14 +150,14 @@ resource "null_resource" "aws_hosts" {
 }
 
 resource "null_resource" "ansible" {
-   depends_on = ["null_resource.aws_hosts"]
+    depends_on = ["null_resource.aws_hosts"]
 
-   provisioner "local-exec" {
-        command = "git clone https://github.com/ONSdigital/eq-messaging.git tmp/eq-messaging"
+    provisioner "local-exec" {
+      command = "git clone https://github.com/ONSdigital/eq-messaging.git tmp/eq-messaging"
     }
 
     provisioner "local-exec" {
-        command = "ansible-playbook --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml"
+      command = "ansible-playbook --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml"
     }
 
     provisioner "local-exec" {
@@ -167,7 +167,7 @@ resource "null_resource" "ansible" {
 
 resource "aws_route53_record" "rabbitmq1" {
   zone_id = "${var.dns_zone_id}"
-  name = "rabbitmq1.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq1.${var.dns_zone_name}"
   type = "CNAME"
   ttl = "60"
   records = ["${aws_instance.rabbitmq1.public_dns}"]
@@ -175,14 +175,14 @@ resource "aws_route53_record" "rabbitmq1" {
 
 resource "aws_route53_record" "rabbitmq2" {
   zone_id = "${var.dns_zone_id}"
-  name = "rabbitmq2.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq2.${var.dns_zone_name}"
   type = "CNAME"
   ttl = "60"
   records = ["${aws_instance.rabbitmq2.public_dns}"]
 }
 
 resource "aws_security_group" "allow_all" {
-  name = "allow_all"
+  name = "allow_all-${var.env}"
   description = "Allow all inbound traffic"
 
     ingress {
