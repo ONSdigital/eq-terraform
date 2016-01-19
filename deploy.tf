@@ -36,7 +36,7 @@ resource "null_resource" "aws_hosts" {
      provisioner "remote-exec" {
         inline = [
             "sudo sh -c 'echo ${var.env}-rabbitmq1 > /etc/hostname'",
-            "sudo sh -c 'echo ${template_file.hosts.rendered} > /etc/hosts'",
+            "sudo sh -c '${template_file.hosts.rendered} \n cat /etc/hosts'",
             "sudo hostname -F /etc/hostname"
         ]
         connection {
@@ -51,7 +51,7 @@ resource "null_resource" "aws_hosts" {
      provisioner "remote-exec" {
         inline = [
             "sudo sh -c 'echo ${var.env}-rabbitmq2 > /etc/hostname'",
-            "sudo sh -c 'echo ${template_file.hosts.rendered} > /etc/hosts'",
+            "sudo sh -c '${template_file.hosts.rendered} \n cat /etc/hosts'",
             "sudo hostname -F /etc/hostname"
         ]
         connection {
@@ -77,9 +77,9 @@ resource "null_resource" "ansible" {
     }
 
     provisioner "local-exec" {
-      command = "ansible-playbook --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars \"deploy_env=${var.env}\""
+      command = "ansible-playbook -i '${var.env}-rabbitmq1.eq.ons.digital,${var.env}-rabbitmq2.eq.ons.digital'  --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars \"deploy_env=${var.env}\""
     }
-
+    # ansible-playbook -i "dan-rabbitmq1.eq.ons.digital,dan-rabbitmq2.eq.ons.digital" --private-key ../eq-terraform/pre-prod.pem -v ansible/rabbitmq-cluster.yml --extra-vars "deploy_env=dan"
     provisioner "local-exec" {
       command = "rm -rf tmp"
     }
