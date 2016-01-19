@@ -1,3 +1,3 @@
 aws_access_key="XXXXXXXXXXXX"
 aws_secret_key="XXXXXXXXXXXX"
-aws_key_pair="digital-eq-keypair"
+aws_key_pair="pre-prod"
