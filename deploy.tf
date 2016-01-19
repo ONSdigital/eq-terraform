@@ -55,19 +55,23 @@ resource "template_file" "hostname-rabbitmq2" {
 resource "null_resource" "aws_hosts" {
 
     provisioner "local-exec" {
-        command = "echo '${template_file.hosts.rendered}' > rendered/hosts"
+      command = "mkdir tmp"
     }
 
     provisioner "local-exec" {
-        command = "echo ${template_file.hostname-rabbitmq1.rendered} > rendered/hostname-rabbitmq1"
+        command = "echo '${template_file.hosts.rendered}' > tmp/hosts"
     }
 
     provisioner "local-exec" {
-        command = "echo ${template_file.hostname-rabbitmq2.rendered} > rendered/hostname-rabbitmq2"
+        command = "echo ${template_file.hostname-rabbitmq1.rendered} > tmp/hostname-rabbitmq1"
+    }
+
+    provisioner "local-exec" {
+        command = "echo ${template_file.hostname-rabbitmq2.rendered} > tmp/hostname-rabbitmq2"
     }
 
     provisioner "file" {
-        source = "rendered/hosts"
+        source = "tmp/hosts"
         destination = "/home/ubuntu/hosts"
         connection {
             type="ssh"
@@ -79,7 +83,7 @@ resource "null_resource" "aws_hosts" {
     }
 
     provisioner "file" {
-        source = "rendered/hostname-rabbitmq1"
+        source = "tmp/hostname-rabbitmq1"
         destination = "/home/ubuntu/hostname"
         connection {
             type = "ssh"
@@ -91,7 +95,7 @@ resource "null_resource" "aws_hosts" {
     }
 
     provisioner "file" {
-        source = "rendered/hosts"
+        source = "tmp/hosts"
         destination = "/home/ubuntu/hosts"
         connection {            type = "ssh"
             user = "ubuntu"
@@ -102,7 +106,7 @@ resource "null_resource" "aws_hosts" {
     }
 
     provisioner "file" {
-        source = "rendered/hostname-rabbitmq2"
+        source = "tmp/hostname-rabbitmq2"
         destination = "/home/ubuntu/hostname"
         connection {
             type="ssh"
@@ -142,6 +146,39 @@ resource "null_resource" "aws_hosts" {
             agent = false
         }
     }
+
+}
+
+resource "null_resource" "ansible" {
+   depends_on = ["null_resource.aws_hosts"]
+
+   provisioner "local-exec" {
+        command = "git clone https://github.com/ONSdigital/eq-messaging.git tmp/eq-messaging"
+    }
+
+    provisioner "local-exec" {
+        command = "ansible-playbook --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml"
+    }
+
+    provisioner "local-exec" {
+      command = "rm -rf tmp"
+    }
+}
+
+resource "aws_route53_record" "rabbitmq1" {
+  zone_id = "${var.dns_zone_id}"
+  name = "rabbitmq1.${var.dns_zone_name}"
+  type = "CNAME"
+  ttl = "60"
+  records = ["${aws_instance.rabbitmq1.public_dns}"]
+}
+
+resource "aws_route53_record" "rabbitmq2" {
+  zone_id = "${var.dns_zone_id}"
+  name = "rabbitmq2.${var.dns_zone_name}"
+  type = "CNAME"
+  ttl = "60"
+  records = ["${aws_instance.rabbitmq2.public_dns}"]
 }
 
 resource "aws_security_group" "allow_all" {
