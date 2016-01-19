@@ -35,6 +35,7 @@ resource "template_file" "hosts" {
     vars= {
         rabbitmq1_ip = "${aws_instance.rabbitmq1.private_ip}"
         rabbitmq2_ip = "${aws_instance.rabbitmq2.private_ip}"
+        deploy_env    = "${var.env}"
     }
 }
 
@@ -203,4 +204,3 @@ resource "aws_security_group" "allow_all" {
         Name = "Terraform Allow All"
     }
 }
-

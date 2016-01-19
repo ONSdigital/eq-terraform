@@ -1,6 +1,6 @@
 127.0.0.1 localhost
-${rabbitmq1_ip} rabbitmq1.eq.ons.digital rabbitmq1
-${rabbitmq2_ip} rabbitmq2.eq.ons.digital rabbitmq2
+${rabbitmq1_ip} ${deploy_env}-rabbitmq1.eq.ons.digital rabbitmq1
+${rabbitmq2_ip} ${deploy_env}-rabbitmq2.eq.ons.digital rabbitmq2
 
 
 # The following lines are desirable for IPv6 capable hosts
