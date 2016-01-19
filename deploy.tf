@@ -4,115 +4,45 @@ provider "aws" {
     region = "eu-west-1"
 }
 
-resource "aws_instance" "rabbitmq1" {
+resource "aws_instance" "rabbitmq" {
     ami = "ami-47a23a30"
+    count = 2
     instance_type = "t2.small"
     key_name = "${var.aws_key_pair}"
 
     tags {
-        Name = "RabbitMQ 1 ${var.env}"
+        Name = "RabbitMQ ${var.env} ${count.index + 1}"
     }
 
     security_groups = ["${aws_security_group.allow_all.name}"]
 }
 
-
-resource "aws_instance" "rabbitmq2" {
-    ami = "ami-47a23a30"
-    instance_type = "t2.small"
-    key_name = "${var.aws_key_pair}"
-
-    tags {
-        Name = "RabbitMQ 2 ${var.env}"
-    }
-
-    security_groups = ["${aws_security_group.allow_all.name}"]
-
-}
 
 resource "template_file" "hosts" {
     template = "${file("templates/hosts")}"
     vars= {
-        rabbitmq1_ip = "${aws_instance.rabbitmq1.private_ip}"
-        rabbitmq2_ip = "${aws_instance.rabbitmq2.private_ip}"
+        rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
+        rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
         deploy_env    = "${var.env}"
-    }
-}
-
-resource "template_file" "hostname-rabbitmq1" {
-    template = "${file("templates/hostname")}"
-    vars {
-        hostname = "rabbitmq1"
-    }
-}
-
-resource "template_file" "hostname-rabbitmq2" {
-    template = "${file("templates/hostname")}"
-    vars {
-        hostname = "rabbitmq2"
     }
 }
 
 resource "null_resource" "aws_hosts" {
 
     provisioner "local-exec" {
-      command = "mkdir tmp"
+      command = "mkdir -p tmp"
     }
 
-    provisioner "local-exec" {
-        command = "echo '${template_file.hosts.rendered}' > tmp/hosts"
-    }
-
-    provisioner "local-exec" {
-        command = "echo ${template_file.hostname-rabbitmq1.rendered} > tmp/hostname-rabbitmq1"
-    }
-
-    provisioner "local-exec" {
-        command = "echo ${template_file.hostname-rabbitmq2.rendered} > tmp/hostname-rabbitmq2"
-    }
-
-    provisioner "file" {
-        source = "tmp/hosts"
-        destination = "/home/ubuntu/hosts"
+     provisioner "remote-exec" {
+        inline = [
+            "sudo sh -c 'echo ${var.env}-rabbitmq1 > /etc/hostname'",
+            "sudo sh -c 'echo ${template_file.hosts.rendered} > /etc/hosts'",
+            "sudo hostname -F /etc/hostname"
+        ]
         connection {
             type="ssh"
             user = "ubuntu"
-            host = "${aws_instance.rabbitmq1.public_ip}"
-            private_key = "${file("pre-prod.pem")}"
-            agent = false
-        }
-    }
-
-    provisioner "file" {
-        source = "tmp/hostname-rabbitmq1"
-        destination = "/home/ubuntu/hostname"
-        connection {
-            type = "ssh"
-            user = "ubuntu"
-            host = "${aws_instance.rabbitmq1.public_ip}"
-            private_key = "${file("pre-prod.pem")}"
-            agent = false
-        }
-    }
-
-    provisioner "file" {
-        source = "tmp/hosts"
-        destination = "/home/ubuntu/hosts"
-        connection {            type = "ssh"
-            user = "ubuntu"
-            host = "${aws_instance.rabbitmq2.public_ip}"
-            private_key = "${file("pre-prod.pem")}"
-            agent = false
-        }
-    }
-
-    provisioner "file" {
-        source = "tmp/hostname-rabbitmq2"
-        destination = "/home/ubuntu/hostname"
-        connection {
-            type="ssh"
-            user = "ubuntu"
-            host = "${aws_instance.rabbitmq2.public_ip}"
+            host = "${aws_instance.rabbitmq.0.public_ip}"
             private_key = "${file("pre-prod.pem")}"
             agent = false
         }
@@ -120,29 +50,14 @@ resource "null_resource" "aws_hosts" {
 
      provisioner "remote-exec" {
         inline = [
-            "sudo cp hostname /etc/hostname",
-            "sudo cp hosts /etc/hosts",
+            "sudo sh -c 'echo ${var.env}-rabbitmq2 > /etc/hostname'",
+            "sudo sh -c 'echo ${template_file.hosts.rendered} > /etc/hosts'",
             "sudo hostname -F /etc/hostname"
         ]
         connection {
             type="ssh"
             user = "ubuntu"
-            host = "${aws_instance.rabbitmq1.public_ip}"
-            private_key = "${file("pre-prod.pem")}"
-            agent = false
-        }
-    }
-
-     provisioner "remote-exec" {
-        inline = [
-            "sudo cp hostname /etc/hostname",
-            "sudo cp hosts /etc/hosts",
-            "sudo hostname -F /etc/hostname"
-        ]
-        connection {
-            type="ssh"
-            user = "ubuntu"
-            host = "${aws_instance.rabbitmq2.public_ip}"
+            host = "${aws_instance.rabbitmq.1.public_ip}"
             private_key = "${file("pre-prod.pem")}"
             agent = false
         }
@@ -154,11 +69,15 @@ resource "null_resource" "ansible" {
     depends_on = ["null_resource.aws_hosts"]
 
     provisioner "local-exec" {
+      command = "rm -rf tmp"
+    }
+
+    provisioner "local-exec" {
       command = "git clone https://github.com/ONSdigital/eq-messaging.git tmp/eq-messaging"
     }
 
     provisioner "local-exec" {
-      command = "ansible-playbook --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml"
+      command = "ansible-playbook --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars \"deploy_env=${var.env}\""
     }
 
     provisioner "local-exec" {
@@ -168,22 +87,22 @@ resource "null_resource" "ansible" {
 
 resource "aws_route53_record" "rabbitmq1" {
   zone_id = "${var.dns_zone_id}"
-  name = "${var.env}-rabbitmq1.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq.0.${var.dns_zone_name}"
   type = "CNAME"
   ttl = "60"
-  records = ["${aws_instance.rabbitmq1.public_dns}"]
+  records = ["${aws_instance.rabbitmq.0.public_dns}"]
 }
 
 resource "aws_route53_record" "rabbitmq2" {
   zone_id = "${var.dns_zone_id}"
-  name = "${var.env}-rabbitmq2.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq.1.${var.dns_zone_name}"
   type = "CNAME"
   ttl = "60"
-  records = ["${aws_instance.rabbitmq2.public_dns}"]
+  records = ["${aws_instance.rabbitmq.1.public_dns}"]
 }
 
 resource "aws_security_group" "allow_all" {
-  name = "allow_all-${var.env}"
+  name = "${var.env}-allow_all"
   description = "Allow all inbound traffic"
 
     ingress {
