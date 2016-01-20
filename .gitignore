@@ -1,0 +1,8 @@
+rendered
+tmp
+.idea
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+pre-prod.pem
+
