@@ -33,10 +33,37 @@ resource "null_resource" "aws_hosts" {
       command = "mkdir -p tmp"
     }
 
-     provisioner "remote-exec" {
+    provisioner "local-exec" {
+      command = "echo '${template_file.hosts.rendered}' > tmp/hosts"
+    }
+
+    provisioner "file" {
+        source = "tmp/hosts"
+        destination = "/home/ubuntu/hosts"
+        connection {
+            type="ssh"
+            user = "ubuntu"
+            host = "${aws_instance.rabbitmq.0.public_ip}"
+            private_key = "${file("pre-prod.pem")}"
+            agent = false
+        }
+    }
+
+    provisioner "file" {
+        source = "tmp/hosts"
+        destination = "/home/ubuntu/hosts"
+        connection {            type = "ssh"
+            user = "ubuntu"
+            host = "${aws_instance.rabbitmq.1.public_ip}"
+            private_key = "${file("pre-prod.pem")}"
+            agent = false
+        }
+    }
+
+    provisioner "remote-exec" {
         inline = [
             "sudo sh -c 'echo ${var.env}-rabbitmq1 > /etc/hostname'",
-            "sudo sh -c '${template_file.hosts.rendered} \n cat /etc/hosts'",
+            "sudo cp hosts /etc/hosts",
             "sudo hostname -F /etc/hostname"
         ]
         connection {
@@ -51,7 +78,7 @@ resource "null_resource" "aws_hosts" {
      provisioner "remote-exec" {
         inline = [
             "sudo sh -c 'echo ${var.env}-rabbitmq2 > /etc/hostname'",
-            "sudo sh -c '${template_file.hosts.rendered} \n cat /etc/hosts'",
+            "sudo cp hosts /etc/hosts",
             "sudo hostname -F /etc/hostname"
         ]
         connection {
