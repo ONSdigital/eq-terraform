@@ -1,20 +1,15 @@
-provider "aws" {
-    access_key = "${var.aws_access_key}"
-    secret_key = "${var.aws_secret_key}"
-    region = "eu-west-1"
-}
-
 resource "aws_instance" "rabbitmq" {
     ami = "ami-47a23a30"
     count = 2
     instance_type = "t2.small"
     key_name = "${var.aws_key_pair}"
+    subnet_id = "${aws_subnet.default.id}"
+    associate_public_ip_address = true
+    security_groups = ["${aws_security_group.default.id}"]
 
     tags {
         Name = "RabbitMQ ${var.env} ${count.index + 1}"
     }
-
-    security_groups = ["${aws_security_group.allow_all.name}"]
 }
 
 
@@ -93,7 +88,7 @@ resource "null_resource" "aws_hosts" {
 }
 
 resource "null_resource" "ansible" {
-    depends_on = ["null_resource.aws_hosts"]
+    depends_on = ["null_resource.aws_hosts", "aws_route53_record.rabbitmq1", "aws_route53_record.rabbitmq2"]
 
     provisioner "local-exec" {
       command = "rm -rf tmp"
@@ -115,17 +110,17 @@ resource "null_resource" "ansible" {
 resource "aws_route53_record" "rabbitmq1" {
   zone_id = "${var.dns_zone_id}"
   name = "${var.env}-rabbitmq1.${var.dns_zone_name}"
-  type = "CNAME"
+  type = "A"
   ttl = "60"
-  records = ["${aws_instance.rabbitmq.0.public_dns}"]
+  records = ["${aws_instance.rabbitmq.0.public_ip}"]
 }
 
 resource "aws_route53_record" "rabbitmq2" {
   zone_id = "${var.dns_zone_id}"
   name = "${var.env}-rabbitmq2.${var.dns_zone_name}"
-  type = "CNAME"
+  type = "A"
   ttl = "60"
-  records = ["${aws_instance.rabbitmq.1.public_dns}"]
+  records = ["${aws_instance.rabbitmq.1.public_ip}"]
 }
 
 resource "aws_security_group" "allow_all" {
