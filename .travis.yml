@@ -2,4 +2,6 @@ language: golang
 before_install:
   - wget https://releases.hashicorp.com/terraform/0.6.9/terraform_0.6.9_linux_amd64.zip -O /tmp/terraform.zip
   - sudo unzip -d /usr/local/bin/ /tmp/terraform.zip
-script: make test
+  - export TF_VAR_aws_access_key=XXXXXXXXXX
+  - export TF_VAR_aws_secret_key=XXXXXXXXXX
+script: make plan
