@@ -12,6 +12,43 @@ resource "aws_instance" "rabbitmq" {
     }
 }
 
+resource "aws_elb" "rabbitmq" {
+  name = "${var.env}-rabbitmq-elb"
+  subnets = ["${aws_subnet.default.id}"]
+
+  listener {
+    instance_port = 5672
+    instance_protocol = "TCP"
+    lb_port = 5672
+    lb_protocol = "TCP"
+  }
+  listener {
+    instance_port = 5673
+    instance_protocol = "TCP"
+    lb_port = 5673
+    lb_protocol = "TCP"
+  }
+
+  instances = ["${aws_instance.rabbitmq.0.id}", "${aws_instance.rabbitmq.1.id}"]
+  cross_zone_load_balancing = true
+  idle_timeout = 400
+  connection_draining = true
+  connection_draining_timeout = 400
+
+  tags {
+    Name = "${var.env}-rabbitmq-elb"
+  }
+}
+
+
+resource "aws_route53_record" "rabbitmq" {
+  zone_id = "${var.dns_zone_id}"
+  name = "${var.env}-rabbitmq.${var.dns_zone_name}"
+  type = "CNAME"
+  ttl = "60"
+  records = ["${aws_elb.rabbitmq.dns_name}"]
+}
+
 
 resource "template_file" "hosts" {
     template = "${file("templates/hosts")}"
