@@ -5,5 +5,5 @@ output "rabbitmq_elb_address" {
 	value = "${aws_elb.rabbitmq.dns_name}"
 }
 output "survey_runner_elb_address" {
-  value = "${aws_elastic_beanstalk_environment.sr_prime.cname}"
+  value = "${aws_route53_record.survey_runner.fqdn}"
 }
