@@ -24,3 +24,26 @@ variable "dns_zone_name" {
   description = "Amazon Route53 DNS zone name"
   default     = "eq.ons.digital."
 }
+
+variable "submissions_bucket_name" {
+  description = "S3 bucket name for encrypted submissions."
+  default     = "pillar_box"
+}
+
+variable "message_queue_name" {
+  description = "RabbitMQ submission queue name"
+  default     = "submit_q"
+}
+
+variable "sub_aws_access_key" {
+  description = "AWS submission access key for submissions bucket."
+}
+
+variable "sub_aws_secret_key" {
+  description = "AWS submission secret key for accessing submissions bucket."
+}
+
+variable "survey_runner_env" {
+  description = "The name of the survey runner environment, which is set as a environment variable."
+  default     = "development"
+}
