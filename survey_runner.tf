@@ -28,10 +28,15 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name      = "EQ_RABBITMQ_TEST_QUEUE_NAME"
     value     = "${var.message_queue_name}"
   }
+  # Extra settings still to implement
+  # EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
+  # EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')
+
+  provisioner "local-exec" {
+       command = "./deploy_surveyrunner.sh ${var.env}-surveyrunner ${var.env}-prime"
+   }
 }
-# Extra settings still to implement
-# EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
-# EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')
+
 
 resource "aws_route53_record" "survey_runner" {
   zone_id = "${var.dns_zone_id}"
