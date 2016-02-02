@@ -9,6 +9,10 @@ The following programs must be installed:
 1. Git
 2. Ansible
 
+You may also need to explicitly tell Ansible to perform non-host key checking:
+
+	`export ANSIBLE_HOST_KEY_CHECKING=False`
+
 Also the pre-prod.pem key must exist in this directory.
 
 ## Setting up Terraform

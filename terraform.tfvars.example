@@ -1,3 +1,5 @@
 aws_access_key="XXXXXXXXXXXX"
 aws_secret_key="XXXXXXXXXXXX"
+sub_aws_access_key="XXXXXXXXXXXX"
+sub_aws_secret_key="XXXXXXXXXXXX"
 aws_key_pair="pre-prod"

@@ -1,0 +1,6 @@
+language: go
+go:
+  - tip
+install:
+  - go get github.com/dwradcliffe/hcl-lint
+script: go run $GOPATH/src/github.com/dwradcliffe/hcl-lint/lint.go .
