@@ -11,7 +11,7 @@ echo $SURVEYRUNNER_REPO_URL
 mkdir -p tmp
 cd ./tmp
 git clone $SURVEYRUNNER_REPO_URL
-cd ./eq-author
+cd ./eq-survey-runner
 for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master `; do
    git branch --track ${branch#remotes/origin/} $branch
 done
