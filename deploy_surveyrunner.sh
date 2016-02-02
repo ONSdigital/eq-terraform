@@ -18,6 +18,12 @@ done
 git checkout $BRANCH
 git pull
 
+VERSION=`python --version`
+echo "*****************************************************"
+echo "Using Python version: ${VERSION}"
+echo "*****************************************************"
+
+
 # We can't seem to pass in that we DON'T want SSH keys. Urgh.
 eb init -i -r eu-west-1 -p "Python 3.4" $1 <<<n
 npm install && npm run compile
