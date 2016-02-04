@@ -9,6 +9,18 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   solution_stack_name = "64bit Amazon Linux 2015.09 v2.0.6 running Python 3.4"
 
   setting {
+    namespace = "aws:ec2:vpc"
+    name      =  "VPCId"
+    value     = "${aws_vpc.default.id}"
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "Subnets"
+    value     = "${aws_subnet.default.id}"
+  }
+
+  setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "SR_ENVIRONMENT"
     value     = "${var.survey_runner_env}"

@@ -15,6 +15,8 @@ resource "aws_instance" "rabbitmq" {
 resource "aws_elb" "rabbitmq" {
   name = "${var.env}-rabbitmq-elb"
   subnets = ["${aws_subnet.default.id}"]
+  security_groups = ["${aws_security_group.default.id}"]
+  internal = true
 
   listener {
     instance_port = 5672
