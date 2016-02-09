@@ -42,9 +42,30 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name      = "InstanceType"
-    value     = "t2.small"
+    name = "InstanceType"
+    value = "t2.small"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "ENV_NAME"
+    value     = "${var.env}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_ACCESS_KEY_ID"
+    value     = "${var.aws_access_key}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_SECRET_ACCESS_KEY"
+    value     = "${var.aws_secret_key}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_DEFAULT_REGION"
+    value     = "${var.aws_default_region}"
+  }
+
   # Extra settings still to implement
   # EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
   # EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')
@@ -61,4 +82,8 @@ resource "aws_route53_record" "survey_runner" {
   type = "CNAME"
   ttl = "60"
   records = ["${aws_elastic_beanstalk_environment.sr_prime.cname}"]
+}
+
+resource "aws_cloudwatch_log_group" "survey_runner" {
+  name = "${var.env}-surveyrunner"
 }
