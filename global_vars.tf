@@ -47,3 +47,32 @@ variable "survey_runner_env" {
   description = "The name of the survey runner environment, which is set as a environment variable."
   default     = "development"
 }
+
+variable "aws_default_region" {
+  description = "The default region for AWS Services"
+  default     = "eu-west-1"
+}
+
+variable "rabbitmq_admin_user" {
+  description = "The admin user to create for rabbitmq"
+}
+
+variable "rabbitmq_admin_password" {
+  description = "The admin user password for rabbitmq"
+}
+
+variable "rabbitmq_read_user" {
+  description = "The 'read-only' user to create for rabbitmq"
+}
+
+variable "rabbitmq_read_password" {
+  description = "The 'read-only' user password for rabbitmq"
+}
+
+variable "rabbitmq_write_user" {
+  description = "The 'write-only' user to create for rabbitmq"
+}
+
+variable "rabbitmq_write_password" {
+  description = "The 'write-only' user password for rabbitmq"
+}
