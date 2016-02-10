@@ -13,3 +13,5 @@ export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 EOF
 chmod +x $ENV_FILE
 . $ENV_FILE
+
+cat $ENV_FILE >> /etc/environment
