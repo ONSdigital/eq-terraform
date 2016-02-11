@@ -138,7 +138,7 @@ resource "null_resource" "ansible" {
     }
 
     provisioner "local-exec" {
-      command = "ansible-playbook -i '${var.env}-rabbitmq1.eq.ons.digital,${var.env}-rabbitmq2.eq.ons.digital'  --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars \"deploy_env=${var.env}\""
+      command = "ansible-playbook -i '${var.env}-rabbitmq1.eq.ons.digital,${var.env}-rabbitmq2.eq.ons.digital'  --private-key pre-prod.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\"}'"
     }
     # ansible-playbook -i "dan-rabbitmq1.eq.ons.digital,dan-rabbitmq2.eq.ons.digital" --private-key ../eq-terraform/pre-prod.pem -v ansible/rabbitmq-cluster.yml --extra-vars "deploy_env=dan"
     provisioner "local-exec" {
