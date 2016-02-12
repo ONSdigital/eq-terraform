@@ -16,6 +16,9 @@ mv eq-submitter-$BRANCH eq-submitter
 cd eq-submitter
 pip install --user -r requirements.txt
 
+# Make sure we've got the correct env variables set
+sudo source /root/env.sh
+
 # Setup init script and restart supervisor
 sudo cp supervisor.sh /etc/init.d/supervisord
 sudo chmod +x /etc/init.d/supervisord
