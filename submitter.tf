@@ -2,6 +2,8 @@ resource "template_file" "submitter_user_data" {
     template = "${file("templates/env_ec2_variables_submitter.sh.tpl")}"
 
     vars {
+          rabbitmq_admin_user = "${var.rabbitmq_admin_user}"
+          rabbitmq_admin_password = "${var.rabbitmq_admin_password}"
           rabbitmq_url = "${aws_elb.rabbitmq.dns_name}"
           rabbitmq_queue = "${var.message_queue_name}"
           submissions_bucket_name = "${var.submissions_bucket_name}"
