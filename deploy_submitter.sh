@@ -3,10 +3,13 @@
 # Must be run remotely on submitter boxes
 
 SUBMITTER_REPO_URL=https://github.com/ONSdigital/eq-submitter
-BRANCH=master
+BRANCH=eq-99-automatic-deploy-submitter
 
 sudo apt-get update
-sudo apt-get install python-pip unzip git -y
+sudo apt-get install python-pip -y
+sudo apt-get install unzip -y
+sudo apt-get install git -y
+
 # Install 3.2.X so we can use ENV_* syntax in our startup script.
 sudo pip install supervisor
 
