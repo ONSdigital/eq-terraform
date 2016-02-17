@@ -3,7 +3,7 @@
 # Must be run remotely on submitter boxes
 
 SUBMITTER_REPO_URL=https://github.com/ONSdigital/eq-submitter
-BRANCH=eq-99-automatic-deploy-submitter
+BRANCH=master
 
 sudo apt-get update
 sudo apt-get install python-pip -y
