@@ -25,6 +25,13 @@ Also the pre-prod.pem key must exist in this directory.
 
 5. Run `terraform apply` to create your infrastructure environment.
 
+## Smoke Test
+For the smoke test you will need
+
+1. Ruby 2.2.3 (rbenv install 2.2.3)
+2. Gem 2.5.2 (gem update --system '2.5.2')
+3. Bundle should be 1.10.6 (gem install bundler -v 1.10.6)
+
 ## Troubleshooting
 
 1. If your build fails make sure the tmp directory has been deleted.
