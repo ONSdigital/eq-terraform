@@ -26,8 +26,10 @@ echo "*****************************************************"
 
 # We can't seem to pass in that we DON'T want SSH keys. Urgh.
 eb init -i -r eu-west-1 -p "Python 3.4" $1 <<<n
-npm install && npm run compile
+npm set progress=false && npm install && npm run compile
 # While we await Vault implemetation for KEYMAT handling.
 # We place JWT behind a feature flag
 eb setenv EQ_PRODUCTION=false
+git_ref=$(git rev-parse HEAD)
+eb setenv EQ_GIT_REF=$git_ref
 eb deploy $2
