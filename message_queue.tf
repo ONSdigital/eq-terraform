@@ -135,7 +135,7 @@ resource "null_resource" "ansible" {
     }
 
     provisioner "local-exec" {
-      command = "git clone https://github.com/ONSdigital/eq-messaging.git --branch production-fix tmp/eq-messaging"
+      command = "git clone https://github.com/ONSdigital/eq-messaging.git tmp/eq-messaging"
     }
 
     provisioner "local-exec" {
