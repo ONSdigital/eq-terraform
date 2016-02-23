@@ -57,7 +57,8 @@ resource "template_file" "hosts" {
     vars= {
         rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
         rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
-        deploy_env    = "${var.env}"
+        deploy_env   = "${var.env}"
+        deply_dns    = "${var.dns_zone_name}"
     }
 }
 
