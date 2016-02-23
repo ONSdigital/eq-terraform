@@ -20,7 +20,4 @@ cd ./eq-smoke-test/eq-tests
 git checkout $BRANCH
 git pull
 
-rbenv global 2.2.3
-bundle install
-
 bundle exec rspec
