@@ -40,6 +40,11 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name      = "EQ_RABBITMQ_TEST_QUEUE_NAME"
     value     = "${var.message_queue_name}"
   }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
+    value     = "t2.small"
+  }
   # Extra settings still to implement
   # EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
   # EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')

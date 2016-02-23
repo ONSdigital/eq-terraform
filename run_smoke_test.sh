@@ -8,7 +8,7 @@
 SMOKETEST_REPO_URL=https://github.com/ONSdigital/eq-smoke-test.git
 BRANCH=master
 
-export EQ_SURVEYRUNNER=$1'-surveys.eq.ons.digital'
+export EQ_SURVEYRUNNER=$1'-surveys.'$2
 
 mkdir -p tmp
 cd ./tmp
@@ -20,7 +20,5 @@ cd ./eq-smoke-test/eq-tests
 git checkout $BRANCH
 git pull
 
-rbenv global 2.2.3
 bundle install
-
 bundle exec rspec
