@@ -50,6 +50,11 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name      = "EQ_LOG_LEVEL"
     value     = "${var.eq_sr_log_level}"
   }
+   setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SR_LOG_GROUP"
+    value     = "${aws_cloudwatch_log_group.survey_runner.name}"
+  }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "AWS_ACCESS_KEY_ID"
