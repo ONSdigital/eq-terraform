@@ -47,6 +47,11 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_LOG_LEVEL"
+    value     = "WARNING"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "AWS_ACCESS_KEY_ID"
     value     = "${var.aws_access_key}"
   }
