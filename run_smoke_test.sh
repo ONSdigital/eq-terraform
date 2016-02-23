@@ -20,4 +20,5 @@ cd ./eq-smoke-test/eq-tests
 git checkout $BRANCH
 git pull
 
+bundle install
 bundle exec rspec
