@@ -48,7 +48,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_LOG_LEVEL"
-    value     = "WARNING"
+    value     = "${var.eq_sr_log_level}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
