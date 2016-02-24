@@ -81,3 +81,18 @@ variable "eq_sr_log_level" {
   description = "The Survey Runner logging level (One of ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])"
   default     = "WARNING"
 }
+
+variable "eb_instance_type" {
+  description = "Elastic Beanstalk Instance Type"
+  default     = "t2.small"
+}
+
+variable "submitter_instance_type" {
+  description = "Submitter Instance Type"
+  default     = "t2.small"
+}
+
+variable "rabbitmq_instance_type" {
+  description = "Rabbit MQ Instance type"
+  default     = "t2.small"
+}
