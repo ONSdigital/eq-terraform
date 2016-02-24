@@ -42,8 +42,8 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name = "InstanceType"
-    value = "t2.small"
+    name      = "InstanceType"
+    value     = "${var.eb_instance_type}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"

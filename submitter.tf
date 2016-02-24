@@ -17,7 +17,7 @@ resource "template_file" "submitter_user_data" {
 resource "aws_instance" "submitter" {
     ami = "ami-47a23a30"
     count = 2
-    instance_type = "t2.medium"
+    instance_type = "${var.submitter_instance_type}"
     key_name = "${var.aws_key_pair}"
     subnet_id = "${aws_subnet.default.id}"
     associate_public_ip_address = true

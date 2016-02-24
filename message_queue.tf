@@ -1,7 +1,7 @@
 resource "aws_instance" "rabbitmq" {
     ami = "ami-47a23a30"
     count = 2
-    instance_type = "t2.small"
+    instance_type = "${var.rabbitmq_instance_type}"
     key_name = "${var.aws_key_pair}"
     subnet_id = "${aws_subnet.default.id}"
     associate_public_ip_address = true
