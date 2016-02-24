@@ -76,3 +76,8 @@ variable "rabbitmq_write_user" {
 variable "rabbitmq_write_password" {
   description = "The 'write-only' user password for rabbitmq"
 }
+
+variable "eq_sr_log_level" {
+  description = "The Survey Runner logging level (One of ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])"
+  default     = "WARNING"
+}
