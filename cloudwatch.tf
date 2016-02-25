@@ -1,5 +1,5 @@
-resource "aws_cloudwatch_metric_alarm" "Rabbitmq1CPU" {
-    alarm_name = "${var.env}-Rabbitmq 1 CPU alert"
+resource "aws_cloudwatch_metric_alarm" "rabbitmq1_cpu" {
+    alarm_name = "${var.env}-rabbitmq1-cpu-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -12,8 +12,8 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq1CPU" {
     dimensions { "InstanceId"="${aws_instance.rabbitmq.0.id}"}
 }
 
-resource "aws_cloudwatch_metric_alarm" "Rabbitmq2CPU" {
-    alarm_name = "${var.env}-Rabbitmq 2 CPU alert"
+resource "aws_cloudwatch_metric_alarm" "rabbitmq2_cpu" {
+    alarm_name = "${var.env}-rabbitmq2-cpu-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -27,8 +27,8 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq2CPU" {
 }
 
 
-resource "aws_cloudwatch_metric_alarm" "Submitter1CPU" {
-    alarm_name = "${var.env}-Submitter 1 CPU alert"
+resource "aws_cloudwatch_metric_alarm" "submitter1_cpu" {
+    alarm_name = "${var.env}-submitter1-cpu-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -41,8 +41,8 @@ resource "aws_cloudwatch_metric_alarm" "Submitter1CPU" {
     dimensions { "InstanceId"="${aws_instance.submitter.0.id}"}
 }
 
-resource "aws_cloudwatch_metric_alarm" "Submitter2CPU" {
-    alarm_name = "${var.env}-Submitter 2 CPU alert"
+resource "aws_cloudwatch_metric_alarm" "submitter2_cpu" {
+    alarm_name = "${var.env}-submitter2-cpu-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -56,8 +56,8 @@ resource "aws_cloudwatch_metric_alarm" "Submitter2CPU" {
 }
 
 
-resource "aws_cloudwatch_metric_alarm" "Rabbitmq1Status" {
-    alarm_name = "${var.env}-Rabbitmq 1 Status alert"
+resource "aws_cloudwatch_metric_alarm" "rabbitmq1_status" {
+    alarm_name = "${var.env}-rabbitmq-1-status-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -70,8 +70,8 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq1Status" {
     dimensions { "InstanceId"="${aws_instance.rabbitmq.0.id}"}
 }
 
-resource "aws_cloudwatch_metric_alarm" "Rabbitmq2Status" {
-    alarm_name = "${var.env}-Rabbitmq 2 Status alert"
+resource "aws_cloudwatch_metric_alarm" "rabbitmq2_status" {
+    alarm_name = "${var.env}-rabbitmq2-status-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -85,8 +85,8 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq2Status" {
 }
 
 
-resource "aws_cloudwatch_metric_alarm" "Submitter1Status" {
-    alarm_name = "${var.env}-Submitter 1 Status alert"
+resource "aws_cloudwatch_metric_alarm" "submitter1_status" {
+    alarm_name = "${var.env}-submitter1-status-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -99,8 +99,8 @@ resource "aws_cloudwatch_metric_alarm" "Submitter1Status" {
     dimensions { "InstanceId"="${aws_instance.submitter.0.id}"}
 }
 
-resource "aws_cloudwatch_metric_alarm" "Submitter2Status" {
-    alarm_name = "${var.env}-Submitter 2 Status alert"
+resource "aws_cloudwatch_metric_alarm" "submitter2_status" {
+    alarm_name = "${var.env}-submitter2-status-alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
