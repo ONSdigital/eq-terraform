@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "Rabbitmq1CPU" {
-    alarm_name = "Rabbitmq 1 CPU alert"
+    alarm_name = "${var.env}-Rabbitmq 1 CPU alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq1CPU" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "Rabbitmq2CPU" {
-    alarm_name = "Rabbitmq 2 CPU alert"
+    alarm_name = "${var.env}-Rabbitmq 2 CPU alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq2CPU" {
 
 
 resource "aws_cloudwatch_metric_alarm" "Submitter1CPU" {
-    alarm_name = "Submitter 1 CPU alert"
+    alarm_name = "${var.env}-Submitter 1 CPU alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "Submitter1CPU" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "Submitter2CPU" {
-    alarm_name = "Submitter 2 CPU alert"
+    alarm_name = "${var.env}-Submitter 2 CPU alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "CPUUtilization"
@@ -57,7 +57,7 @@ resource "aws_cloudwatch_metric_alarm" "Submitter2CPU" {
 
 
 resource "aws_cloudwatch_metric_alarm" "Rabbitmq1Status" {
-    alarm_name = "Rabbitmq 1 Status alert"
+    alarm_name = "${var.env}-Rabbitmq 1 Status alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -71,7 +71,7 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq1Status" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "Rabbitmq2Status" {
-    alarm_name = "Rabbitmq 2 Status alert"
+    alarm_name = "${var.env}-Rabbitmq 2 Status alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -86,7 +86,7 @@ resource "aws_cloudwatch_metric_alarm" "Rabbitmq2Status" {
 
 
 resource "aws_cloudwatch_metric_alarm" "Submitter1Status" {
-    alarm_name = "Submitter 1 Status alert"
+    alarm_name = "${var.env}-Submitter 1 Status alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -100,7 +100,7 @@ resource "aws_cloudwatch_metric_alarm" "Submitter1Status" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "Submitter2Status" {
-    alarm_name = "Submitter 2 Status alert"
+    alarm_name = "${var.env}-Submitter 2 Status alert"
     evaluation_periods = "1"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     metric_name = "StatusCheckFailed"
@@ -112,3 +112,11 @@ resource "aws_cloudwatch_metric_alarm" "Submitter2Status" {
     alarm_actions = ["${var.cloudwatch_alarm_arn}"]
     dimensions { "InstanceId"="${aws_instance.submitter.1.id}"}
 }
+
+
+
+
+
+
+
+
