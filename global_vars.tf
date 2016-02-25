@@ -94,10 +94,10 @@ variable "submitter_instance_type" {
 
 variable "rabbitmq_instance_type" {
   description = "Rabbit MQ Instance type"
-  default     = "t2.small"
+  default = "t2.small"
+}
 
 variable "cloudwatch_alarm_arn" {
   description = "arn for cloudwatch"
   default = "arn:aws:sns:eu-west-1:229460966734:eq-alert"
-
 }
