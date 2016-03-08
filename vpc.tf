@@ -1,6 +1,6 @@
 # Create a VPC to launch our instances into
 resource "aws_vpc" "default" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "${var.vpc_ip_block}"
   enable_dns_support = true
   tags {
     Name = "${var.env}-vpc"
@@ -22,7 +22,7 @@ resource "aws_route" "internet_access" {
 # Create a subnet to launch our ec2 instances and ElasticBeanstalk into
 resource "aws_subnet" "default" {
   vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "${var.vpc_ip_block}"
   map_public_ip_on_launch = true
 }
 
@@ -47,7 +47,7 @@ resource "aws_security_group" "default" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
 
   # Rabbitmq
@@ -56,50 +56,50 @@ resource "aws_security_group" "default" {
     from_port = 4369
     to_port   = 4369
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   egress {
     from_port = 4369
     to_port   = 4369
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   ingress {
     from_port = 25672
     to_port   = 25672
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   egress {
     from_port = 25672
     to_port   = 25672
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   ## AMQP Connection ports
   ingress {
     from_port = 5672
     to_port   = 5672
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   egress {
     from_port = 5672
     to_port   = 5672
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   ingress {
     from_port = 5671
     to_port   = 5671
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   egress {
     from_port = 5671
     to_port   = 5671
     protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["${var.vpc_ip_block}"]
   }
   # End RabbitMQ ports
 
