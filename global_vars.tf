@@ -84,12 +84,7 @@ variable "eq_sr_log_level" {
 
 variable "eb_instance_type" {
   description = "Elastic Beanstalk Instance Type"
-  default     = "t2.small"
-}
-
-variable "submitter_instance_type" {
-  description = "Submitter Instance Type"
-  default     = "t2.small"
+  default     = "t2.medium"
 }
 
 variable "rabbitmq_instance_type" {
