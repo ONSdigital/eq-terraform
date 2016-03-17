@@ -106,3 +106,13 @@ variable "vpc_ip_block" {
   description = "VPC internal IP cidr block for ec2 machines"
   default = "10.30.20.0/24"
 }
+
+variable "rabbitmq_ip_prime" {
+  description = "Static IP of prime rabbitmq server"
+  default =  "10.30.20.15"
+}
+
+variable "rabbitmq_ip_failover" {
+  description = "Static IP of secondary failover rabbitmq server"
+  default = "10.30.20.16"
+}
