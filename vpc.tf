@@ -10,6 +10,9 @@ resource "aws_vpc" "default" {
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
+  tags {
+    Name = "${var.env}-igateway"
+  }
 }
 
 # Grant the VPC internet access on its main route table
@@ -24,6 +27,9 @@ resource "aws_subnet" "default" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${var.vpc_ip_block}"
   map_public_ip_on_launch = true
+  tags {
+    Name = "${var.env}-default-subnet"
+  }
 }
 
 
@@ -31,7 +37,7 @@ resource "aws_subnet" "default" {
 # the instances over SSH and HTTP
 resource "aws_security_group" "default" {
   name        = "survey_runner"
-  description = "Used for "
+  description = "Used for eQ"
   vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere

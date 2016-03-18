@@ -185,26 +185,3 @@ resource "aws_route53_record" "rabbitmq2" {
   ttl = "60"
   records = ["${aws_instance.rabbitmq.1.public_ip}"]
 }
-
-resource "aws_security_group" "allow_all" {
-  name = "${var.env}-allow_all"
-  description = "Allow all inbound traffic"
-
-    ingress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags {
-        Name = "Terraform Allow All"
-    }
-}
