@@ -111,3 +111,8 @@ variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
   default = "10.30.20.16"
 }
+
+variable "aws_elastic_beanstalk_solution_stack_name" {
+  description = "Elastic Beanstalk Amazon Linux version"
+  default = "64bit Amazon Linux 2015.09 v2.0.8 running Python 3.4"
+}
