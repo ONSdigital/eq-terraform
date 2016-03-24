@@ -6,7 +6,7 @@ resource "aws_elastic_beanstalk_application" "surveyrunner" {
 resource "aws_elastic_beanstalk_environment" "sr_prime" {
   name = "${var.env}-prime"
   application = "${aws_elastic_beanstalk_application.surveyrunner.name}"
-  solution_stack_name = "64bit Amazon Linux 2015.09 v2.0.7 running Python 3.4"
+  solution_stack_name = "64bit Amazon Linux 2015.09 v2.0.8 running Python 3.4"
 
   setting {
     namespace = "aws:ec2:vpc"
