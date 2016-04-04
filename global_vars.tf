@@ -97,6 +97,11 @@ variable "cloudwatch_alarm_arn" {
   default = "arn:aws:sns:eu-west-1:229460966734:eq-alert"
 }
 
+variable "cloudwatch_logging" {
+  description = "Enable Cloudwatch logging"
+  default = "True"
+}
+
 variable "vpc_ip_block" {
   description = "VPC internal IP cidr block for ec2 machines"
   default = "10.30.20.0/24"
@@ -110,4 +115,9 @@ variable "rabbitmq_ip_prime" {
 variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
   default = "10.30.20.16"
+}
+
+variable "aws_elastic_beanstalk_solution_stack_name" {
+  description = "Elastic Beanstalk Amazon Linux version"
+  default = "64bit Amazon Linux 2015.09 v2.0.8 running Python 3.4"
 }

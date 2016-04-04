@@ -32,4 +32,4 @@ npm set progress=false && npm install && npm run compile
 eb setenv EQ_PRODUCTION=false
 git_ref=$(git rev-parse HEAD)
 eb setenv EQ_GIT_REF=$git_ref
-eb deploy $2
+eb deploy --timeout 30 $2

@@ -6,7 +6,7 @@ resource "aws_elastic_beanstalk_application" "surveyrunner" {
 resource "aws_elastic_beanstalk_environment" "sr_prime" {
   name = "${var.env}-prime"
   application = "${aws_elastic_beanstalk_application.surveyrunner.name}"
-  solution_stack_name = "64bit Amazon Linux 2015.09 v2.0.7 running Python 3.4"
+  solution_stack_name = "${var.aws_elastic_beanstalk_solution_stack_name}"
 
   setting {
     namespace = "aws:ec2:vpc"
@@ -70,6 +70,13 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name      = "AWS_DEFAULT_REGION"
     value     = "${var.aws_default_region}"
   }
+
+   setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_CLOUDWATCH_LOGGING"
+    value     = "${var.cloudwatch_logging}"
+  }
+
   # Extra settings still to implement
   # EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
   # EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')
