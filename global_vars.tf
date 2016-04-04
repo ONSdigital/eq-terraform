@@ -97,6 +97,11 @@ variable "cloudwatch_alarm_arn" {
   default = "arn:aws:sns:eu-west-1:229460966734:eq-alert"
 }
 
+variable "cloudwatch_logging" {
+  description = "Enable Cloudwatch logging"
+  default = "True"
+}
+
 variable "vpc_ip_block" {
   description = "VPC internal IP cidr block for ec2 machines"
   default = "10.30.20.0/24"
