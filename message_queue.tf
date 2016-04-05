@@ -1,3 +1,96 @@
+resource "aws_security_group" "provision-allow-ssh-REMOVE" {
+  name = "${var.env}-provision-ssh-remove"
+  vpc_id      = "${aws_vpc.default.id}"
+
+  # SSH access from anywhere.
+  # REMOVE in production via AWS console.
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    }
+}
+
+
+resource "aws_security_group" "rabbit_required" {
+  name        = "${var.env}-RabbitMQ-required"
+  description = "Required for rabbitmq operation"
+  vpc_id      = "${aws_vpc.default.id}"
+
+
+  # HTTP access from the VPC
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+
+  # Rabbitmq
+  ## Clustering ports
+  ingress {
+    from_port = 4369
+    to_port   = 4369
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  egress {
+    from_port = 4369
+    to_port   = 4369
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  ingress {
+    from_port = 25672
+    to_port   = 25672
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  egress {
+    from_port = 25672
+    to_port   = 25672
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  ## AMQP Connection ports
+  ingress {
+    from_port = 5672
+    to_port   = 5672
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  egress {
+    from_port = 5672
+    to_port   = 5672
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  ingress {
+    from_port = 5671
+    to_port   = 5671
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  egress {
+    from_port = 5671
+    to_port   = 5671
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_ip_block}"]
+  }
+  # End RabbitMQ ports
+
+  # outbound internet access
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
+
 resource "aws_instance" "rabbitmq" {
     ami = "ami-47a23a30"
     count = 2
@@ -5,7 +98,7 @@ resource "aws_instance" "rabbitmq" {
     key_name = "${var.aws_key_pair}"
     subnet_id = "${aws_subnet.default.id}"
     associate_public_ip_address = true
-    security_groups = ["${aws_security_group.default.id}"]
+    security_groups = ["${aws_security_group.rabbit_required.id}", "${aws_security_group.provision-allow-ssh-REMOVE.id}"]
 
     tags {
         Name = "RabbitMQ ${var.env} ${count.index + 1}"

@@ -25,41 +25,49 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name      = "SR_ENVIRONMENT"
     value     = "${var.survey_runner_env}"
   }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_URL"
     value     = "amqp://admin:admin@${aws_elb.rabbitmq.dns_name}:5672/%2F"
   }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_QUEUE_NAME"
     value     = "${var.message_queue_name}"
   }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_TEST_QUEUE_NAME"
     value     = "${var.message_queue_name}"
   }
+
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
     value     = "${var.eb_instance_type}"
   }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_LOG_LEVEL"
     value     = "${var.eq_sr_log_level}"
   }
+
    setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SR_LOG_GROUP"
     value     = "${aws_cloudwatch_log_group.survey_runner.name}"
   }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "AWS_ACCESS_KEY_ID"
     value     = "${var.aws_access_key}"
   }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "AWS_SECRET_ACCESS_KEY"

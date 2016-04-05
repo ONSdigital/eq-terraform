@@ -40,7 +40,8 @@ resource "aws_security_group" "default" {
   description = "Used for eQ"
   vpc_id      = "${aws_vpc.default.id}"
 
-  # SSH access from anywhere
+  # SSH access from anywhere.
+  # REMOVE in production via AWS console. 
   ingress {
     from_port   = 22
     to_port     = 22
