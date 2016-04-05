@@ -118,3 +118,22 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+
+# External access security group
+# Blocks access to an environment based on a
+# set of IP's in tfvars file.
+# Our default security group to access
+# the instances over SSH and HTTP
+resource "aws_security_group" "ons_ips" {
+  name        = "public_access_ip_restriction"
+  description = "Block access to only ONS IPs"
+  vpc_id      = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["${split(",", var.ons_access_ips)}"]
+  }
+}

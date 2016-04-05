@@ -121,3 +121,7 @@ variable "aws_elastic_beanstalk_solution_stack_name" {
   description = "Elastic Beanstalk Amazon Linux version"
   default = "64bit Amazon Linux 2015.09 v2.0.8 running Python 3.4"
 }
+
+variable "ons_access_ips" {
+  description = "List of IP's or IP ranges to allow access to our service."
+}
