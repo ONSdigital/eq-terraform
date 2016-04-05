@@ -34,10 +34,10 @@ For the smoke test you will need
 
 ## Additional security
 
-To increase the security of the system, remove via the AWS console the public IP's
-of the rabbitmq machines and their SSH access. This is retained to allow provisioning
+To increase the security of the system, remove the security group `"provision-allow-ssh-REMOVE`
+from the rabbitmq machines to block their SSH access. This is retained to allow provisioning
 via ansible. In future we may migrate to a bastion machine to provision, which could
-be then replicated locally via docker / VM bastion. 
+be then replicated locally via docker / VM bastion.
 
 ## Troubleshooting
 
