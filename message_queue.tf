@@ -1,5 +1,6 @@
 resource "aws_security_group" "provision-allow-ssh-REMOVE" {
   name = "${var.env}-provision-ssh-remove"
+  vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere.
   # REMOVE in production via AWS console.
