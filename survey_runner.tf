@@ -27,6 +27,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
 
   setting {
+    namespace = "aws:elb:loadbalancer"
+    name      = "ManagedSecurityGroup"
+    value     = "${aws_security_group.ons_ips.id}"
+  }
+
+  setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "SR_ENVIRONMENT"
     value     = "${var.survey_runner_env}"
