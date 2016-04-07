@@ -41,7 +41,7 @@ resource "aws_security_group" "default" {
   vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere.
-  # REMOVE in production via AWS console. 
+  # REMOVE in production via AWS console.
   ingress {
     from_port   = 22
     to_port     = 22
@@ -135,5 +135,12 @@ resource "aws_security_group" "ons_ips" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["${split(",", var.ons_access_ips)}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
