@@ -40,15 +40,6 @@ resource "aws_security_group" "default" {
   description = "Used for eQ"
   vpc_id      = "${aws_vpc.default.id}"
 
-  # SSH access from anywhere.
-  # REMOVE in production via AWS console.
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   # HTTP access from the VPC
   ingress {
     from_port   = 80
@@ -131,8 +122,8 @@ resource "aws_security_group" "ons_ips" {
   vpc_id      = "${aws_vpc.default.id}"
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["${split(",", var.ons_access_ips)}"]
   }

@@ -97,6 +97,30 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value     = "${var.cloudwatch_logging}"
   }
 
+  setting {
+    namespace = "aws:elb:listener:443"
+    name      = "ListenerProtocol"
+    value     = "HTTPS"
+  }
+
+  setting {
+    namespace = "aws:elb:listener:443"
+    name      = "SSLCertificateId"
+    value     = "${var.certificate_arn}"
+  }
+
+  setting {
+    namespace =  "aws:elb:listener:443"
+    name      = "InstancePort"
+    value = "80"
+  }
+
+  setting {
+    namespace  = "aws:elb:listener:443"
+    name       = "InstanceProtocol"
+    value      = "HTTP"
+  }
+
   # Extra settings still to implement
   # EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
   # EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')

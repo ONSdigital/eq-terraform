@@ -125,3 +125,7 @@ variable "aws_elastic_beanstalk_solution_stack_name" {
 variable "ons_access_ips" {
   description = "List of IP's or IP ranges to allow access to our service."
 }
+
+variable "certificate_arn" {
+  description = "ARN of the IAM loaded TLS certificate for public ELB"
+}
