@@ -5,3 +5,4 @@ sub_aws_secret_key="XXXXXXXXXXXX"
 aws_key_pair="pre-prod"
 ons_access_ips=[XXXXXXX, XXXXXXX]
 certificate_arn="arn:aws:iam::XXXXXXX:server-certificate/NAME"
+application_secret_key="you'll never guess it"

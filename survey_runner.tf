@@ -34,6 +34,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SECRET_KEY"
+    value     = "${var.application_secret_key}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "SR_ENVIRONMENT"
     value     = "${var.survey_runner_env}"
   }

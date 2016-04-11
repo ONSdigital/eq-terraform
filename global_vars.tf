@@ -139,3 +139,7 @@ variable "ons_access_ips" {
 variable "certificate_arn" {
   description = "ARN of the IAM loaded TLS certificate for public ELB"
 }
+
+variable "application_secret_key" {
+  description = "The Flask secret key for secure cookie storage"
+}
