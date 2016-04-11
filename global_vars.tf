@@ -87,6 +87,16 @@ variable "eb_instance_type" {
   default     = "t2.medium"
 }
 
+variable "eb_min_size" {
+  description = "Elastic Beanstalk Minimum number of instances"
+  default     = "2"
+}
+
+variable "eb_max_size" {
+  description = "Elastic Beanstalk Maximum number of instances"
+  default     = "2"
+}
+
 variable "rabbitmq_instance_type" {
   description = "Rabbit MQ Instance type"
   default = "t2.small"

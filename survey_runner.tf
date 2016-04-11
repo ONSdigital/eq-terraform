@@ -57,6 +57,18 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
 
   setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MaxSize"
+    value     = "${var.eb_max_size}"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MinSize"
+    value     = "${var.eb_min_size}"
+  }
+
+  setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
     value     = "${var.eb_instance_type}"
@@ -68,7 +80,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value     = "${var.eq_sr_log_level}"
   }
 
-   setting {
+  setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SR_LOG_GROUP"
     value     = "${aws_cloudwatch_log_group.survey_runner.name}"
