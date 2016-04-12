@@ -25,22 +25,9 @@ variable "dns_zone_name" {
   default     = "eq.ons.digital."
 }
 
-variable "submissions_bucket_name" {
-  description = "S3 bucket name for encrypted submissions."
-  default     = "pillar_box"
-}
-
 variable "message_queue_name" {
   description = "RabbitMQ submission queue name"
   default     = "submit_q"
-}
-
-variable "sub_aws_access_key" {
-  description = "AWS submission access key for submissions bucket."
-}
-
-variable "sub_aws_secret_key" {
-  description = "AWS submission secret key for accessing submissions bucket."
 }
 
 variable "survey_runner_env" {
@@ -114,17 +101,14 @@ variable "cloudwatch_logging" {
 
 variable "vpc_ip_block" {
   description = "VPC internal IP cidr block for ec2 machines"
-  default = "10.30.20.0/24"
 }
 
 variable "rabbitmq_ip_prime" {
   description = "Static IP of prime rabbitmq server"
-  default =  "10.30.20.15"
 }
 
 variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
-  default = "10.30.20.16"
 }
 
 variable "aws_elastic_beanstalk_solution_stack_name" {
