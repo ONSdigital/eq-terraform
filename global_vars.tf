@@ -113,7 +113,7 @@ variable "rabbitmq_ip_failover" {
 
 variable "aws_elastic_beanstalk_solution_stack_name" {
   description = "Elastic Beanstalk Amazon Linux version"
-  default = "64bit Amazon Linux 2015.09 v2.0.8 running Python 3.4"
+  default = "64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4"
 }
 
 variable "ons_access_ips" {
