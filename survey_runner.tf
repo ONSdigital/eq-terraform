@@ -116,6 +116,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
 
   setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_UA_ID"
+    value     = "${var.google_analytics_code}"
+  }
+
+  setting {
     namespace = "aws:elb:listener:443"
     name      = "ListenerProtocol"
     value     = "HTTPS"
