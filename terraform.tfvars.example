@@ -1,8 +1,9 @@
 aws_access_key="XXXXXXXXXXXX"
 aws_secret_key="XXXXXXXXXXXX"
-sub_aws_access_key="XXXXXXXXXXXX"
-sub_aws_secret_key="XXXXXXXXXXXX"
 aws_key_pair="pre-prod"
 ons_access_ips=[XXXXXXX, XXXXXXX]
 certificate_arn="arn:aws:iam::XXXXXXX:server-certificate/NAME"
 application_secret_key="you'll never guess it"
+vpc_ip_block="10.30.20.0/24"
+rabbitmq_ip_prime="10.30.20.15"
+rabbitmq_ip_failover="10.30.20.16"

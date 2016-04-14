@@ -47,7 +47,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_URL"
-    value     = "amqp://admin:admin@${aws_elb.rabbitmq.dns_name}:5672/%2F"
+    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${aws_elb.rabbitmq.dns_name}:5672/%2F"
   }
 
   setting {
