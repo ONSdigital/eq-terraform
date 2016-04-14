@@ -127,3 +127,7 @@ variable "certificate_arn" {
 variable "application_secret_key" {
   description = "The Flask secret key for secure cookie storage"
 }
+
+variable "google_analytics_code" {
+  description = "The google analytics UA Code"
+}
