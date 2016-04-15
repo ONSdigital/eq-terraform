@@ -36,7 +36,7 @@ resource "aws_subnet" "default" {
 # Our default security group to access
 # the instances over SSH and HTTP
 resource "aws_security_group" "default" {
-  name        = "survey_runner"
+  name        = "${var.en}-survey_runner"
   description = "Used for eQ"
   vpc_id      = "${aws_vpc.default.id}"
 
@@ -117,7 +117,7 @@ resource "aws_security_group" "default" {
 # Our default security group to access
 # the instances over SSH and HTTP
 resource "aws_security_group" "ons_ips" {
-  name        = "public_access_ip_restriction"
+  name        = "${var.en}-public_access_ip_restriction"
   description = "Block access to only ONS IPs"
   vpc_id      = "${aws_vpc.default.id}"
 
@@ -138,7 +138,7 @@ resource "aws_security_group" "ons_ips" {
 
 # VPN services control group
 resource "aws_security_group" "vpn_services_logging_auditing" {
-  name        = "vpn_services_logging_auditing"
+  name        = "${var.en}-vpn_services_logging_auditing"
   description = "Allow the VPN provided services to access our VPC"
   vpc_id      = "${aws_vpc.default.id}"
 
@@ -171,7 +171,7 @@ resource "aws_security_group" "vpn_services_logging_auditing" {
 }
 
 resource "aws_security_group" "vpn_sdx_access" {
-  name        = "vpn_services_sdx_access"
+  name        = "${var.en}-vpn_services_sdx_access"
   description = "Allow the sdx system access to RabbitMQ servers."
   vpc_id      = "${aws_vpc.default.id}"
 
