@@ -97,34 +97,12 @@ resource "aws_instance" "rabbitmq" {
     instance_type = "${var.rabbitmq_instance_type}"
     key_name = "${var.aws_key_pair}"
     subnet_id = "${aws_subnet.default.id}"
+    private_ip = "${lookup(var.rabbitmq_ips,count.index)}"
     associate_public_ip_address = true
     security_groups = ["${aws_security_group.rabbit_required.id}", "${aws_security_group.provision-allow-ssh-REMOVE.id}"]
 
     tags {
         Name = "RabbitMQ ${var.env} ${count.index + 1}"
-    }
-}
-
-# Static Network interfaces for the two RabbitMq boxes
-# Prime IP
-resource "aws_network_interface" "ons_vpn_prime" {
-    subnet_id = "${aws_subnet.default.id}"
-    private_ips = ["${var.rabbitmq_ip_prime}"]
-    security_groups = ["${aws_security_group.default.id}"]
-    attachment {
-        instance = "${aws_instance.rabbitmq.0.id}"
-        device_index = 1
-    }
-}
-
-# Failover IP
-resource "aws_network_interface" "ons_vpn_failover" {
-    subnet_id = "${aws_subnet.default.id}"
-    private_ips = ["${var.rabbitmq_ip_failover}"]
-    security_groups = ["${aws_security_group.default.id}"]
-    attachment {
-        instance = "${aws_instance.rabbitmq.1.id}"
-        device_index = 1
     }
 }
 

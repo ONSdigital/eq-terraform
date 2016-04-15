@@ -5,6 +5,9 @@ ons_access_ips=[XXXXXXX, XXXXXXX]
 certificate_arn="arn:aws:iam::XXXXXXX:server-certificate/NAME"
 application_secret_key="you'll never guess it"
 vpc_ip_block="10.30.20.0/24"
-rabbitmq_ip_prime="10.30.20.15"
-rabbitmq_ip_failover="10.30.20.16"
+rabbitmq_ip_prime="XX.XX.XX.15"
+rabbitmq_ip_failover="XX.XX.XX.16"
 google_analytics_code="UA-56892037-7"
+rabbitmq_ips.0="xx.xx.xx.15"
+rabbitmq_ips.1="xx.xx.xx.16"
+
