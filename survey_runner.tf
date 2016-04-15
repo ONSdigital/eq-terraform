@@ -3,6 +3,30 @@ resource "aws_elastic_beanstalk_application" "surveyrunner" {
   description = "Survey runner for environment"
 }
 
+resource "aws_iam_instance_profile" "eb_profile" {
+    name = "${var.env}-eb-iam-instance-profile"
+    roles = ["${aws_iam_role.role.name}"]
+}
+
+resource "aws_iam_role" "role" {
+    name = "${var.env}-eb-iam-role"
+    path = "/"
+    assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+    {
+        "Action": "sts:AssumeRole",
+        "Principal": {"AWS": "*"},
+        "Effect": "Allow",
+        "Sid": ""
+    }
+]
+}
+EOF
+}
+
+
 resource "aws_elastic_beanstalk_environment" "sr_prime" {
   name = "${var.env}-prime"
   application = "${aws_elastic_beanstalk_application.surveyrunner.name}"
@@ -36,6 +60,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     namespace = "aws:ec2:vpc"
     name = "AssociatePublicIpAddress"
     value = "true"
+  }
+
+   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = "${aws_iam_instance_profile.eb_profile.name}"
   }
 
   setting {
