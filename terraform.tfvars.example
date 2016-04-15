@@ -10,4 +10,6 @@ rabbitmq_ip_failover="XX.XX.XX.16"
 google_analytics_code="UA-56892037-7"
 rabbitmq_ips.0="xx.xx.xx.15"
 rabbitmq_ips.1="xx.xx.xx.16"
-
+logserver_cidr="x.x.x.21/32"
+audit_cidr="x.x.x.242/32"
+sdx_cidr="x.x.x.0/32"

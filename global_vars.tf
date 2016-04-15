@@ -134,3 +134,15 @@ variable "application_secret_key" {
 variable "google_analytics_code" {
   description = "The google analytics UA Code"
 }
+
+variable "logserver_cidr" {
+  description="CIDR block of the centralised logging service"
+}
+
+variable "audit_cidr" {
+  description="CIDR block of the centralised auditing service."
+}
+
+variable "sdx_cidr" {
+  description="CIDR block of the sdx system."
+}
