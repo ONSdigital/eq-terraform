@@ -10,6 +10,13 @@ resource "aws_security_group" "provision-allow-ssh-REMOVE" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     }
+    # outbound internet access
+    egress {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
 }
 
 
@@ -79,14 +86,6 @@ resource "aws_security_group" "rabbit_required" {
     cidr_blocks = ["${var.vpc_ip_block}"]
   }
   # End RabbitMQ ports
-
-  # outbound internet access
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
 
@@ -99,7 +98,10 @@ resource "aws_instance" "rabbitmq" {
     subnet_id = "${aws_subnet.default.id}"
     private_ip = "${lookup(var.rabbitmq_ips,count.index)}"
     associate_public_ip_address = true
-    security_groups = ["${aws_security_group.rabbit_required.id}", "${aws_security_group.provision-allow-ssh-REMOVE.id}"]
+    security_groups = ["${aws_security_group.rabbit_required.id}",
+                        "${aws_security_group.provision-allow-ssh-REMOVE.id}",
+                        "${aws_security_group.vpn_services_logging_auditing.id}",
+                        "${aws_security_group.vpn_sdx_access.id}"]
 
     tags {
         Name = "RabbitMQ ${var.env} ${count.index + 1}"

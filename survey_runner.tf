@@ -27,6 +27,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   }
 
   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "SecurityGroups"
+    value     = "${aws_security_group.vpn_services_logging_auditing.id}"
+  }
+
+  setting {
     namespace = "aws:elb:loadbalancer"
     name      = "ManagedSecurityGroup"
     value     = "${aws_security_group.ons_ips.id}"
@@ -144,10 +150,6 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name       = "InstanceProtocol"
     value      = "HTTP"
   }
-
-  # Extra settings still to implement
-  # EQ_RRM_PUBLIC_KEY = os.getenv('EQ_RRM_PUBLIC_KEY', './jwt-test-keys/rrm-public.pem')
-  # EQ_SR_PRIVATE_KEY = os.getenv('EQ_SR_PRIVATE_KEY', './jwt-test-keys/sr-private.pem')
 
   provisioner "local-exec" {
        command = "./deploy_surveyrunner.sh ${var.env}-surveyrunner ${var.env}-prime"

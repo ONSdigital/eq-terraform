@@ -135,3 +135,62 @@ resource "aws_security_group" "ons_ips" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+# VPN services control group
+resource "aws_security_group" "vpn_services_logging_auditing" {
+  name        = "vpn_services_logging_auditing"
+  description = "Allow the VPN provided services to access our VPC"
+  vpc_id      = "${aws_vpc.default.id}"
+
+  # Auditing service
+  egress {
+    from_port   = 601
+    to_port     = 601
+    protocol    = "tcp"
+    cidr_blocks = ["${var.audit_cidr}"]
+  }
+  egress {
+    from_port   = 514
+    to_port     = 514
+    protocol    = "udp"
+    cidr_blocks = ["${var.audit_cidr}"]
+  }
+  # Log service
+  egress {
+    from_port   = 514
+    to_port     = 514
+    protocol    = "udp"
+    cidr_blocks = ["${var.logserver_cidr}"]
+  }
+  egress {
+    from_port   = 9997
+    to_port     = 9997
+    protocol    = "tcp"
+    cidr_blocks = ["${var.logserver_cidr}"]
+  }
+}
+
+resource "aws_security_group" "vpn_sdx_access" {
+  name        = "vpn_services_sdx_access"
+  description = "Allow the sdx system access to RabbitMQ servers."
+  vpc_id      = "${aws_vpc.default.id}"
+
+  # RabbitMQ access from SDX to queue servers
+  ingress {
+    from_port   = 5672
+    to_port     = 5672
+    protocol    = "tcp"
+    cidr_blocks = ["${var.sdx_cidr}"]
+  }
+}
+
+# egress
+# Security all boxes to 10.172.92.242/32 udp 514 / tcp 601 - selex
+# Security group all boxes 10.171.93.21/32 udp 514 / tcp 9997 - Splunk
+#
+
+# ingress
+# To rabbitmq servers from SDX on port 5672
+# To Jenkins server from 10.27.0.0/16 ports 22 / 8080
+# To Jenkins server from 10.47.0.0/16 ports 22 / 8080
+# To Jenkins server from 10.171.93.21 ports 22 / 8080
