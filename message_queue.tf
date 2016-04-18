@@ -95,7 +95,7 @@ resource "aws_instance" "rabbitmq" {
     count = 2
     instance_type = "${var.rabbitmq_instance_type}"
     key_name = "${var.aws_key_pair}"
-    subnet_id = "${aws_subnet.default.id}"
+    subnet_id = "${aws_subnet.sr_application.id}"
     private_ip = "${lookup(var.rabbitmq_ips,count.index)}"
     associate_public_ip_address = true
     security_groups = ["${aws_security_group.rabbit_required.id}",
@@ -111,7 +111,7 @@ resource "aws_instance" "rabbitmq" {
 
 resource "aws_elb" "rabbitmq" {
   name = "${var.env}-rabbitmq-elb"
-  subnets = ["${aws_subnet.default.id}"]
+  subnets = ["${aws_subnet.sr_application.id}"]
   security_groups = ["${aws_security_group.default.id}"]
   internal = true
 

@@ -17,7 +17,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = "${aws_subnet.default.id}"
+    value     = "${aws_subnet.sr_application.id}"
   }
 
   setting {
