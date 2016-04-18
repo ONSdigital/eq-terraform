@@ -183,14 +183,3 @@ resource "aws_security_group" "vpn_sdx_access" {
     cidr_blocks = ["${var.sdx_cidr}"]
   }
 }
-
-# egress
-# Security all boxes to 10.172.92.242/32 udp 514 / tcp 601 - selex
-# Security group all boxes 10.171.93.21/32 udp 514 / tcp 9997 - Splunk
-#
-
-# ingress
-# To rabbitmq servers from SDX on port 5672
-# To Jenkins server from 10.27.0.0/16 ports 22 / 8080
-# To Jenkins server from 10.47.0.0/16 ports 22 / 8080
-# To Jenkins server from 10.171.93.21 ports 22 / 8080
