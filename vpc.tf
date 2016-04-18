@@ -183,3 +183,29 @@ resource "aws_security_group" "vpn_sdx_access" {
     cidr_blocks = ["${var.sdx_cidr}"]
   }
 }
+
+# Subnets for ElasticBeanstalk / Jenkins / WAF
+# Create a subnet to launch our ec2 instances and ElasticBeanstalk into
+resource "aws_subnet" "sr_application" {
+  vpc_id                  = "${aws_vpc.default.id}"
+  cidr_block              = "${var.application_cidr}"
+  tags {
+    Name = "${var.env}-application-subnet"
+  }
+}
+# Create a subnet to launch our deployment tools into
+resource "aws_subnet" "tools" {
+  vpc_id                  = "${aws_vpc.default.id}"
+  cidr_block              = "${var.tools_cidr}"
+  tags {
+    Name = "${var.env}-tools-subnet"
+  }
+}
+# Create a subnet to launch our WAF into.
+resource "aws_subnet" "waf" {
+  vpc_id                  = "${aws_vpc.default.id}"
+  cidr_block              = "${var.waf_cidr}"
+  tags {
+    Name = "${var.env}-waf-subnet"
+  }
+}
