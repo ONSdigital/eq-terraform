@@ -30,6 +30,11 @@ variable "message_queue_name" {
   default     = "submit_q"
 }
 
+variable "message_test_queue_name" {
+  description = "RabbitMQ health check queue name"
+  default     = "test_q"
+}
+
 variable "survey_runner_env" {
   description = "The name of the survey runner environment, which is set as a environment variable."
   default     = "development"

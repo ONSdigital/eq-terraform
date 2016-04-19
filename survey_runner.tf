@@ -65,7 +65,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_TEST_QUEUE_NAME"
-    value     = "${var.message_queue_name}"
+    value     = "${var.message_test_queue_name}"
   }
 
   setting {
