@@ -115,10 +115,12 @@ variable "rabbitmq_ip_prime" {
 variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
 }
+
 variable "rabbitmq_ips" {
-  description = "Set of IPS for our rabbitmq machines static for VPN"
+  description="A set of static IP's to allocate to rabbitmq servers"
   default = {}
 }
+
 variable "aws_elastic_beanstalk_solution_stack_name" {
   description = "Elastic Beanstalk Amazon Linux version"
   default = "64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4"
@@ -150,4 +152,16 @@ variable "audit_cidr" {
 
 variable "sdx_cidr" {
   description="CIDR block of the sdx system."
+}
+
+variable "application_cidr" {
+  description="CIDR block for application subnet"
+}
+
+variable "tools_cidr" {
+  description="CIDR block for tooling subnet"
+}
+
+variable "waf_cidr" {
+  description="CIDR block for the WAF"
 }
