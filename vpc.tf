@@ -22,15 +22,7 @@ resource "aws_route" "internet_access" {
   gateway_id             = "${aws_internet_gateway.default.id}"
 }
 
-# Create a subnet to launch our ec2 instances and ElasticBeanstalk into
-resource "aws_subnet" "default" {
-  vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "${var.vpc_ip_block}"
-  map_public_ip_on_launch = true
-  tags {
-    Name = "${var.env}-default-subnet"
-  }
-}
+
 
 
 # Our default security group to access

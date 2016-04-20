@@ -29,7 +29,13 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
-    value     = "${aws_security_group.vpn_services_logging_auditing.id}"
+    value     = "${aws_security_group.vpn_services_logging_auditing.id},${aws_security_group.ons_ips.id}"
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name = "AssociatePublicIpAddress"
+    value = "true"
   }
 
   setting {
