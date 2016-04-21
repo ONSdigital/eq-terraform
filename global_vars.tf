@@ -71,7 +71,7 @@ variable "rabbitmq_write_password" {
 
 variable "eq_sr_log_level" {
   description = "The Survey Runner logging level (One of ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])"
-  default     = "WARNING"
+  default     = "ERROR"
 }
 
 variable "eb_instance_type" {
