@@ -165,3 +165,8 @@ variable "tools_cidr" {
 variable "waf_cidr" {
   description="CIDR block for the WAF"
 }
+
+variable "dev_mode" {
+  description = "Flag to enabled DEV Mode defaulted to False"
+  default="False"
+}

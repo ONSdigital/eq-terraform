@@ -157,6 +157,13 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value      = "HTTP"
   }
 
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_DEV_MODE"
+    value     = "${var.dev_mode}"
+  }
+
+
   provisioner "local-exec" {
        command = "./deploy_surveyrunner.sh ${var.env}-surveyrunner ${var.env}-prime"
    }
