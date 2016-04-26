@@ -170,3 +170,7 @@ variable "dev_mode" {
   description = "Flag to enabled DEV Mode defaulted to False"
   default="False"
 }
+
+variable "rsyslogd_server_ip" {
+  description = "The IP of the centralised syslog service."
+}
