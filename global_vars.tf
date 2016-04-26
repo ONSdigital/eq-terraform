@@ -171,6 +171,6 @@ variable "dev_mode" {
   default="False"
 }
 
-variable "rsyslog_server_IP" {
+variable "rsyslogd_server_ip" {
   description = "The IP of the centralised syslog service."
 }
