@@ -163,6 +163,29 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value     = "${var.dev_mode}"
   }
 
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE"
+    value     = "True"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_ENCRYPTION"
+    value     = "True"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_TYPE"
+    value     = "DATABASE"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
+    value     = "postgresql://digitaleq12345:digitaleq12345@${aws_db_instance.db1.address}:${aws_db_instance.db1.port}/${aws_db_instance.db1.name}"
+  }
 
   provisioner "local-exec" {
        command = "./deploy_surveyrunner.sh ${var.env}-surveyrunner ${var.env}-prime"
