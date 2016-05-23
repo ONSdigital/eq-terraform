@@ -162,8 +162,12 @@ variable "tools_cidr" {
   description="CIDR block for tooling subnet"
 }
 
-variable "waf_cidr" {
-  description="CIDR block for the WAF"
+variable "database_1_cidr" {
+  description="1st CIDR block for the database"
+}
+
+variable "database_2_cidr" {
+  description="2nd CIDR block for the database"
 }
 
 variable "dev_mode" {

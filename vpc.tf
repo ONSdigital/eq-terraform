@@ -181,6 +181,7 @@ resource "aws_security_group" "vpn_sdx_access" {
 resource "aws_subnet" "sr_application" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${var.application_cidr}"
+  availability_zone       = "eu-west-1a"
   tags {
     Name = "${var.env}-application-subnet"
   }
@@ -189,15 +190,26 @@ resource "aws_subnet" "sr_application" {
 resource "aws_subnet" "tools" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${var.tools_cidr}"
+  availability_zone       = "eu-west-1a"
   tags {
     Name = "${var.env}-tools-subnet"
   }
 }
-# Create a subnet to launch our WAF into.
-resource "aws_subnet" "waf" {
+# Create a subnet to launch our database into.
+resource "aws_subnet" "database-1" {
   vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "${var.waf_cidr}"
+  cidr_block              = "${var.database_1_cidr}"
+  availability_zone       = "eu-west-1b"
   tags {
-    Name = "${var.env}-waf-subnet"
+    Name = "${var.env}-database-1-subnet"
+  }
+}
+
+resource "aws_subnet" "database-2" {
+  vpc_id                  = "${aws_vpc.default.id}"
+  cidr_block              = "${var.database_2_cidr}"
+  availability_zone       = "eu-west-1c"
+  tags {
+    Name = "${var.env}-database-1-subnet"
   }
 }

@@ -184,7 +184,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
-    value     = "postgresql://digitaleq12345:digitaleq12345@${aws_db_instance.db1.address}:${aws_db_instance.db1.port}/${aws_db_instance.db1.name}"
+    value     = "postgresql://digitaleq12345:digitaleq12345@${aws_db_instance.database.address}:${aws_db_instance.database.port}/${aws_db_instance.database.name}"
   }
 
   provisioner "local-exec" {
