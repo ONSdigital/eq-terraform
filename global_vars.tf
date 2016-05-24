@@ -178,3 +178,18 @@ variable "dev_mode" {
 variable "rsyslogd_server_ip" {
   description = "The IP of the centralised syslog service."
 }
+
+variable "database_name" {
+  description = "The name of the database"
+  default="digitaleqrds"
+}
+
+variable "database_user" {
+  description = "The master username for the database"
+  default = "digitaleq12345"
+}
+
+variable "database_password" {
+  description = "The password for the master username of the database"
+  default = "digitaleq12345"
+}
