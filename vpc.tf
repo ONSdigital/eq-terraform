@@ -210,6 +210,6 @@ resource "aws_subnet" "database-2" {
   cidr_block              = "${var.database_2_cidr}"
   availability_zone       = "eu-west-1c"
   tags {
-    Name = "${var.env}-database-1-subnet"
+    Name = "${var.env}-database-2-subnet"
   }
 }
