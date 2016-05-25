@@ -5,25 +5,7 @@ resource "aws_elastic_beanstalk_application" "surveyrunner" {
 
 resource "aws_iam_instance_profile" "eb_profile" {
     name = "${var.env}-eb-iam-instance-profile"
-    roles = ["${aws_iam_role.role.name}"]
-}
-
-resource "aws_iam_role" "role" {
-    name = "${var.env}-eb-iam-role"
-    path = "/"
-    assume_role_policy = <<EOF
-{
- "Version": "2012-10-17",
- "Statement": [
-    {
-        "Action": "sts:AssumeRole",
-        "Principal": {"AWS": "*"},
-        "Effect": "Allow",
-        "Sid": ""
-    }
-]
-}
-EOF
+    roles = ["aws-elasticbeanstalk-ec2-role"]
 }
 
 
