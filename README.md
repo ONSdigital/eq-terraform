@@ -32,6 +32,10 @@ For the smoke test you will need
 2. Gem 2.5.2 (gem update --system '2.5.2')
 3. Bundle should be 1.10.6 (gem install bundler -v 1.10.6)
 
+## IAM Role
+Currently for this to work you need to add the CloudWatchFullAccess policy to the IAM role aws-elasticbeanstalk-ec2-role
+using the IAM console in AWS
+
 ## Additional security
 
 To increase the security of the system, remove the security group `"provision-allow-ssh-REMOVE`

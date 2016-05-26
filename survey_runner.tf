@@ -3,12 +3,6 @@ resource "aws_elastic_beanstalk_application" "surveyrunner" {
   description = "Survey runner for environment"
 }
 
-resource "aws_iam_instance_profile" "eb_profile" {
-    name = "${var.env}-eb-iam-instance-profile"
-    roles = ["aws-elasticbeanstalk-ec2-role"]
-}
-
-
 resource "aws_elastic_beanstalk_environment" "sr_prime" {
   name = "${var.env}-prime"
   application = "${aws_elastic_beanstalk_application.surveyrunner.name}"
@@ -47,7 +41,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
    setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     = "${aws_iam_instance_profile.eb_profile.name}"
+    value     = "${var.elastic_beanstalk_iam_role}"
   }
 
   setting {
@@ -116,17 +110,6 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value     = "${aws_cloudwatch_log_group.survey_runner.name}"
   }
 
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "AWS_ACCESS_KEY_ID"
-    value     = "${var.aws_access_key}"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "AWS_SECRET_ACCESS_KEY"
-    value     = "${var.aws_secret_key}"
-  }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "AWS_DEFAULT_REGION"
