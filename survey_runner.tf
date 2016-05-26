@@ -161,19 +161,19 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE"
-    value     = "True"
+    value     = "${var.eq_server_side_storage}"
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE_ENCRYPTION"
-    value     = "True"
+    value     = "${var.eq_server_side_storage_encryption}"
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE_TYPE"
-    value     = "DATABASE"
+    value     = "${var.eq_server_side_storage_type}"
   }
 
   setting {
