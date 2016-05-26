@@ -162,8 +162,12 @@ variable "tools_cidr" {
   description="CIDR block for tooling subnet"
 }
 
-variable "waf_cidr" {
-  description="CIDR block for the WAF"
+variable "database_1_cidr" {
+  description="1st CIDR block for the database"
+}
+
+variable "database_2_cidr" {
+  description="2nd CIDR block for the database"
 }
 
 variable "dev_mode" {
@@ -173,4 +177,19 @@ variable "dev_mode" {
 
 variable "rsyslogd_server_ip" {
   description = "The IP of the centralised syslog service."
+}
+
+variable "database_name" {
+  description = "The name of the database"
+  default="digitaleqrds"
+}
+
+variable "database_user" {
+  description = "The master username for the database"
+  default = "digitaleq12345"
+}
+
+variable "database_password" {
+  description = "The password for the master username of the database"
+  default = "digitaleq12345"
 }
