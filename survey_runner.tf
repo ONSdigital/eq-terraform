@@ -38,6 +38,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value = "true"
   }
 
+   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = "${var.elastic_beanstalk_iam_role}"
+  }
+
   setting {
     namespace = "aws:elb:loadbalancer"
     name      = "ManagedSecurityGroup"
@@ -106,17 +112,6 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "AWS_ACCESS_KEY_ID"
-    value     = "${var.aws_access_key}"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "AWS_SECRET_ACCESS_KEY"
-    value     = "${var.aws_secret_key}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "AWS_DEFAULT_REGION"
     value     = "${var.aws_default_region}"
   }
@@ -166,19 +161,19 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE"
-    value     = "True"
+    value     = "${var.eq_server_side_storage}"
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE_ENCRYPTION"
-    value     = "True"
+    value     = "${var.eq_server_side_storage_encryption}"
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE_TYPE"
-    value     = "DATABASE"
+    value     = "${var.eq_server_side_storage_type}"
   }
 
   setting {

@@ -12,7 +12,7 @@ resource "aws_security_group" "rds_access" {
 }
 
 resource "aws_db_subnet_group" "rds" {
-    name = "eq-rds"
+    name = "${var.env}-eq-rds"
     description = "The two database subnets"
     subnet_ids = ["${aws_subnet.database-1.id}", "${aws_subnet.database-2.id}"]
     tags {
@@ -22,7 +22,7 @@ resource "aws_db_subnet_group" "rds" {
 
 resource "aws_db_instance" "database" {
   allocated_storage    = 10
-  identifier           = "digitaleqrds"
+  identifier           = "${var.env}-digitaleqrds"
   engine               = "postgres"
   engine_version       = "9.4.5"
   instance_class       = "db.m1.small"

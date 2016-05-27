@@ -193,3 +193,19 @@ variable "database_password" {
   description = "The password for the master username of the database"
   default = "digitaleq12345"
 }
+
+variable "elastic_beanstalk_iam_role" {
+  default = "aws-elasticbeanstalk-ec2-role"
+}
+
+variable "eq_server_side_storage" {
+  default = "False"
+}
+
+variable "eq_server_side_storage_encryption" {
+  default = "True"
+}
+
+variable "eq_server_side_storage_type" {
+  default = "DATABASE"
+}
