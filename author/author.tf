@@ -85,8 +85,13 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     name       = "InstanceProtocol"
     value      = "HTTP"
   }
-}
 
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_AUTHOR_DATABASE_URL"
+    value     = "postgres://${var.database_user}:${var.database_password}@${aws_db_instance.author-database.address}:${aws_db_instance.author-database.port}/${aws_db_instance.author-database.name}"
+  }
+}
 
 resource "aws_route53_record" "author" {
   zone_id = "${var.dns_zone_id}"
