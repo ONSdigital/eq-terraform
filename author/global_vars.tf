@@ -83,3 +83,8 @@ variable "eb_instance_type" {
   description = "Elastic Beanstalk Instance Type"
   default     = "t2.medium"
 }
+
+variable "bucket-name" {
+  description = "The bucket name were the schema files are stored"
+  default     = "eq-schemas-dev"
+}

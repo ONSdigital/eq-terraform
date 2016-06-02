@@ -91,6 +91,12 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     name      = "EQ_AUTHOR_DATABASE_URL"
     value     = "postgres://${var.database_user}:${var.database_password}@${aws_db_instance.author-database.address}:${aws_db_instance.author-database.port}/${aws_db_instance.author-database.name}"
   }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_BUCKET_NAME"
+    value     = "${var.bucket-name}"
+  }
 }
 
 resource "aws_route53_record" "author" {
