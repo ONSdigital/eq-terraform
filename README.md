@@ -19,11 +19,21 @@ Also the pre-prod.pem key must exist in this directory.
 
 1. Install terraform(terraform.io) and add the binary to your shell path.
 
-2. Copy `terraform.tfvars.example` to `terraform.tfvars`
+2. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and survey-runner. You'll need to change the
+values to match your requirements.
+
+3. To deploy survey-runner, first cd in survey-runer
 
 4. Run `terraform plan` to check the output of terraform.
 
 5. Run `terraform apply` to create your infrastructure environment.
+
+6. To deploy-author, cd in author
+
+7. Run `terraform plan` to check the output of terraform.
+
+8. Run `terraform apply` to create your infrastructure environment.
+
 
 ## Smoke Test
 For the smoke test you will need
