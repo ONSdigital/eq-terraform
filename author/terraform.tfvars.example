@@ -1,7 +1,7 @@
 aws_access_key="xxxxxx"
 aws_secret_key="xxxxxx"
 aws_key_pair="xxxx"
-ons_access_ips="0.0.0.0/32"
+ons_access_ips="0.0.0.0/0"
 vpc_ip_block="10.0.0.0/24"
 application_cidr="10.0.0.0/26"
 database_1_cidr="10.0.0.64/26"
