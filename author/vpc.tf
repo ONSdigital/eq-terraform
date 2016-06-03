@@ -32,21 +32,21 @@ resource "aws_subnet" "author_application" {
 }
 
 # Create a subnet to launch our database into.
-resource "aws_subnet" "database-1" {
+resource "aws_subnet" "database-1b" {
   vpc_id                  = "${aws_vpc.author-vpc.id}"
   cidr_block              = "${var.database_1_cidr}"
   availability_zone       = "eu-west-1b"
   tags {
-    Name = "${var.env}-author-database-1-subnet"
+    Name = "${var.env}-author-database-1b-subnet"
   }
 }
 
-resource "aws_subnet" "database-2" {
+resource "aws_subnet" "database-1c" {
   vpc_id                  = "${aws_vpc.author-vpc.id}"
   cidr_block              = "${var.database_2_cidr}"
   availability_zone       = "eu-west-1c"
   tags {
-    Name = "${var.env}-author-database-2-subnet"
+    Name = "${var.env}-author-database-1c-subnet"
   }
 }
 

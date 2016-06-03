@@ -14,7 +14,7 @@ resource "aws_security_group" "author_rds_access" {
 resource "aws_db_subnet_group" "author_rds" {
     name = "${var.env}-eq-author-rds"
     description = "The two database subnets"
-    subnet_ids = ["${aws_subnet.database-1.id}", "${aws_subnet.database-2.id}"]
+    subnet_ids = ["${aws_subnet.database-1b.id}", "${aws_subnet.database-1c.id}"]
     tags {
         Name = "${var.env}-author-db-subnet"
     }
