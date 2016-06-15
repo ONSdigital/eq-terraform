@@ -198,10 +198,6 @@ variable "elastic_beanstalk_iam_role" {
   default = "aws-elasticbeanstalk-ec2-role-runner"
 }
 
-variable "eq_server_side_storage" {
-  default = "False"
-}
-
 variable "eq_server_side_storage_encryption" {
   default = "True"
 }
