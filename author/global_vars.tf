@@ -88,3 +88,23 @@ variable "bucket-name" {
   description = "The bucket name were the schema files are stored"
   default     = "eq-schemas-dev"
 }
+
+variable "author_admin_username" {
+  description = "The admin username for the author application"
+}
+
+variable "author_admin_password" {
+  description = "The admin password for the author application"
+}
+
+variable "author_admin_email" {
+  description = "The admin users email address"
+}
+
+variable "author_admin_firstname" {
+  description = "The admin users first name"
+}
+
+variable "author_admin_lastname" {
+  description = "The admin users last anme"
+}

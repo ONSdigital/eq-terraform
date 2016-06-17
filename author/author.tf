@@ -97,6 +97,33 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     name      = "EQ_BUCKET_NAME"
     value     = "${var.bucket-name}"
   }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_AUTHOR_ADMIN_USERNAME"
+    value     = "${var.author_admin_username}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_AUTHOR_ADMIN_EMAIL"
+    value     = "${var.author_admin_email}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_AUTHOR_ADMIN_PASSWORD"
+    value     = "${var.author_admin_password}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_AUTHOR_ADMIN_FIRSTNAME"
+    value     = "${var.author_admin_firstname}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_AUTHOR_ADMIN_LASTNAME"
+    value     = "${var.author_admin_lastname}"
+  }
 }
 
 resource "aws_route53_record" "author" {
