@@ -160,6 +160,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SCHEMA_BUCKET"
+    value     = "${var.eq-schema-bucket-name}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE"
     value     = "${var.eq_server_side_storage}"
   }
