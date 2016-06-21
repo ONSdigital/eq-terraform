@@ -76,7 +76,7 @@ variable "aws_elastic_beanstalk_solution_stack_name" {
 }
 
 variable "elastic_beanstalk_iam_role" {
-  default = "aws-elasticbeanstalk-ec2-role"
+  default = "aws-elasticbeanstalk-ec2-role-author"
 }
 
 variable "eb_instance_type" {
