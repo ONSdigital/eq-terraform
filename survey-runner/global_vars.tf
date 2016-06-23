@@ -209,3 +209,7 @@ variable "eq_server_side_storage_encryption" {
 variable "eq_server_side_storage_type" {
   default = "DATABASE"
 }
+
+variable "eq-schema-bucket-name" {
+  description = "The bucket name were the schema files are stored"
+}
