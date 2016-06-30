@@ -91,7 +91,7 @@ resource "aws_security_group" "rabbit_required" {
 
 resource "aws_instance" "rabbitmq" {
     ami = "ami-47a23a30"
-    iam_instance_profile="rabbitmq-role"
+    iam_instance_profile="${aws_iam_instance_profile.rabbitmq-instance-profile.name}"
     count = 2
     instance_type = "${var.rabbitmq_instance_type}"
     key_name = "${var.aws_key_pair}"
@@ -236,7 +236,7 @@ resource "null_resource" "ansible" {
     }
 
     provisioner "local-exec" {
-      command = "ansible-playbook -vvvv -i '${var.env}-rabbitmq1.${var.dns_zone_name},${var.env}-rabbitmq2.${var.dns_zone_name}'  --private-key ${var.aws_key_pair}.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"deploy_dns\":\"${var.dns_zone_name}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\", \"rsyslogd_server_IP\":\"${var.rsyslogd_server_ip}\", \"region\":\"${var.aws_default_region}\"}'"
+      command = "ansible-playbook -i '${var.env}-rabbitmq1.${var.dns_zone_name},${var.env}-rabbitmq2.${var.dns_zone_name}'  --private-key ${var.aws_key_pair}.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"deploy_dns\":\"${var.dns_zone_name}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\", \"rsyslogd_server_IP\":\"${var.rsyslogd_server_ip}\", \"region\":\"${var.aws_default_region}\"}'"
     }
     provisioner "local-exec" {
       command = "rm -rf tmp"
