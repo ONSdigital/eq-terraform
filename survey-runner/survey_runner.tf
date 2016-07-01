@@ -11,7 +11,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:ec2:vpc"
     name      =  "VPCId"
-    value     = "${aws_vpc.default.id}"
+    value     = "${aws_vpc.survey_runner_default.id}"
   }
 
   setting {
@@ -23,13 +23,13 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elb:loadbalancer"
     name      = "SecurityGroups"
-    value     = "${aws_security_group.ons_ips.id}"
+    value     = "${aws_security_group.survey_runner_ons_ips.id}"
   }
 
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
-    value     = "${aws_security_group.vpn_services_logging_auditing.id},${aws_security_group.ons_ips.id}"
+    value     = "${aws_security_group.survey_runner_vpn_services_logging_auditing.id},${aws_security_group.survey_runner_ons_ips.id}"
   }
 
   setting {
@@ -47,7 +47,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elb:loadbalancer"
     name      = "ManagedSecurityGroup"
-    value     = "${aws_security_group.ons_ips.id}"
+    value     = "${aws_security_group.survey_runner_ons_ips.id}"
   }
 
   setting {
@@ -179,7 +179,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
-    value     = "postgresql://${var.database_user}:${var.database_password}@${aws_db_instance.database.address}:${aws_db_instance.database.port}/${aws_db_instance.database.name}"
+    value     = "postgresql://${var.database_user}:${var.database_password}@${aws_db_instance.survey_runner_database.address}:${aws_db_instance.survey_runner_database.port}/${aws_db_instance.survey_runner_database.name}"
   }
 
   provisioner "local-exec" {

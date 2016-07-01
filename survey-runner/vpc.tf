@@ -1,5 +1,5 @@
 # Create a VPC to launch our instances into
-resource "aws_vpc" "default" {
+resource "aws_vpc" "survey_runner_default" {
   cidr_block = "${var.vpc_ip_block}"
   enable_dns_support = true
   tags {
@@ -8,18 +8,18 @@ resource "aws_vpc" "default" {
 }
 
 # Create an internet gateway to give our subnet access to the outside world
-resource "aws_internet_gateway" "default" {
-  vpc_id = "${aws_vpc.default.id}"
+resource "aws_internet_gateway" "survey_runner_default" {
+  vpc_id = "${aws_vpc.survey_runner_default.id}"
   tags {
     Name = "${var.env}-igateway"
   }
 }
 
 # Grant the VPC internet access on its main route table
-resource "aws_route" "internet_access" {
-  route_table_id         = "${aws_vpc.default.main_route_table_id}"
+resource "aws_route" "survey_runner_internet_access" {
+  route_table_id         = "${aws_vpc.survey_runner_default.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.default.id}"
+  gateway_id             = "${aws_internet_gateway.survey_runner_default.id}"
 }
 
 
@@ -27,10 +27,10 @@ resource "aws_route" "internet_access" {
 
 # Our default security group to access
 # the instances over SSH and HTTP
-resource "aws_security_group" "default" {
+resource "aws_security_group" "survey_runner_default" {
   name        = "${var.env}-survey_runner"
   description = "Used for eQ"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.survey_runner_default.id}"
 
   # HTTP access from the VPC
   ingress {
@@ -100,6 +100,9 @@ resource "aws_security_group" "default" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags {
+    Name = "${var.env}-survey_runner_security_group"
+  }
 }
 
 
@@ -108,10 +111,10 @@ resource "aws_security_group" "default" {
 # set of IP's in tfvars file.
 # Our default security group to access
 # the instances over SSH and HTTP
-resource "aws_security_group" "ons_ips" {
+resource "aws_security_group" "survey_runner_ons_ips" {
   name        = "${var.env}-public_access_ip_restriction"
   description = "Block access to only ONS IPs"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.survey_runner_default.id}"
 
   ingress {
     from_port   = 443
@@ -126,13 +129,16 @@ resource "aws_security_group" "ons_ips" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags {
+    Name = "${var.env}-survey_runner_ons_ips"
+  }
 }
 
 # VPN services control group
-resource "aws_security_group" "vpn_services_logging_auditing" {
+resource "aws_security_group" "survey_runner_vpn_services_logging_auditing" {
   name        = "${var.env}-vpn_services_logging_auditing"
   description = "Allow the VPN provided services to access our VPC"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.survey_runner_default.id}"
 
   # Auditing service
   egress {
@@ -162,10 +168,10 @@ resource "aws_security_group" "vpn_services_logging_auditing" {
   }
 }
 
-resource "aws_security_group" "vpn_sdx_access" {
+resource "aws_security_group" "survey_runner_vpn_sdx_access" {
   name        = "${var.env}-vpn_services_sdx_access"
   description = "Allow the sdx system access to RabbitMQ servers."
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.survey_runner_default.id}"
 
   # RabbitMQ access from SDX to queue servers
   ingress {
@@ -179,7 +185,7 @@ resource "aws_security_group" "vpn_sdx_access" {
 # Subnets for ElasticBeanstalk / Jenkins / WAF
 # Create a subnet to launch our ec2 instances and ElasticBeanstalk into
 resource "aws_subnet" "sr_application" {
-  vpc_id                  = "${aws_vpc.default.id}"
+  vpc_id                  = "${aws_vpc.survey_runner_default.id}"
   cidr_block              = "${var.application_cidr}"
   availability_zone       = "eu-west-1a"
   tags {
@@ -188,7 +194,7 @@ resource "aws_subnet" "sr_application" {
 }
 # Create a subnet to launch our deployment tools into
 resource "aws_subnet" "tools" {
-  vpc_id                  = "${aws_vpc.default.id}"
+  vpc_id                  = "${aws_vpc.survey_runner_default.id}"
   cidr_block              = "${var.tools_cidr}"
   availability_zone       = "eu-west-1a"
   tags {
@@ -196,8 +202,8 @@ resource "aws_subnet" "tools" {
   }
 }
 # Create a subnet to launch our database into.
-resource "aws_subnet" "database-1" {
-  vpc_id                  = "${aws_vpc.default.id}"
+resource "aws_subnet" "survey_runner_database-1" {
+  vpc_id                  = "${aws_vpc.survey_runner_default.id}"
   cidr_block              = "${var.database_1_cidr}"
   availability_zone       = "eu-west-1b"
   tags {
@@ -205,8 +211,8 @@ resource "aws_subnet" "database-1" {
   }
 }
 
-resource "aws_subnet" "database-2" {
-  vpc_id                  = "${aws_vpc.default.id}"
+resource "aws_subnet" "survey_runner_database-2" {
+  vpc_id                  = "${aws_vpc.survey_runner_default.id}"
   cidr_block              = "${var.database_2_cidr}"
   availability_zone       = "eu-west-1c"
   tags {

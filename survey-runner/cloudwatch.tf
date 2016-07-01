@@ -92,7 +92,7 @@ resource "aws_cloudwatch_metric_alarm" "database_storage_alert" {
     evaluation_periods="1"
     alarm_description = "Alert generated if the DB has less than a 1gb of spage left"
     alarm_actions = ["arn:aws:sns:eu-west-1:853958762481:slack-alarm"]
-    dimensions { "DBInstanceIdentifier"="${aws_db_instance.database.identifier}"}
+    dimensions { "DBInstanceIdentifier"="${aws_db_instance.survey_runner_database.identifier}"}
 }
 
 resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
@@ -107,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
     evaluation_periods="1"
     alarm_description = "Alert generated if the DB is using more than 80% CPU"
     alarm_actions = ["${var.cloudwatch_alarm_arn}"]
-    dimensions { "DBInstanceIdentifier"="${aws_db_instance.database.identifier}"}
+    dimensions { "DBInstanceIdentifier"="${aws_db_instance.survey_runner_database.identifier}"}
 }
 
 resource "aws_cloudwatch_metric_alarm" "database_free_memory_alert" {
@@ -122,5 +122,5 @@ resource "aws_cloudwatch_metric_alarm" "database_free_memory_alert" {
     evaluation_periods="1"
     alarm_description = "Alert generated if the DB has less than a 512MB of memory left"
     alarm_actions = ["arn:aws:sns:eu-west-1:853958762481:slack-alarm"]
-    dimensions { "DBInstanceIdentifier"="${aws_db_instance.database.identifier}"}
+    dimensions { "DBInstanceIdentifier"="${aws_db_instance.survey_runner_database.identifier}"}
 }

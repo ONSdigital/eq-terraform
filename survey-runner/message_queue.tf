@@ -1,6 +1,6 @@
 resource "aws_security_group" "provision-allow-ssh-REMOVE" {
   name = "${var.env}-provision-ssh-remove"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.survey_runner_default.id}"
 
   # SSH access from anywhere.
   # REMOVE in production via AWS console.
@@ -23,7 +23,7 @@ resource "aws_security_group" "provision-allow-ssh-REMOVE" {
 resource "aws_security_group" "rabbit_required" {
   name        = "${var.env}-RabbitMQ-required"
   description = "Required for rabbitmq operation"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${aws_vpc.survey_runner_default.id}"
 
 
   # HTTP access from the VPC
@@ -100,8 +100,8 @@ resource "aws_instance" "rabbitmq" {
     associate_public_ip_address = true
     security_groups = ["${aws_security_group.rabbit_required.id}",
                         "${aws_security_group.provision-allow-ssh-REMOVE.id}",
-                        "${aws_security_group.vpn_services_logging_auditing.id}",
-                        "${aws_security_group.vpn_sdx_access.id}"]
+                        "${aws_security_group.survey_runner_vpn_services_logging_auditing.id}",
+                        "${aws_security_group.survey_runner_vpn_sdx_access.id}"]
 
     tags {
         Name = "RabbitMQ ${var.env} ${count.index + 1}"
@@ -112,7 +112,7 @@ resource "aws_instance" "rabbitmq" {
 resource "aws_elb" "rabbitmq" {
   name = "${var.env}-rabbitmq-elb"
   subnets = ["${aws_subnet.sr_application.id}"]
-  security_groups = ["${aws_security_group.default.id}"]
+  security_groups = ["${aws_security_group.survey_runner_default.id}"]
   internal = true
 
   listener {
