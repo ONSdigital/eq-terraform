@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "author-gateway" {
 }
 
 # Grant the VPC internet access on its main route table
-resource "aws_route" "internet_access" {
+resource "aws_route" "author_internet_access" {
   route_table_id         = "${aws_vpc.author-vpc.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${aws_internet_gateway.author-gateway.id}"
@@ -67,5 +67,8 @@ resource "aws_security_group" "author_ons_ips" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags {
+    Name = "${var.env}-author-security-group-whitelist"
   }
 }
