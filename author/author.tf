@@ -1,12 +1,25 @@
+resource "aws_s3_bucket" "schema_bucket" {
+    bucket = "${var.schema_bucket}"
+
+    tags {
+        Name = "EQ Schema Bucket for ${var.env}"
+        Environment = "${var.env}-bucket"
+    }
+}
+
 resource "aws_elastic_beanstalk_application" "author" {
   name = "${var.env}-author"
-  description = "Author for environment"
+  description = "Author Application"
 }
 
 resource "aws_elastic_beanstalk_environment" "author-prime" {
   name = "${var.env}-author-prime"
   application = "${aws_elastic_beanstalk_application.author.name}"
   solution_stack_name = "${var.aws_elastic_beanstalk_solution_stack_name}"
+
+  tags {
+       Name = "${var.env}-eb-application"
+  }
 
   setting {
     namespace = "aws:ec2:vpc"
@@ -95,7 +108,7 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SCHEMA_BUCKET"
-    value     = "${var.eq-schema-bucket-name}"
+    value     = "${var.schema_bucket}"
   }
 
   setting {

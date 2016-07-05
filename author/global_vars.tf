@@ -84,7 +84,7 @@ variable "eb_instance_type" {
   default     = "t2.medium"
 }
 
-variable "eq-schema-bucket-name" {
+variable "schema_bucket" {
   description = "The bucket name were the schema files are stored"
 }
 

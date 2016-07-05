@@ -9,6 +9,9 @@ resource "aws_security_group" "author_rds_access" {
     protocol    = "tcp"
     cidr_blocks = ["${var.vpc_ip_block}"]
   }
+  tags {
+    Name = "${var.env}-author-db-security-group"
+  }
 }
 
 resource "aws_db_subnet_group" "author_rds" {
@@ -34,4 +37,7 @@ resource "aws_db_instance" "author-database" {
   backup_retention_period = 7
   db_subnet_group_name = "${aws_db_subnet_group.author_rds.name}"
   vpc_security_group_ids  = ["${aws_security_group.author_rds_access.id}"]
+  tags {
+        Name = "${var.env}-author-db"
+  }
 }

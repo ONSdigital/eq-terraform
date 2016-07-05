@@ -24,6 +24,10 @@ EOF
 resource "aws_iam_instance_profile" "rabbitmq-instance-profile" {
     name = "rabbit-mq-${var.env}-instance-profile"
     roles = ["${aws_iam_role.rabbitmq-role.name}"]
+
+    provisioner "local-exec" {
+        command = "sleep 5"
+    }
 }
 
 resource "aws_iam_role" "rabbitmq-role" {

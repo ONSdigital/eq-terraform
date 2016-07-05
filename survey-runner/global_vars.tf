@@ -206,6 +206,6 @@ variable "eq_server_side_storage_type" {
   default = "DATABASE"
 }
 
-variable "eq-schema-bucket-name" {
+variable "schema_bucket" {
   description = "The bucket name were the schema files are stored"
 }
