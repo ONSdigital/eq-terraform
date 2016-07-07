@@ -34,13 +34,12 @@ values to match your requirements.
 
 8. Run `terraform apply` to create your infrastructure environment.
 
-
-## Smoke Test
-For the smoke test you will need
-
-1. Ruby 2.2.3 (rbenv install 2.2.3)
-2. Gem 2.5.2 (gem update --system '2.5.2')
-3. Bundle should be 1.10.6 (gem install bundler -v 1.10.6)
+## Deploying the application
+The terraform scripts will only create your elastic beanstalk environment and a holding page for your application. To
+deploy either the survey runner or the author follow these steps:
+1. eb init  (select your newly created environment)
+2. eb list (will give you the environment name)
+3. eb deploy <your-env-name>
 
 ## IAM Role
 Currently for this to work you need to add the CloudWatchFullAccess policy to the IAM role aws-elasticbeanstalk-ec2-role

@@ -181,10 +181,6 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
     value     = "postgresql://${var.database_user}:${var.database_password}@${aws_db_instance.survey_runner_database.address}:${aws_db_instance.survey_runner_database.port}/${aws_db_instance.survey_runner_database.name}"
   }
-
-  provisioner "local-exec" {
-       command = "./deploy_surveyrunner.sh ${var.env}-surveyrunner ${var.env}-prime"
-   }
 }
 
 
