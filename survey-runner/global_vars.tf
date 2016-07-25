@@ -179,6 +179,11 @@ variable "rsyslogd_server_ip" {
   description = "The IP of the centralised syslog service."
 }
 
+variable "database_instance_class" {
+  description = "The size of the DB instance"
+  default = "db.m1.small"
+}
+
 variable "database_name" {
   description = "The name of the database"
   default="digitaleqrds"

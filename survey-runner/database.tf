@@ -28,7 +28,7 @@ resource "aws_db_instance" "survey_runner_database" {
   identifier           = "${var.env}-digitaleqrds"
   engine               = "postgres"
   engine_version       = "9.4.5"
-  instance_class       = "db.m1.small"
+  instance_class       = "${var.database_instance_class}"
   name                 = "${var.database_name}"
   username             = "${var.database_user}"
   password             = "${var.database_password}"

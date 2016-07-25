@@ -45,6 +45,11 @@ variable "database_2_cidr" {
   description="2nd CIDR block for the database"
 }
 
+variable "database_instance_class" {
+  description = "The size of the DB instance"
+  default = "db.m1.small"
+}
+
 variable "database_name" {
   description = "The name of the database"
   default="eqauthor"
