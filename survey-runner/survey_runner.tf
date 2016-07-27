@@ -65,7 +65,13 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_URL"
-    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${aws_elb.rabbitmq.dns_name}:5672/%2F"
+    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${aws_instance.rabbitmq.0.private_ip}:5672/%2F"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_RABBITMQ_URL_SECONDARY"
+    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${aws_instance.rabbitmq.1.private_ip}:5672/%2F"
   }
 
   setting {

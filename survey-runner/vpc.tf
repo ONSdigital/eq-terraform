@@ -23,8 +23,6 @@ resource "aws_route" "survey_runner_internet_access" {
 }
 
 
-
-
 # Our default security group to access
 # the instances over SSH and HTTP
 resource "aws_security_group" "survey_runner_default" {
@@ -182,7 +180,7 @@ resource "aws_security_group" "survey_runner_vpn_sdx_access" {
   }
 }
 
-# Subnets for ElasticBeanstalk / Jenkins / WAF
+# Subnets for ElasticBeanstalk / Jenkins 
 # Create a subnet to launch our ec2 instances and ElasticBeanstalk into
 resource "aws_subnet" "sr_application" {
   vpc_id                  = "${aws_vpc.survey_runner_default.id}"
