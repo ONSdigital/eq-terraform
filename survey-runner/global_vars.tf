@@ -15,6 +15,11 @@ variable "aws_key_pair" {
     default="pre-prod"
 }
 
+variable "elastic_beanstalk_aws_key_pair" {
+    description = "Amazon Web Service Key Pair for use by elastic beanstalk - in production this value should be empty"
+    default=""
+}
+
 variable "dns_zone_id" {
   description = "Amazon Route53 DNS zone identifier"
   default = "Z2XIERRF1SJEYP"

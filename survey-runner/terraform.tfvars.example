@@ -1,6 +1,7 @@
 aws_access_key="XXXXXXXXXXXX"
 aws_secret_key="XXXXXXXXXXXX"
 aws_key_pair="XXXXX"
+elastic_beanstalk_aws_key_pair="XXXXX"
 ons_access_ips=[XXXXXXX, XXXXXXX]
 certificate_arn="arn:aws:iam::XXXXXXX:server-certificate/NAME"
 application_secret_key="you'll never guess it"
