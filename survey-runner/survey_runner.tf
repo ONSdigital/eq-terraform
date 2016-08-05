@@ -26,6 +26,12 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value     = "${aws_security_group.survey_runner_ons_ips.id}"
   }
 
+    setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "EC2KeyName"
+    value     = "${var.elastic_beanstalk_aws_key_pair}"
+  }
+
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
