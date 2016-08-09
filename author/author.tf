@@ -100,6 +100,30 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
   }
 
   setting {
+    namespace = "aws:elb:listener:443"
+    name      = "ListenerProtocol"
+    value     = "HTTPS"
+  }
+
+  setting {
+    namespace = "aws:elb:listener:443"
+    name      = "SSLCertificateId"
+    value     = "${var.certificate_arn}"
+  }
+
+  setting {
+    namespace =  "aws:elb:listener:443"
+    name      = "InstancePort"
+    value = "80"
+  }
+
+  setting {
+    namespace  = "aws:elb:listener:443"
+    name       = "InstanceProtocol"
+    value      = "HTTP"
+  }  
+
+  setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_AUTHOR_DATABASE_URL"
     value     = "postgres://${var.database_user}:${var.database_password}@${aws_db_instance.author-database.address}:${aws_db_instance.author-database.port}/${aws_db_instance.author-database.name}"
