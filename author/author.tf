@@ -82,24 +82,6 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
   }
 
   setting {
-    namespace = "aws:elb:listener:80"
-    name      = "ListenerProtocol"
-    value     = "HTTP"
-  }
-
-  setting {
-    namespace =  "aws:elb:listener:80"
-    name      = "InstancePort"
-    value = "80"
-  }
-
-  setting {
-    namespace  = "aws:elb:listener:80"
-    name       = "InstanceProtocol"
-    value      = "HTTP"
-  }
-
-  setting {
     namespace = "aws:elb:listener:443"
     name      = "ListenerProtocol"
     value     = "HTTPS"
