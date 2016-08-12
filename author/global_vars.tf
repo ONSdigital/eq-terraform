@@ -112,3 +112,7 @@ variable "author_admin_firstname" {
 variable "author_admin_lastname" {
   description = "The admin users last anme"
 }
+
+variable "certificate_arn" {
+  description = "ARN of the IAM loaded TLS certificate for public ELB"
+}
