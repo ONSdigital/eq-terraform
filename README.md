@@ -11,7 +11,7 @@ The following programs must be installed:
 
 You may also need to explicitly tell Ansible to perform non-host key checking:
 
-	`export ANSIBLE_HOST_KEY_CHECKING=False`
+  `export ANSIBLE_HOST_KEY_CHECKING=False`
 
 Also the pre-prod.pem key must exist in this directory.
 
@@ -21,6 +21,20 @@ Also the pre-prod.pem key must exist in this directory.
 
 2. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and survey-runner. You'll need to change the
 values to match your requirements.
+
+N.B. If using terraform 0.7.0 replace:
+```
+rabbitmq_ips.0="xx.xx.xx.15"
+rabbitmq_ips.1="xx.xx.xx.16"
+```
+
+with:
+```
+rabbitmq_ips = {
+"0" = "xx.xx.xx.15"
+"1" = "xx.xx.xx.16"
+}
+```
 
 3. To deploy survey-runner, first cd in survey-runer
 
