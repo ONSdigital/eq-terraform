@@ -141,10 +141,11 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
     value     = "true"
   }
 
+  # time is UTC
   setting {
     namespace = "aws:elasticbeanstalk:managedactions"
     name      = "PreferredStartTime"
-    value     = "Tue:03:00"
+    value     = "Tue:02:00"
   }
 
   setting {

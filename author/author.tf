@@ -12,6 +12,14 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
        Name = "${var.env}-eb-application"
   }
 
+  # Service Role to allow enhanced health check and managed updates
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "ServiceRole"
+    value     = "aws-elasticbeanstalk-service-role"
+  }
+
+  # VPC and Subnet settings
   setting {
     namespace = "aws:ec2:vpc"
     name      =  "VPCId"
@@ -24,6 +32,7 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     value     = "${aws_subnet.author_application.id}"
   }
 
+  # restrict access to the load balancer
   setting {
     namespace = "aws:elb:loadbalancer"
     name      = "SecurityGroups"
@@ -36,12 +45,14 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     value     = "${aws_security_group.author_ons_ips.id}"
   }
 
+  # allow access to the internet
   setting {
     namespace = "aws:ec2:vpc"
     name = "AssociatePublicIpAddress"
     value = "true"
   }
 
+  # EC2 instance role
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
@@ -54,6 +65,7 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     value     = "${aws_security_group.author_ons_ips.id}"
   }
 
+  # Number of EC2 instances to start the pool with
   setting {
     namespace = "aws:autoscaling:asg"
     name      = "MaxSize"
@@ -66,6 +78,7 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     value     = "${var.eb_min_size}"
   }
 
+  # The EC2 instance type
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
@@ -78,12 +91,14 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     value     = "HTTPS"
   }
 
+  # The port for the load balancer to listen on
   setting {
     namespace = "aws:elb:listener:443"
     name      = "SSLCertificateId"
     value     = "${var.certificate_arn}"
   }
 
+  # The port the ec2 instances listens on
   setting {
     namespace =  "aws:elb:listener:443"
     name      = "InstancePort"
@@ -96,6 +111,47 @@ resource "aws_elastic_beanstalk_environment" "author-prime" {
     value      = "HTTP"
   }  
 
+   # Healthcheck settings for elastic beanstalk
+  setting {
+    namespace = "aws:elasticbeanstalk:application"
+    name      = "Application Healthcheck URL"
+    value     = "/healthcheck"
+  }
+
+  # enable to enhanced health reporting
+  setting {
+    namespace = "aws:elasticbeanstalk:healthreporting:system"
+    name      = "SystemType"
+    value     = "enhanced"
+  }
+
+  # Managed updates setting, basically all EC2 instances are refreshed and updated weekly on Tuesday at 3am
+  setting {
+    namespace = "aws:elasticbeanstalk:managedactions"
+    name      = "ManagedActionsEnabled"
+    value     = "true"
+  }
+
+  # time is UTC
+  setting {
+    namespace = "aws:elasticbeanstalk:managedactions"
+    name      = "PreferredStartTime"
+    value     = "Tue:02:00"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:managedactions:platformupdate"
+    name      = "UpdateLevel"
+    value     = "minor"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:managedactions:platformupdate"
+    name      = "InstanceRefreshEnabled"
+    value     = "true"
+  }
+
+  # Author application specific environment variables.
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_AUTHOR_DATABASE_URL"
