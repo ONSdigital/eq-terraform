@@ -11,18 +11,27 @@ The following programs must be installed:
 
 You may also need to explicitly tell Ansible to perform non-host key checking:
 
-	`export ANSIBLE_HOST_KEY_CHECKING=False`
+  `export ANSIBLE_HOST_KEY_CHECKING=False`
 
 Also the pre-prod.pem key must exist in this directory.
 
+## Setting up your AWS credentials
+
+1. Ensure you have been set up with an AWS account
+
+2. Obtain your AWS credentials - http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html#cli-signup
+
+3. And configure them - http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+
 ## Setting up Terraform
 
-1. Install terraform(terraform.io) and add the binary to your shell path.
+1. Install terraform(terraform.io) and add the binary to your shell path. If you are using Homebrew:
 
-2. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and survey-runner. You'll need to change the
-values to match your requirements.
+`brew install terraform`
 
-3. To deploy survey-runner, first cd in survey-runer
+2. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and survey-runner. You'll need to change all values containing an 'X' to match your requirements, including the AWS credentials you set up previously.
+
+3. To deploy survey-runner, first cd in survey-runner
 
 4. Run `terraform plan` to check the output of terraform.
 
