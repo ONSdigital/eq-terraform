@@ -1,12 +1,3 @@
-resource "aws_s3_bucket" "schema_bucket" {
-    bucket = "${var.schema_bucket}"
-
-    tags {
-        Name = "EQ Schema Bucket for ${var.env}"
-        Environment = "${var.env}-bucket"
-    }
-}
-
 resource "aws_elastic_beanstalk_application" "author" {
   name = "${var.env}-author"
   description = "Author Application"
