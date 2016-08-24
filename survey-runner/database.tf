@@ -1,7 +1,7 @@
 resource "aws_security_group" "survey_runner_rds_access" {
   name        = "${var.env}-rds-access"
   description = "Allow access to the database from the default vpc"
-  vpc_id      = "${aws_vpc.survey_runner_default.id}"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port   = 5432

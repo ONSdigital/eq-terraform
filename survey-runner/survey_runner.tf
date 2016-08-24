@@ -17,7 +17,7 @@ resource "aws_elastic_beanstalk_environment" "sr_prime" {
   setting {
     namespace = "aws:ec2:vpc"
     name      =  "VPCId"
-    value     = "${aws_vpc.survey_runner_default.id}"
+    value     = "${var.vpc_id}"
   }
 
   setting {

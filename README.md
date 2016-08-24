@@ -8,6 +8,7 @@ The following programs must be installed:
 
 1. Git
 2. Ansible
+3. AWS CLI
 
 You may also need to explicitly tell Ansible to perform non-host key checking:
 
@@ -33,21 +34,29 @@ Also the pre-prod.pem key must exist in this directory.
 
 1. Install terraform(terraform.io) and add the binary to your shell path. If you are using Homebrew:
 
-`brew install terraform`
+  `brew install terraform`
 
 2. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and survey-runner. You'll need to change all values containing an 'X' to match your requirements, including the AWS credentials you set up previously.
 
-3. To deploy survey-runner, first cd in survey-runner
+3. To deploy survey-runner:
 
-4. Run `terraform plan` to check the output of terraform.
+  - Export an `AWS_ENVIRONMENT_NAME` environment variable e.g. `export AWS_ENVIRONMENT_NAME=preprod`
 
-5. Run `terraform apply` to create your infrastructure environment.
+  - Run `survey-runner.sh plan` to check the output of terraform
 
-6. To deploy-author, cd in author
+  - Run `survey-runner.sh apply` to create your infrastructure environment
 
-7. Run `terraform plan` to check the output of terraform.
+  - Run `survey-runner.sh destroy` to destroy your infrastructure environment
 
-8. Run `terraform apply` to create your infrastructure environment.
+4. To deploy author:
+
+  - cd into author
+
+  - Run `terraform plan` to check the output of terraform
+
+  - Run `terraform apply` to create your infrastructure environment
+
+  - Run `terraform destroy` to destroy your infrastructure environment
 
 ## Deploying the application
 The terraform scripts will only create your elastic beanstalk environment and a holding page for your application. To
