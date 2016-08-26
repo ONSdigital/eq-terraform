@@ -13,6 +13,12 @@ You may also need to explicitly tell Ansible to perform non-host key checking:
 
   `export ANSIBLE_HOST_KEY_CHECKING=False`
 
+Make sure you've installed all the roles from eq-messaging
+
+ `sudo ansible-galaxy install alexeymedvedchikov.rabbitmq`
+
+ `sudo ansible-galaxy install jnv.unattended-upgrades`
+
 Also the pre-prod.pem key must exist in this directory.
 
 ## Setting up your AWS credentials
