@@ -97,7 +97,7 @@ resource "aws_instance" "rabbitmq" {
     subnet_id = "${aws_subnet.sr_application.id}"
     private_ip = "${lookup(var.rabbitmq_ips,count.index)}"
     associate_public_ip_address = true
-    security_groups = ["${aws_security_group.rabbit_required.id}",
+    vpc_security_group_ids = ["${aws_security_group.rabbit_required.id}",
                         "${aws_security_group.provision-allow-ssh-REMOVE.id}",
                         "${aws_security_group.survey_runner_vpn_services_logging_auditing.id}",
                         "${aws_security_group.survey_runner_vpn_sdx_access.id}"]
