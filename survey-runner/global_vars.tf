@@ -15,6 +15,10 @@ variable "aws_key_pair" {
     default="pre-prod"
 }
 
+variable "vpc_id" {
+    description = "The survey runner VPC ID"
+}
+
 variable "elastic_beanstalk_aws_key_pair" {
     description = "Amazon Web Service Key Pair for use by elastic beanstalk - in production this value should be empty"
     default=""
@@ -161,10 +165,6 @@ variable "sdx_cidr" {
 
 variable "application_cidr" {
   description="CIDR block for application subnet"
-}
-
-variable "tools_cidr" {
-  description="CIDR block for tooling subnet"
 }
 
 variable "database_1_cidr" {

@@ -1,0 +1,4 @@
+aws_access_key="XXXXXXXXXXXX"
+aws_secret_key="XXXXXXXXXXXX"
+vpc_ip_block="10.30.20.0/24"
+tools_cidr="10.30.20.192/26"

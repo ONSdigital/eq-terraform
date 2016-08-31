@@ -4,7 +4,7 @@ tmp
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
-pre-prod.pem
+*.pem
 
 
 # Elastic Beanstalk Files
