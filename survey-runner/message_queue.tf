@@ -183,7 +183,7 @@ resource "null_resource" "aws_hosts" {
 }
 
 resource "null_resource" "ansible" {
-    depends_on = ["null_resource.aws_hosts", "aws_route53_record.rabbitmq1", "aws_route53_record.rabbitmq2"]
+    depends_on = ["null_resource.aws_hosts", "aws_route53_record.rabbitmq"]
 
     provisioner "local-exec" {
       command = "rm -rf tmp"
@@ -201,18 +201,11 @@ resource "null_resource" "ansible" {
     }
 }
 
-resource "aws_route53_record" "rabbitmq1" {
+resource "aws_route53_record" "rabbitmq" {
+  count = 2
   zone_id = "${var.dns_zone_id}"
-  name = "${var.env}-rabbitmq1.${var.dns_zone_name}"
+  name = "${var.env}-rabbitmq${count.index + 1}.${var.dns_zone_name}"
   type = "A"
   ttl = "60"
-  records = ["${aws_instance.rabbitmq.0.public_ip}"]
-}
-
-resource "aws_route53_record" "rabbitmq2" {
-  zone_id = "${var.dns_zone_id}"
-  name = "${var.env}-rabbitmq2.${var.dns_zone_name}"
-  type = "A"
-  ttl = "60"
-  records = ["${aws_instance.rabbitmq.1.public_ip}"]
+  records = ["${element(aws_instance.rabbitmq.*.public_ip,count.index)}"]
 }
