@@ -1,25 +1,30 @@
 #!/bin/bash
 
+if [ -n "$AWS_DEFAULT_PROFILE" ]; then
+    profile="--profile $AWS_DEFAULT_PROFILE";
+    echo "Using AWS cli profile $AWS_DEFAULT_PROFILE"
+fi
+
 if [ -z "$AWS_ENVIRONMENT_NAME" ]; then
     echo "Need to set AWS_ENVIRONMENT_NAME environment variable e.g. export AWS_ENVIRONMENT_NAME=preprod"
     exit 1
 fi
 
 export ANSIBLE_HOST_KEY_CHECKING=False
-export ACTION=$1
+action=$1
 
-if [ $ACTION != 'apply' ] && [ $ACTION != 'plan' ] && [ $ACTION != 'destroy' ]; then
+if [ $action != "apply" ] && [ $action != "plan" ] && [ $action != "destroy" ]; then
     echo "You must provide an action (apply/plan/destroy) e.g. ./run-terraform.sh plan"
     exit 1
 fi
 
-VPC_NAME=${AWS_ENVIRONMENT_NAME}-vpc
-VPC_ID=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values=${VPC_NAME} --query 'Vpcs[*].VpcId'`
+vpc_name=${AWS_ENVIRONMENT_NAME}-vpc
+VPC_ID=`aws ec2 describe-vpcs --output text $profile --filter Name=tag:Name,Values="${vpc_name}" --query "Vpcs[*].VpcId"`
 
 if [ -z "$VPC_ID" ]; then
-    echo "Nothing to ${ACTION}, no vpc exists!"
+    echo "Nothing to ${action}, no vpc exists!"
     exit 1
 fi
 
-terraform $ACTION -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${VPC_ID}"
+terraform "$action" -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${VPC_ID}"
 
