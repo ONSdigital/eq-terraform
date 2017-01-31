@@ -21,7 +21,6 @@ database_1_cidr="10.30.20.64/26"
 database_2_cidr="10.30.20.128/26"
 dev_mode="True"
 rsyslogd_server_ip="10.172.x.x"
-schema_bucket="eq-schema-files-XXXXX" # Set to your schema bucket
 rabbitmq_admin_user="admin" # Admin username
 rabbitmq_admin_password="test1" # Admin password
 rabbitmq_write_user="writeonly" # "writeonly" username
