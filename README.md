@@ -46,9 +46,9 @@ brew install terraform
 chmod 400 mykey.pem
 ```
 
-1. Move the ssh key to `eq-terraform/survey-runner`
+1. Move the ssh key to `eq-terraform/survey-runner-queue`
 
-1. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and survey-runner. You'll need to change all values containing an 'X' to match your requirements, including the AWS credentials you set up previously.
+1. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and all survey-runner-* directories. You'll need to change all values containing an 'X' to match your requirements, including the AWS credentials you set up previously.
 
 1. To deploy survey-runner:
 

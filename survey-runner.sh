@@ -16,15 +16,25 @@ fi
 if [ $ACTION == 'plan' ] || [ $ACTION == 'apply' ]; then
     cd survey-runner-vpc
     terraform $ACTION -var "env=${AWS_ENVIRONMENT_NAME}"
-    cd -
-    cd survey-runner
+    cd ../survey-runner-routing
+    ./run-terraform.sh $ACTION
+    cd ../survey-runner-database
+    ./run-terraform.sh $ACTION
+    cd ../survey-runner-queue
+    ./run-terraform.sh $ACTION
+    cd ../survey-runner-application
     ./run-terraform.sh $ACTION
 fi
 
 if [ $ACTION == 'destroy' ]; then
-    cd survey-runner
+    cd survey-runner-application
     ./run-terraform.sh destroy
-    cd -
-    cd survey-runner-vpc
+    cd ../survey-runner-queue
+    ./run-terraform.sh destroy
+    cd ../survey-runner-database
+    ./run-terraform.sh destroy
+    cd ../survey-runner-routing
+    ./run-terraform.sh destroy
+    cd ../survey-runner-vpc
     terraform destroy -var "env=${AWS_ENVIRONMENT_NAME}"
 fi

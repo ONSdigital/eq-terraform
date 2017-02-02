@@ -1,7 +1,8 @@
 resource "aws_iam_role_policy" "rabbitmq-policy" {
-    name = "rabbit-mq-${var.env}-policy"
-    role = "${aws_iam_role.rabbitmq-role.name}"
-    policy = <<EOF
+  name = "rabbit-mq-${var.env}-policy"
+  role = "${aws_iam_role.rabbitmq-role.name}"
+
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -20,19 +21,19 @@ resource "aws_iam_role_policy" "rabbitmq-policy" {
 EOF
 }
 
-
 resource "aws_iam_instance_profile" "rabbitmq-instance-profile" {
-    name = "rabbit-mq-${var.env}-instance-profile"
-    roles = ["${aws_iam_role.rabbitmq-role.name}"]
+  name  = "rabbit-mq-${var.env}-instance-profile"
+  roles = ["${aws_iam_role.rabbitmq-role.name}"]
 
-    provisioner "local-exec" {
-        command = "sleep 5"
-    }
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
 }
 
 resource "aws_iam_role" "rabbitmq-role" {
-    name = "rabbit-mq-${var.env}-role"
-    assume_role_policy = <<EOF
+  name = "rabbit-mq-${var.env}-role"
+
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -48,5 +49,3 @@ resource "aws_iam_role" "rabbitmq-role" {
 }
 EOF
 }
-
-

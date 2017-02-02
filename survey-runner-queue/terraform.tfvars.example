@@ -1,0 +1,24 @@
+aws_access_key="XXXXXXXXXXXX"
+aws_secret_key = "XXXXXXXXXXXX"
+queue_cidrs=["10.30.20.0/27"]
+
+aws_key_pair = "XXXXX"
+rabbitmq_ips = ["10.30.20.15","10.30.20.16"]
+rabbitmq_admin_user="admin" # Admin username
+rabbitmq_admin_password="test1" # Admin password
+rabbitmq_write_user="writeonly" # "writeonly" username
+rabbitmq_write_password="test2" # "writeonly" password
+rabbitmq_read_user="readonly" # "readonly" username
+rabbitmq_read_password="test3" # "readonly" password
+
+dns_zone_id="XXXXXXX"
+dns_zone_name="dev.eq.ons.digital"
+
+application_cidrs=["10.30.20.48/28"]
+
+sdx_cidrs=["10.99.0.1/32"]
+rsyslogd_server_ip="10.99.0.2"
+logserver_cidr="10.99.0.3/32"
+audit_cidr="10.99.0.4/32"
+
+cloudwatch_alarm_arn="arn:aws:sns:eu-west-1:XXXXXX:slack-alarm"
