@@ -54,13 +54,13 @@ chmod 400 mykey.pem
 
   - Export an `AWS_ENVIRONMENT_NAME` environment variable e.g. `export AWS_ENVIRONMENT_NAME=preprod` or `export AWS_ENVIRONMENT_NAME=$USER`
 
-  - If using awscli profile export an `AWS_DEFAULT_PROFILE` environment variable e.g. `export AWS_DEFAULT_PROFILE=ons`
-
   - Run `survey-runner.sh plan` to check the output of terraform
 
   - Run `survey-runner.sh apply` to create your infrastructure environment
 
   - Run `survey-runner.sh destroy` to destroy your infrastructure environment
+
+Note. If using a named profile ensure you have set the profile e.g. `export AWS_DEFAULT_PROFILE=ons`
 
 1. To deploy author:
 

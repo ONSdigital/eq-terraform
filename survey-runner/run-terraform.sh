@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ -n "$AWS_DEFAULT_PROFILE" ]; then
-    profile="--profile $AWS_DEFAULT_PROFILE";
-    echo "Using AWS cli profile $AWS_DEFAULT_PROFILE"
-fi
-
 if [ -z "$AWS_ENVIRONMENT_NAME" ]; then
     echo "Need to set AWS_ENVIRONMENT_NAME environment variable e.g. export AWS_ENVIRONMENT_NAME=preprod"
     exit 1
@@ -19,7 +14,7 @@ if [ $action != "apply" ] && [ $action != "plan" ] && [ $action != "destroy" ]; 
 fi
 
 vpc_name=${AWS_ENVIRONMENT_NAME}-vpc
-VPC_ID=`aws ec2 describe-vpcs --output text $profile --filter Name=tag:Name,Values="${vpc_name}" --query "Vpcs[*].VpcId"`
+VPC_ID=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values="${vpc_name}" --query "Vpcs[*].VpcId"`
 
 if [ -z "$VPC_ID" ]; then
     echo "Nothing to ${action}, no vpc exists!"
@@ -27,4 +22,3 @@ if [ -z "$VPC_ID" ]; then
 fi
 
 terraform "$action" -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${VPC_ID}"
-
