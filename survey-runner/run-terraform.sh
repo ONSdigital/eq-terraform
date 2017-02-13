@@ -6,20 +6,19 @@ if [ -z "$AWS_ENVIRONMENT_NAME" ]; then
 fi
 
 export ANSIBLE_HOST_KEY_CHECKING=False
-export ACTION=$1
+action=$1
 
-if [ $ACTION != 'apply' ] && [ $ACTION != 'plan' ] && [ $ACTION != 'destroy' ]; then
+if [ $action != "apply" ] && [ $action != "plan" ] && [ $action != "destroy" ]; then
     echo "You must provide an action (apply/plan/destroy) e.g. ./run-terraform.sh plan"
     exit 1
 fi
 
-VPC_NAME=${AWS_ENVIRONMENT_NAME}-vpc
-VPC_ID=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values=${VPC_NAME} --query 'Vpcs[*].VpcId'`
+vpc_name=${AWS_ENVIRONMENT_NAME}-vpc
+VPC_ID=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values="${vpc_name}" --query "Vpcs[*].VpcId"`
 
 if [ -z "$VPC_ID" ]; then
-    echo "Nothing to ${ACTION}, no vpc exists!"
+    echo "Nothing to ${action}, no vpc exists!"
     exit 1
 fi
 
-terraform $ACTION -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${VPC_ID}"
-
+terraform "$action" -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${VPC_ID}"
