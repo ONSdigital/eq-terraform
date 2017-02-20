@@ -45,6 +45,26 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     name      = "ServiceRole"
     value     = "aws-elasticbeanstalk-service-role"
   }
+
+  # Application Deployments
+  setting {
+    namespace = "aws:elasticbeanstalk:command"
+    name      = "DeploymentPolicy"
+    value     = "Immutable"
+  }
+
+  # Configuration Updates
+  setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "RollingUpdateEnabled"
+    value     = "true"
+  }
+  setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "RollingUpdateType"
+    value     = "Immutable"
+  }
+
   # This setting restricts the IP range that can access elastic beanstalk
   setting {
     namespace = "aws:elb:loadbalancer"
