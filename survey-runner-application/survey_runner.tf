@@ -45,14 +45,12 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     name      = "ServiceRole"
     value     = "aws-elasticbeanstalk-service-role"
   }
-
   # Application Deployments
   setting {
     namespace = "aws:elasticbeanstalk:command"
     name      = "DeploymentPolicy"
     value     = "Immutable"
   }
-
   # Configuration Updates
   setting {
     namespace = "aws:autoscaling:updatepolicy:rollingupdate"
@@ -64,7 +62,6 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     name      = "RollingUpdateType"
     value     = "Immutable"
   }
-
   # This setting restricts the IP range that can access elastic beanstalk
   setting {
     namespace = "aws:elb:loadbalancer"
@@ -94,6 +91,16 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     value     = "${var.elastic_beanstalk_iam_role}"
   }
   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
+    value     = "${var.eb_instance_type}"
+  }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "MonitoringInterval"
+    value     = "1 minute"
+  }
+  setting {
     namespace = "aws:autoscaling:asg"
     name      = "MinSize"
     value     = "${var.eb_min_size}"
@@ -102,11 +109,6 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     namespace = "aws:autoscaling:asg"
     name      = "MaxSize"
     value     = "${var.eb_max_size}"
-  }
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "InstanceType"
-    value     = "${var.eb_instance_type}"
   }
   setting {
     namespace = "aws:elb:listener:443"
@@ -244,6 +246,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     name      = "NumThreads"
     value     = "${var.wsgi_number_of_threads}"
   }
+  # Cloudwatch log streaming
   setting {
     namespace = "aws:elasticbeanstalk:cloudwatch:logs"
     name      = "StreamLogs"
@@ -253,6 +256,87 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     namespace = "aws:elasticbeanstalk:cloudwatch:logs"
     name      = "RetentionInDays"
     value     = "30"
+  }
+  # Autoscaling triggers
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "MeasureName"
+    value     = "CPUUtilization"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "Statistic"
+    value     = "Average"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "Unit"
+    value     = "Percent"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "Period"
+    value     = "1"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "BreachDuration"
+    value     = "1"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "UpperThreshold"
+    value     = "40"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "UpperBreachScaleIncrement"
+    value     = "1"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "LowerThreshold"
+    value     = "20"
+  }
+  setting {
+    namespace = "aws:autoscaling:trigger"
+    name      = "LowerBreachScaleIncrement"
+    value     = "-1"
+  }
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "Cooldown"
+    value     = "60"
+  }
+  setting {
+    namespace = "aws:elb:policies"
+    name      = "ConnectionDrainingEnabled"
+    value     = "true"
+  }
+  setting {
+    namespace = "aws:elb:policies"
+    name      = "ConnectionDrainingTimeout"
+    value     = "20"
+  }
+  setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "HealthyThreshold"
+    value     = "2"
+  }
+  setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "Interval"
+    value     = "5"
+  }
+  setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "Timeout"
+    value     = "3"
+  }
+  setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "UnhealthyThreshold"
+    value     = "2"
   }
 }
 
