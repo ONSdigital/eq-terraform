@@ -219,6 +219,16 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
     value     = "postgresql://${var.database_user}:${var.database_password}@${var.database_address}:${var.database_port}/${var.database_name}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:container:python"
+    name      = "NumProcesses"
+    value     = "${var.wsgi_number_of_processes}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:container:python"
+    name      = "NumThreads"
+    value     = "${var.wsgi_number_of_threads}"
+  }
 }
 
 resource "aws_route53_record" "survey_runner" {

@@ -73,6 +73,16 @@ variable "eb_max_size" {
   default     = "2"
 }
 
+variable "wsgi_number_of_processes" {
+  description = "The number of daemon processes that should be started for the process group when running WSGI applications"
+  default     = 1
+}
+
+variable "wsgi_number_of_threads" {
+  description = "The number of threads to be created to handle requests in each daemon process within the process group when running WSGI applications"
+  default     = 15
+}
+
 variable "elastic_beanstalk_aws_key_pair" {
   description = "Amazon Web Service Key Pair for use by elastic beanstalk - in production this value should be empty"
   default     = ""
