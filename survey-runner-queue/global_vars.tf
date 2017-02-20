@@ -1,0 +1,123 @@
+variable "env" {
+  description = "The environment you wish to use"
+}
+
+variable "aws_secret_key" {
+  description = "Amazon Web Service Secret Key"
+}
+
+variable "aws_access_key" {
+  description = "Amazon Web Service Access Key"
+}
+
+variable "availability_zones" {
+  type        = "list"
+  description = "The availability zones"
+  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+}
+
+variable "vpc_id" {
+  description = "The survey runner VPC ID"
+}
+
+variable "vpc_cidr_block" {
+  description = "CIDR block of the VPC"
+}
+
+variable "queue_cidrs" {
+  type        = "list"
+  description = "CIDR blocks for queue subnets"
+}
+
+variable "application_cidrs" {
+  type        = "list"
+  description = "CIDR blocks for application subnets"
+}
+
+variable "sdx_cidrs" {
+  type        = "list"
+  description = "CIDR blocks of the sdx system"
+}
+
+variable "internet_gateway_id" {
+  description = "An existing VPC Internet Gateway ID"
+  default     = ""
+}
+
+variable "virtual_private_gateway_id" {
+    description = "An existing Virtual Private Gateway ID"
+    default = []
+}
+
+variable "cloudwatch_alarm_arn" {
+  description = "arn for cloudwatch"
+  default     = "arn:aws:sns:eu-west-1:853958762481:slack-alarm"
+}
+
+# DNS
+variable "dns_zone_id" {
+  description = "Amazon Route53 DNS zone identifier"
+  default     = "Z2XIERRF1SJEYP"
+}
+
+variable "dns_zone_name" {
+  description = "Amazon Route53 DNS zone name"
+  default     = "eq.ons.digital."
+}
+
+# RabbitMQ
+variable "rabbitmq_instance_type" {
+  description = "Rabbit MQ Instance type"
+  default     = "t2.small"
+}
+
+variable "rabbitmq_ips" {
+  type        = "list"
+  description = "Static IPs of rabbitmq servers (prime,secondary)"
+}
+
+variable "aws_key_pair" {
+  description = "AWS key pair for queue servers"
+  default     = "pre-prod"
+}
+
+variable "rabbitmq_admin_user" {
+  description = "The admin user to create for rabbitmq"
+}
+
+variable "rabbitmq_admin_password" {
+  description = "The admin user password for rabbitmq"
+}
+
+variable "rabbitmq_read_user" {
+  description = "The 'read-only' user to create for rabbitmq"
+}
+
+variable "rabbitmq_read_password" {
+  description = "The 'read-only' user password for rabbitmq"
+}
+
+variable "rabbitmq_write_user" {
+  description = "The 'write-only' user to create for rabbitmq"
+}
+
+variable "rabbitmq_write_password" {
+  description = "The 'write-only' user password for rabbitmq"
+}
+
+variable "aws_default_region" {
+  description = "The default region for AWS Services"
+  default     = "eu-west-1"
+}
+
+variable "rsyslogd_server_ip" {
+  description = "The IP of the centralised syslog service."
+}
+
+variable "logserver_cidr" {
+  description = "CIDR block of the centralised logging service"
+}
+
+variable "audit_cidr" {
+  description = "CIDR block of the centralised auditing service."
+}
