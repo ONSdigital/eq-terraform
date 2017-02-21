@@ -211,11 +211,6 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_CLOUDWATCH_LOGGING"
-    value     = "${var.cloudwatch_logging}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_UA_ID"
     value     = "${var.google_analytics_code}"
   }
@@ -248,6 +243,16 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     namespace = "aws:elasticbeanstalk:container:python"
     name      = "NumThreads"
     value     = "${var.wsgi_number_of_threads}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "StreamLogs"
+    value     = "true"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "RetentionInDays"
+    value     = "30"
   }
 }
 

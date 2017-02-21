@@ -55,7 +55,7 @@ variable "dns_zone_name" {
 # EB Configuration
 variable "aws_elastic_beanstalk_solution_stack_name" {
   description = "Elastic Beanstalk Amazon Linux version"
-  default     = "64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4"
+  default     = "64bit Amazon Linux 2016.09 v2.3.1 running Python 3.4"
 }
 
 variable "eb_instance_type" {
@@ -105,11 +105,6 @@ variable "aws_default_region" {
 variable "eq_sr_log_level" {
   description = "The Survey Runner logging level (One of ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])"
   default     = "ERROR"
-}
-
-variable "cloudwatch_logging" {
-  description = "Enable Cloudwatch logging"
-  default     = "True"
 }
 
 variable "survey_runner_env" {
