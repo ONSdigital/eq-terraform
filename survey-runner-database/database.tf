@@ -39,6 +39,8 @@ resource "aws_db_instance" "survey_runner_database" {
   backup_retention_period = "${var.backup_retention_period}"
   db_subnet_group_name    = "${aws_db_subnet_group.survey_runner_rds.name}"
   vpc_security_group_ids  = ["${aws_security_group.survey_runner_rds_access.id}"]
+  storage_type            = "gp2"
+  apply_immediately       = "${var.database_apply_immediately}"
 
   tags {
     Name        = "${var.env}-db-instance"

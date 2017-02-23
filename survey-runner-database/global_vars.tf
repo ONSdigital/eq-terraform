@@ -36,7 +36,7 @@ variable "database_cidrs" {
 
 variable "database_allocated_storage" {
     description = "The allocated storage for the database (in GB)"
-    default     = 10
+    default     = 100
 }
 
 variable "database_instance_class" {
@@ -72,4 +72,10 @@ variable "database_password" {
 variable "cloudwatch_alarm_arn" {
   description = "arn for cloudwatch"
   default     = "arn:aws:sns:eu-west-1:853958762481:slack-alarm"
+}
+
+variable "database_apply_immediately" {
+  description = "Apply changes to the database immediately and not during next maintenance window"
+  default     = true
+
 }
