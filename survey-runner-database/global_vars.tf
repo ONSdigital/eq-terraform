@@ -35,8 +35,18 @@ variable "database_cidrs" {
 }
 
 variable "database_allocated_storage" {
-    description = "The allocated storage for the database (in GB)"
-    default     = 100
+  description = "The allocated storage for the database (in GB)"
+  default     = 100
+}
+
+variable "database_engine_version" {
+  description = "The Postgres database engine version"
+  default     = "9.4.9"
+}
+
+variable "allow_major_version_upgrade" {
+  description = "Allow major database version upgrades e.g. 9.4.x to 9.5.x"
+  default     = false
 }
 
 variable "database_instance_class" {
@@ -50,8 +60,8 @@ variable "multi_az" {
 }
 
 variable "backup_retention_period" {
-    description = "How many days database backup to keep"
-    default     = 7
+  description = "How many days database backup to keep"
+  default     = 7
 }
 
 variable "database_name" {
@@ -76,6 +86,5 @@ variable "cloudwatch_alarm_arn" {
 
 variable "database_apply_immediately" {
   description = "Apply changes to the database immediately and not during next maintenance window"
-  default     = true
-
+  default     = false
 }
