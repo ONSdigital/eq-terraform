@@ -26,21 +26,22 @@ resource "aws_db_subnet_group" "survey_runner_rds" {
 }
 
 resource "aws_db_instance" "survey_runner_database" {
-  allocated_storage       = "${var.database_allocated_storage}"
-  identifier              = "${var.env}-digitaleqrds"
-  engine                  = "postgres"
-  engine_version          = "9.4.5"
-  instance_class          = "${var.database_instance_class}"
-  name                    = "${var.database_name}"
-  username                = "${var.database_user}"
-  password                = "${var.database_password}"
-  multi_az                = "${var.multi_az}"
-  publicly_accessible     = false
-  backup_retention_period = "${var.backup_retention_period}"
-  db_subnet_group_name    = "${aws_db_subnet_group.survey_runner_rds.name}"
-  vpc_security_group_ids  = ["${aws_security_group.survey_runner_rds_access.id}"]
-  storage_type            = "gp2"
-  apply_immediately       = "${var.database_apply_immediately}"
+  allocated_storage           = "${var.database_allocated_storage}"
+  identifier                  = "${var.env}-digitaleqrds"
+  engine                      = "postgres"
+  engine_version              = "${var.database_engine_version}"
+  allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
+  instance_class              = "${var.database_instance_class}"
+  name                        = "${var.database_name}"
+  username                    = "${var.database_user}"
+  password                    = "${var.database_password}"
+  multi_az                    = "${var.multi_az}"
+  publicly_accessible         = false
+  backup_retention_period     = "${var.backup_retention_period}"
+  db_subnet_group_name        = "${aws_db_subnet_group.survey_runner_rds.name}"
+  vpc_security_group_ids      = ["${aws_security_group.survey_runner_rds_access.id}"]
+  storage_type                = "gp2"
+  apply_immediately           = "${var.database_apply_immediately}"
 
   tags {
     Name        = "${var.env}-db-instance"
