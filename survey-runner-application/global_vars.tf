@@ -18,6 +18,11 @@ variable "vpc_cidr_block" {
   description = "CIDR block of the VPC"
 }
 
+variable "vpc_peer_cidr_block" {
+  description = "The CIDR block of the peered VPC, optional"
+  default     = ""
+}
+
 variable "public_subnet_ids" {
   description = "The IDs of the public subnets for the external ELBs"
 }
@@ -29,6 +34,11 @@ variable "private_route_table_ids" {
 variable "application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
+}
+
+variable "use_internal_elb" {
+  description = "Set to true to use an internal load balancer"
+  default     = false
 }
 
 variable "availability_zones" {

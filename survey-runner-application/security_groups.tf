@@ -1,46 +1,16 @@
-# Our default security group to access
-# the instances over SSH and HTTP
-resource "aws_security_group" "survey_runner_default" {
-  name        = "${var.env}-survey-runner-application-sg"
-  description = "eQ application security group"
-  vpc_id      = "${var.vpc_id}"
-
-  # HTTP access from the VPC
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["${var.vpc_cidr_block}"]
-  }
-
-  # outbound internet access
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags {
-    Name = "${var.env}-survey-runner-security-group"
-  }
-}
-
-# External access security group
-# Blocks access to an environment based on a
-# set of IP's in tfvars file.
-# Our default security group to access
-# the instances over SSH and HTTP
-resource "aws_security_group" "survey_runner_ons_ips" {
-  name        = "${var.env}-public-access-ip-restriction"
-  description = "Block access to only ONS IPs"
+# Access to the application from either the internet or WAF
+# If using an internal ELB, we enable port 80 from the WAF peered VPC 
+# If not using an internal ELB, we enable port 443 from the internet
+resource "aws_security_group" "survey_runner_access" {
+  name        = "${var.env}-survey-runner-access"
+  description = "Allow access from the internet or WAF"
   vpc_id      = "${var.vpc_id}"
 
   ingress {
-    from_port   = 443
-    to_port     = 443
+    from_port   = "${var.use_internal_elb ? 80 : 443}"
+    to_port     = "${var.use_internal_elb ? 80 : 443}"
     protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.ons_access_ips)}"]
+    cidr_blocks = ["${split(",", var.use_internal_elb ? var.vpc_peer_cidr_block : var.ons_access_ips)}"]
   }
 
   egress {
@@ -51,6 +21,6 @@ resource "aws_security_group" "survey_runner_ons_ips" {
   }
 
   tags {
-    Name = "${var.env}-public-access-ip-restriction"
+    Name = "${var.env}-survey-runner-access"
   }
 }
