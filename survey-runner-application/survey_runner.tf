@@ -33,12 +33,12 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBSubnets"
-    value     = "${var.public_subnet_ids}"
+    value     = "${var.use_internal_elb ? join(",", aws_subnet.application.*.id) : var.public_subnet_ids}"
   }
   setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBScheme"
-    value     = "external"
+    value     = "${var.use_internal_elb ? "internal" : "external" }"
   }
   setting {
     namespace = "aws:elasticbeanstalk:environment"
@@ -66,12 +66,12 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:elb:loadbalancer"
     name      = "SecurityGroups"
-    value     = "${aws_security_group.survey_runner_ons_ips.id}"
+    value     = "${aws_security_group.survey_runner_access.id}"
   }
   setting {
     namespace = "aws:elb:loadbalancer"
     name      = "ManagedSecurityGroup"
-    value     = "${aws_security_group.survey_runner_ons_ips.id}"
+    value     = "${aws_security_group.survey_runner_access.id}"
   }
   # this setting allows SSH access to the ec2 instances running elastic beanstalk (note this should be blank in prod)
   setting {
@@ -83,7 +83,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
-    value     = "${aws_security_group.survey_runner_ons_ips.id}"
+    value     = "${aws_security_group.survey_runner_access.id}"
   }
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
@@ -341,6 +341,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
 }
 
 resource "aws_route53_record" "survey_runner" {
+  count   = "${var.use_internal_elb ? 0 : 1}"
   zone_id = "${var.dns_zone_id}"
   name    = "${var.env}-surveys.${var.dns_zone_name}"
   type    = "CNAME"
