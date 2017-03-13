@@ -49,11 +49,6 @@ variable "virtual_private_gateway_id" {
     default = []
 }
 
-variable "cloudwatch_alarm_arn" {
-  description = "arn for cloudwatch"
-  default     = "arn:aws:sns:eu-west-1:853958762481:slack-alarm"
-}
-
 # DNS
 variable "dns_zone_id" {
   description = "Amazon Route53 DNS zone identifier"

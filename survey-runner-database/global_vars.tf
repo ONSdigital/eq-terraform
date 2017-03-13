@@ -79,11 +79,6 @@ variable "database_password" {
   default     = "digitaleq12345"
 }
 
-variable "cloudwatch_alarm_arn" {
-  description = "arn for cloudwatch"
-  default     = "arn:aws:sns:eu-west-1:853958762481:slack-alarm"
-}
-
 variable "database_apply_immediately" {
   description = "Apply changes to the database immediately and not during next maintenance window"
   default     = false

@@ -1,0 +1,3 @@
+aws_access_key="XXXXXXXXXXXX"
+aws_secret_key = "XXXXXXXXXXXX"
+slack_webhook_path = "/services/XXXXXX/XXXXXX/XXXXXX"

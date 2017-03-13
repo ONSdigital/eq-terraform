@@ -79,6 +79,14 @@ deploy either the survey runner or the author follow these steps:
 1. eb list (will give you the environment name)
 1. eb deploy <your-env-name>
 
+## Alerting
+A webhook will need to be created for a new integration via https://api.slack.com/incoming-webhooks
+Alternatively, your team may already have a webhook url created to send messages to your slack.  
+
+You will need to create a slack channel with the name, `eq-<your-env-name>-alerts`
+
+Eg. eq-preprod-alerts
+
 ## IAM Role
 Currently for this to work you need to add the CloudWatchFullAccess policy to the IAM role aws-elasticbeanstalk-ec2-role
 using the IAM console in AWS
