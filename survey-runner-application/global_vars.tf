@@ -112,9 +112,9 @@ variable "aws_default_region" {
   default     = "eu-west-1"
 }
 
-variable "eq_sr_log_level" {
+variable "eq_log_level" {
   description = "The Survey Runner logging level (One of ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])"
-  default     = "ERROR"
+  default     = "INFO"
 }
 
 variable "survey_runner_env" {
