@@ -14,6 +14,10 @@ resource "aws_instance" "rabbitmq" {
     "${aws_security_group.survey_runner_vpn_sdx_access.id}",
   ]
 
+  root_block_device {
+    delete_on_termination = "${var.delete_volume_on_termination}"
+  }
+
   tags {
     Name = "${var.env}-rabbitmq-${count.index + 1}"
   }
