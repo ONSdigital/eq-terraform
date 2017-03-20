@@ -1,0 +1,7 @@
+#!/bin/bash -v
+
+echo '${hosts}' > /home/ubuntu/hosts
+cp /home/ubuntu/hosts /etc/hosts
+
+sh -c 'echo ${hostname} > /etc/hostname'
+hostname -F /etc/hostname
