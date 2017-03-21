@@ -18,6 +18,8 @@ if [ $ACTION == 'plan' ] || [ $ACTION == 'apply' ]; then
     terraform $ACTION -var "env=${AWS_ENVIRONMENT_NAME}"
     cd ../survey-runner-routing
     ./run-terraform.sh $ACTION
+    cd ../survey-runner-alerting
+    ./run-terraform.sh $ACTION
     cd ../survey-runner-database
     ./run-terraform.sh $ACTION
     cd ../survey-runner-queue
@@ -32,6 +34,8 @@ if [ $ACTION == 'destroy' ]; then
     cd ../survey-runner-queue
     ./run-terraform.sh destroy
     cd ../survey-runner-database
+    ./run-terraform.sh destroy
+    cd ../survey-runner-alerting
     ./run-terraform.sh destroy
     cd ../survey-runner-routing
     ./run-terraform.sh destroy

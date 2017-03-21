@@ -6,5 +6,3 @@ database_cidrs=["10.30.20.96/28","10.30.20.112/28"]
 multi_az = false
 backup_retention_period = 0
 database_allocated_storage = 10
-
-cloudwatch_alarm_arn="arn:aws:sns:eu-west-1:XXXXXX:slack-alarm"

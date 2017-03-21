@@ -20,5 +20,3 @@ sdx_cidrs=["10.99.0.1/32"]
 rsyslogd_server_ip="10.99.0.2"
 logserver_cidr="10.99.0.3/32"
 audit_cidr="10.99.0.4/32"
-
-cloudwatch_alarm_arn="arn:aws:sns:eu-west-1:XXXXXX:slack-alarm"
