@@ -116,3 +116,8 @@ variable "logserver_cidr" {
 variable "audit_cidr" {
   description = "CIDR block of the centralised auditing service."
 }
+
+variable "delete_volume_on_termination" {
+  description = "Delete EC2 volumes on termination of EC2 instance."
+  default     = false
+}

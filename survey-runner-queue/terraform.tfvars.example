@@ -20,3 +20,6 @@ sdx_cidrs=["10.99.0.1/32"]
 rsyslogd_server_ip="10.99.0.2"
 logserver_cidr="10.99.0.3/32"
 audit_cidr="10.99.0.4/32"
+
+# Should be set to false in production
+delete_on_termination="true"
