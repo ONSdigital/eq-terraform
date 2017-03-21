@@ -199,7 +199,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_LOG_LEVEL"
-    value     = "${var.eq_sr_log_level}"
+    value     = "${var.eq_log_level}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"

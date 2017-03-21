@@ -10,7 +10,7 @@ certificate_arn="arn:aws:iam::XXXXXXX:server-certificate/NAME"
 
 # Environment variables
 application_secret_key="you'll never guess it"
-eq_sr_log_level="DEBUG"
+eq_log_level="DEBUG"
 google_analytics_code=""
 dev_mode="True"
 
