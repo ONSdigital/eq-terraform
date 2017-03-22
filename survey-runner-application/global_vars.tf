@@ -98,10 +98,6 @@ variable "elastic_beanstalk_aws_key_pair" {
   default     = ""
 }
 
-variable "elastic_beanstalk_iam_role" {
-  default = "aws-elasticbeanstalk-ec2-role-runner"
-}
-
 variable "certificate_arn" {
   description = "ARN of the IAM loaded TLS certificate for public ELB"
 }

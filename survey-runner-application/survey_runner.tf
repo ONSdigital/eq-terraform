@@ -7,6 +7,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   name                = "${var.env}-prime"
   application         = "${aws_elastic_beanstalk_application.survey_runner.name}"
   solution_stack_name = "${var.aws_elastic_beanstalk_solution_stack_name}"
+  wait_for_ready_timeout = "20m"
 
   # The configuration settings for this section can be found here
 

@@ -83,3 +83,13 @@ variable "database_apply_immediately" {
   description = "Apply changes to the database immediately and not during next maintenance window"
   default     = false
 }
+
+variable "database_free_memory_alert_level" {
+  description = "The level at which to alert about lack of freeable memory (MB)"
+  default     = 512
+}
+
+variable "database_free_storage_alert_level" {
+  description = "The level at which to alert about lack of free storage (GB)"
+  default     = 5
+}
