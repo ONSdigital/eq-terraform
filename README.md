@@ -87,10 +87,6 @@ You will need to create a slack channel with the name, `eq-<your-env-name>-alert
 
 Eg. eq-preprod-alerts
 
-## IAM Role
-Currently for this to work you need to add the CloudWatchFullAccess policy to the IAM role aws-elasticbeanstalk-ec2-role
-using the IAM console in AWS
-
 ## Additional security
 
 To increase the security of the system, remove the security group `"provision-allow-ssh-REMOVE`
