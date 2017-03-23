@@ -11,7 +11,7 @@ exports.handler = function(event, context){
      var alertState = JSON.parse(event.Records[0].Sns.Message);
 
      console.log("Sending alert to Slack Channel: #eq-" + process.env.environment_name + "-alerts");
-     
+
      var payload = JSON.stringify(
          {
             "channel": "#eq-" + process.env.environment_name + "-alerts",
