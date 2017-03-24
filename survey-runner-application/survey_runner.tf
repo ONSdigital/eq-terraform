@@ -89,7 +89,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     = "${var.elastic_beanstalk_iam_role}"
+    value     = "${aws_iam_instance_profile.elasticbeanstalk_survey_runner.name}"
   }
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
@@ -201,11 +201,6 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_LOG_LEVEL"
     value     = "${var.eq_log_level}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_SR_LOG_GROUP"
-    value     = "${aws_cloudwatch_log_group.survey_runner.name}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
@@ -348,8 +343,4 @@ resource "aws_route53_record" "survey_runner" {
   type    = "CNAME"
   ttl     = "60"
   records = ["${aws_elastic_beanstalk_environment.survey_runner_prime.cname}"]
-}
-
-resource "aws_cloudwatch_log_group" "survey_runner" {
-  name = "${var.env}-survey-runner"
 }
