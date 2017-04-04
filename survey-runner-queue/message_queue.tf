@@ -7,6 +7,7 @@ resource "aws_instance" "rabbitmq" {
   subnet_id                   = "${aws_subnet.queue.id}"
   private_ip                  = "${var.rabbitmq_ips[count.index]}"
   associate_public_ip_address = true
+  user_data = "${element(template_file.rabbitmq_setup.*.rendered, count.index)}"
 
   vpc_security_group_ids = ["${aws_security_group.rabbit_required.id}",
     "${aws_security_group.provision-allow-ssh-REMOVE.id}",
@@ -27,83 +28,28 @@ resource "template_file" "hosts" {
   template = "${file("templates/hosts")}"
 
   vars = {
-    rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
-    rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
+    rabbitmq1_ip = "${var.rabbitmq_ips[0]}"
+    rabbitmq2_ip = "${var.rabbitmq_ips[1]}"
     deploy_env   = "${var.env}"
     deploy_dns   = "${var.dns_zone_name}"
   }
 }
 
-resource "null_resource" "aws_hosts" {
-  provisioner "local-exec" {
-    command = "mkdir -p tmp"
-  }
+resource "template_file" "rabbitmq_setup" {
+  template = "${file("templates/rabbitmq_setup")}"
+  count = 2
 
-  provisioner "local-exec" {
-    command = "echo '${template_file.hosts.rendered}' > tmp/hosts"
-  }
-
-  provisioner "file" {
-    source      = "tmp/hosts"
-    destination = "/home/ubuntu/hosts"
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = "${aws_instance.rabbitmq.0.public_ip}"
-      private_key = "${file("${var.aws_key_pair}.pem")}"
-      agent       = false
-    }
-  }
-
-  provisioner "file" {
-    source      = "tmp/hosts"
-    destination = "/home/ubuntu/hosts"
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = "${aws_instance.rabbitmq.1.public_ip}"
-      private_key = "${file("${var.aws_key_pair}.pem")}"
-      agent       = false
-    }
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo sh -c 'echo ${var.env}-rabbitmq1 > /etc/hostname'",
-      "sudo cp hosts /etc/hosts",
-      "sudo hostname -F /etc/hostname",
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = "${aws_instance.rabbitmq.0.public_ip}"
-      private_key = "${file("${var.aws_key_pair}.pem")}"
-      agent       = false
-    }
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo sh -c 'echo ${var.env}-rabbitmq2 > /etc/hostname'",
-      "sudo cp hosts /etc/hosts",
-      "sudo hostname -F /etc/hostname",
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = "${aws_instance.rabbitmq.1.public_ip}"
-      private_key = "${file("${var.aws_key_pair}.pem")}"
-      agent       = false
-    }
+  vars = {
+    hosts = "${template_file.hosts.rendered}"
+    hostname = "${var.env}-rabbitmq${count.index + 1}"
   }
 }
 
 resource "null_resource" "ansible" {
-  depends_on = ["null_resource.aws_hosts", "aws_route53_record.rabbitmq"]
+  depends_on = [
+    "aws_instance.rabbitmq",
+    "aws_route53_record.rabbitmq"
+  ]
 
   provisioner "local-exec" {
     command = "rm -rf tmp"
@@ -119,6 +65,10 @@ resource "null_resource" "ansible" {
 
   provisioner "local-exec" {
     command = "rm -rf tmp"
+  }
+
+  triggers = {
+      instance_change = "${join(" ", aws_instance.rabbitmq.*.id)}"
   }
 }
 
