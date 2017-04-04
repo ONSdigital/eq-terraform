@@ -32,7 +32,7 @@ resource "aws_db_instance" "survey_runner_database" {
   engine_version              = "${var.database_engine_version}"
   allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
   instance_class              = "${var.database_instance_class}"
-  name                        = "${var.database_name}"
+  name                        = "${var.snapshot_identifier == "" ? var.database_name : ""}"
   username                    = "${var.database_user}"
   password                    = "${var.database_password}"
   multi_az                    = "${var.multi_az}"
@@ -42,6 +42,8 @@ resource "aws_db_instance" "survey_runner_database" {
   vpc_security_group_ids      = ["${aws_security_group.survey_runner_rds_access.id}"]
   storage_type                = "gp2"
   apply_immediately           = "${var.database_apply_immediately}"
+  snapshot_identifier         = "${var.snapshot_identifier}"
+  skip_final_snapshot         = true
 
   tags {
     Name        = "${var.env}-db-instance"

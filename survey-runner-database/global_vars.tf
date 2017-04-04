@@ -93,3 +93,7 @@ variable "database_free_storage_alert_level" {
   description = "The level at which to alert about lack of free storage (GB)"
   default     = 5
 }
+
+variable "snapshot_identifier" {
+  default     = ""
+}
