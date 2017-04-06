@@ -172,22 +172,6 @@ variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
 }
 
-variable "rabbitmq_admin_user" {
-  description = "The admin user to create for rabbitmq"
-}
-
-variable "rabbitmq_admin_password" {
-  description = "The admin user password for rabbitmq"
-}
-
-variable "rabbitmq_read_user" {
-  description = "The 'read-only' user to create for rabbitmq"
-}
-
-variable "rabbitmq_read_password" {
-  description = "The 'read-only' user password for rabbitmq"
-}
-
 variable "rabbitmq_write_user" {
   description = "The 'write-only' user to create for rabbitmq"
 }

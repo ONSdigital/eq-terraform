@@ -1,0 +1,43 @@
+[
+  {
+    "name": "eq-survey-runner",
+    "image": "jonnyshaw89/eq-survey-runner:latest",
+    "memoryReservation": 256,
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 5000,
+        "hostPort": 0
+      }
+    ],
+    "environment": [
+      {
+        "name": "EQ_DEV_MODE",
+        "value": "True"
+      },
+      {
+        "name": "EQ_SECRET_KEY",
+        "value": "${EQ_SECRET_KEY}"
+      },
+      {
+        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_URL",
+        "value": "${EQ_SERVER_SIDE_STORAGE_DATABASE_URL}"
+      },
+      {
+        "name": "EQ_RABBITMQ_URL",
+        "value": "${EQ_RABBITMQ_URL}"
+      },
+      {
+        "name": "EQ_RABBITMQ_URL_SECONDARY",
+        "value": "${EQ_RABBITMQ_URL_SECONDARY}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "eu-west-1",
+        "awslogs-group": "${LOG_GROUP}"
+      }
+    }
+  }
+]

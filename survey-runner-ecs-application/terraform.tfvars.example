@@ -1,0 +1,7 @@
+aws_access_key="XXXXXXXXXXXX"
+aws_secret_key = "XXXXXXXXXXXX"
+application_cidrs=["10.30.20.192/28", "10.30.20.208/28", "10.30.20.224/28"]
+
+application_secret_key="you'll never guess it"
+rabbitmq_write_user="writeonly" # "writeonly" username
+rabbitmq_write_password="test2" # "writeonly" password
