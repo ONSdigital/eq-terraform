@@ -118,20 +118,8 @@ variable "survey_runner_env" {
   default     = "development"
 }
 
-variable "eq_server_side_storage_encryption" {
-  default = "True"
-}
-
-variable "eq_server_side_storage_type" {
-  default = "DATABASE"
-}
-
 variable "google_analytics_code" {
   description = "The google analytics UA Code"
-}
-
-variable "application_secret_key" {
-  description = "The Flask secret key for secure cookie storage"
 }
 
 variable "dev_mode" {
@@ -194,14 +182,4 @@ variable "rabbitmq_write_user" {
 
 variable "rabbitmq_write_password" {
   description = "The 'write-only' user password for rabbitmq"
-}
-
-variable "message_queue_name" {
-  description = "RabbitMQ submission queue name"
-  default     = "submit_q"
-}
-
-variable "message_test_queue_name" {
-  description = "RabbitMQ health check queue name"
-  default     = "test_q"
 }

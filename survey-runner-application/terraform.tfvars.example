@@ -9,7 +9,6 @@ elastic_beanstalk_iam_role="aws-elasticbeanstalk-ec2-role"
 certificate_arn="arn:aws:iam::XXXXXXX:server-certificate/NAME"
 
 # Environment variables
-application_secret_key="you'll never guess it"
 eq_log_level="DEBUG"
 google_analytics_code=""
 dev_mode="True"
