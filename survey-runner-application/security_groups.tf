@@ -22,5 +22,6 @@ resource "aws_security_group" "survey_runner_access" {
 
   tags {
     Name = "${var.env}-survey-runner-access"
+    Environment = "${var.env}"
   }
 }

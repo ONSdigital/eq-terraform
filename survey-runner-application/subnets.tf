@@ -17,4 +17,8 @@ resource "aws_route_table_association" "private" {
   count          = "${length(var.application_cidrs)}"
   subnet_id      = "${element(aws_subnet.application.*.id, count.index)}"
   route_table_id = "${element(split(",", var.private_route_table_ids), count.index)}"
+
+  tags {
+    Environment = "${var.env}"
+  }
 }

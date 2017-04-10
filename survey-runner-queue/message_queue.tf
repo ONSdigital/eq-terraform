@@ -20,6 +20,7 @@ resource "aws_instance" "rabbitmq" {
 
   tags {
     Name = "${var.env}-rabbitmq-${count.index + 1}"
+    Environment = "${var.env}"
   }
 }
 
@@ -31,6 +32,10 @@ resource "template_file" "hosts" {
     rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
     deploy_env   = "${var.env}"
     deploy_dns   = "${var.dns_zone_name}"
+  }
+
+  tags {
+    Environment = "${var.env}"
   }
 }
 
@@ -129,4 +134,8 @@ resource "aws_route53_record" "rabbitmq" {
   type    = "A"
   ttl     = "60"
   records = ["${element(aws_instance.rabbitmq.*.public_ip,count.index)}"]
+
+  tags {
+    Environment = "${var.env}"
+  }
 }

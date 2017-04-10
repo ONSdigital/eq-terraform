@@ -14,4 +14,8 @@ resource "aws_dynamodb_table" "credential-store" {
     name = "version"
     type = "S"
   }
+
+  tags {
+    Environment = "${var.env}"
+  }
 }
