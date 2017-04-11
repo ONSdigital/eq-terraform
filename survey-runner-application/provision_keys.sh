@@ -41,5 +41,9 @@ credstash --table $table put -k $key "EQ_USER_AUTHENTICATION_SR_PRIVATE_KEY_PASS
 credstash --table $table put -k $key "EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY_PASSWORD" $EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY_PASSWORD -a
 credstash --table $table put -k $key "EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_PASSWORD" $EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_PASSWORD -a
 
+credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT" "luke.skywalker.r2d2.c3p0"
+credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT" "jabba.leia.organa.solo"
+credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER" "boba.fett.ig88.xizor"
+
 deactivate
 rmvirtualenv credstash
