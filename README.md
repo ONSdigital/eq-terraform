@@ -50,6 +50,10 @@ chmod 400 mykey.pem
 
 1. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and all survey-runner-* directories. You'll need to change all values containing an 'X' to match your requirements, including the AWS credentials you set up previously.
 
+1. run `./generate-keys.sh` to generate random passwords
+
+1. Copy `./test-keys` to `./survey-runner-secrets/secrets` to use test keys in a developer environment
+
 1. To deploy survey-runner:
 
   - Export an `AWS_ENVIRONMENT_NAME` environment variable e.g. `export AWS_ENVIRONMENT_NAME=preprod` or `export AWS_ENVIRONMENT_NAME=$USER`

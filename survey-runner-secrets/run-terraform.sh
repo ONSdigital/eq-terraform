@@ -12,7 +12,11 @@ if [ $action != "apply" ] && [ $action != "plan" ] && [ $action != "destroy" ]; 
     exit 1
 fi
 
-sh ./generate_keys.sh
+
+if [ ! -d "./secrets" ]; then
+    echo "You must provide secrets but putting them in the directory './survey-runner-secrets/secrets'"
+    exit 1
+fi
 
 terraform $action -var "env=${AWS_ENVIRONMENT_NAME}"
 
