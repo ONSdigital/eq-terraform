@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "elasticbeanstalk_survey_runner" {
         "dynamodb:Query"
     ],
     "resources" = [
-        "${aws_dynamodb_table.credential-store.arn}"
+        "arn:aws:dynamodb:${var.aws_default_region}:${data.aws_caller_identity.current.account_id}:table/${var.credstash_dynamodb_table}"
     ]
   }
   "statement" = {
@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "elasticbeanstalk_survey_runner" {
         "kms:Decrypt"
     ],
     "resources" = [
-        "${aws_kms_key.credstash.arn}"
+        "${var.credstash_kms_key}"
     ]
   }
   "statement" = {

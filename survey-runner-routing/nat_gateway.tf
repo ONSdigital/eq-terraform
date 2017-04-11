@@ -1,10 +1,6 @@
 resource "aws_eip" "nat_eip" {
   count = "${length(var.public_cidrs)}"
   vpc   = true
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -12,10 +8,6 @@ resource "aws_nat_gateway" "nat_gw" {
   allocation_id = "${element(aws_eip.nat_eip.*.id, count.index)}"
   subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
   depends_on    = ["aws_eip.nat_eip"]
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_route_table" "private" {
@@ -35,10 +27,6 @@ resource "aws_route" "private_nat_gateway_route" {
   destination_cidr_block = "0.0.0.0/0"
   depends_on             = ["aws_route_table.private"]
   nat_gateway_id         = "${element(aws_nat_gateway.nat_gw.*.id, count.index)}"
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_route" "private_vpc_peering_route" {

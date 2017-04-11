@@ -1,10 +1,6 @@
 resource "aws_elastic_beanstalk_application" "survey_runner" {
   name        = "${var.env}-survey-runner"
   description = "Survey runner for ${var.env}"
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
@@ -204,7 +200,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SECRETS_TABLE"
-    value     = "${aws_dynamodb_table.credential-store.name}"
+    value     = "${var.credstash_dynamodb_table}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:container:python"
@@ -321,8 +317,4 @@ resource "aws_route53_record" "survey_runner" {
   type    = "CNAME"
   ttl     = "60"
   records = ["${aws_elastic_beanstalk_environment.survey_runner_prime.cname}"]
-
-  tags {
-    Environment = "${var.env}"
-  }
 }

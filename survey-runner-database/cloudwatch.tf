@@ -14,10 +14,6 @@ resource "aws_cloudwatch_metric_alarm" "database_storage_alert" {
   dimensions {
     "DBInstanceIdentifier" = "${aws_db_instance.survey_runner_database.identifier}"
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
@@ -35,10 +31,6 @@ resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
 
   dimensions {
     "DBInstanceIdentifier" = "${aws_db_instance.survey_runner_database.identifier}"
-  }
-
-  tags {
-    Environment = "${var.env}"
   }
 }
 
@@ -59,7 +51,4 @@ resource "aws_cloudwatch_metric_alarm" "database_free_memory_alert" {
     "DBInstanceIdentifier" = "${aws_db_instance.survey_runner_database.identifier}"
   }
 
-  tags {
-    Environment = "${var.env}"
-  }
 }

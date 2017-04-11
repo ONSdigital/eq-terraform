@@ -33,10 +33,6 @@ resource "template_file" "hosts" {
     deploy_env   = "${var.env}"
     deploy_dns   = "${var.dns_zone_name}"
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "null_resource" "aws_hosts" {
@@ -134,8 +130,4 @@ resource "aws_route53_record" "rabbitmq" {
   type    = "A"
   ttl     = "60"
   records = ["${element(aws_instance.rabbitmq.*.public_ip,count.index)}"]
-
-  tags {
-    Environment = "${var.env}"
-  }
 }

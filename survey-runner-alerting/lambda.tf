@@ -12,10 +12,6 @@ resource "aws_lambda_function" "slack_alert" {
       environment_name = "${var.env}"
     }
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_lambda_permission" "slack_alert_from_sns" {
@@ -24,8 +20,4 @@ resource "aws_lambda_permission" "slack_alert_from_sns" {
   function_name = "${aws_lambda_function.slack_alert.arn}"
   principal = "sns.amazonaws.com"
   source_arn = "${aws_sns_topic.slack_alert.arn}"
-
-  tags {
-    Environment = "${var.env}"
-  }
 }

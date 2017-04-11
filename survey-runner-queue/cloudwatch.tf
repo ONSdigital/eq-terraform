@@ -10,10 +10,6 @@ resource "aws_cloudwatch_metric_alarm" "rabbitmq1_cluster_status" {
   alarm_description   = "${var.env} rabbit mq 1 reporting cluster paritions"
   alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
   insufficient_data_actions = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rabbitmq2_cluster_status" {
@@ -28,10 +24,6 @@ resource "aws_cloudwatch_metric_alarm" "rabbitmq2_cluster_status" {
   alarm_description   = "${var.env} rabbit mq 2 reporting cluster paritions"
   alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
   insufficient_data_actions = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rabbitmq_cpu" {
@@ -49,10 +41,6 @@ resource "aws_cloudwatch_metric_alarm" "rabbitmq_cpu" {
 
   dimensions {
     "InstanceId" = "${element(aws_instance.rabbitmq.*.id,count.index)}"
-  }
-
-  tags {
-    Environment = "${var.env}"
   }
 }
 
@@ -72,9 +60,5 @@ resource "aws_cloudwatch_metric_alarm" "rabbitmq_status" {
 
   dimensions {
     "InstanceId" = "${element(aws_instance.rabbitmq.*.id,count.index)}"
-  }
-
-  tags {
-    Environment = "${var.env}"
   }
 }

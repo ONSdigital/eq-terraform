@@ -12,10 +12,6 @@ resource "aws_cloudwatch_metric_alarm" "cpu_usage" {
   dimensions {
     AutoScalingGroupName = "${aws_elastic_beanstalk_environment.survey_runner_prime.autoscaling_groups[0]}"
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "5xx_errors" {
@@ -32,10 +28,6 @@ resource "aws_cloudwatch_metric_alarm" "5xx_errors" {
   dimensions {
     LoadBalancerName = "${aws_elastic_beanstalk_environment.survey_runner_prime.load_balancers[0]}"
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "4xx_errors" {
@@ -50,10 +42,6 @@ resource "aws_cloudwatch_metric_alarm" "4xx_errors" {
   alarm_description = "There have been at least 100 4xx errors in the past 120 seconds"
   dimensions {
     LoadBalancerName = "${aws_elastic_beanstalk_environment.survey_runner_prime.load_balancers[0]}"
-  }
-
-  tags {
-    Environment = "${var.env}"
   }
 }
 
@@ -71,10 +59,6 @@ resource "aws_cloudwatch_metric_alarm" "max_host_count" {
   dimensions {
     LoadBalancerName = "${aws_elastic_beanstalk_environment.survey_runner_prime.load_balancers[0]}"
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "min_host_count" {
@@ -91,10 +75,6 @@ resource "aws_cloudwatch_metric_alarm" "min_host_count" {
   dimensions {
     LoadBalancerName = "${aws_elastic_beanstalk_environment.survey_runner_prime.load_balancers[0]}"
   }
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
 
 resource "aws_cloudwatch_log_metric_filter" "no_database_connections_remaining" {
@@ -106,10 +86,6 @@ resource "aws_cloudwatch_log_metric_filter" "no_database_connections_remaining" 
     name      = "no_remaining_database_connections"
     namespace = "SurveyRunner"
     value     = "1"
-  }
-
-  tags {
-    Environment = "${var.env}"
   }
 }
 
@@ -124,8 +100,4 @@ resource "aws_cloudwatch_metric_alarm" "no_remaining_database_connections" {
   threshold = "1"
   alarm_description = "The number of database connections has been exhausted"
   alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
-
-  tags {
-    Environment = "${var.env}"
-  }
 }
