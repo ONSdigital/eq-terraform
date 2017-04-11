@@ -12,7 +12,7 @@ if [ $action != "apply" ] && [ $action != "plan" ] && [ $action != "destroy" ]; 
     exit 1
 fi
 
-./generate_keys.sh
+sh ./generate_keys.sh
 
 terraform $action -var "env=${AWS_ENVIRONMENT_NAME}"
 
