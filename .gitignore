@@ -4,7 +4,7 @@ tmp
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
-*.pem
+survey-runner-queue/*.pem
 
 
 # Elastic Beanstalk Files
