@@ -187,7 +187,3 @@ variable "rabbitmq_write_password" {
 variable "credstash_kms_key" {
   description = "The arn of the KMS key to use for credstash"
 }
-
-variable "credstash_dynamodb_table" {
-  description = "The table name of the DynamoDB table to store credstash credentials"
-}

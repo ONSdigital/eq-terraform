@@ -200,7 +200,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_SECRETS_TABLE"
-    value     = "${var.credstash_dynamodb_table}"
+    value     = "${var.env}-credential-store"
   }
   setting {
     namespace = "aws:elasticbeanstalk:container:python"

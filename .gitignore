@@ -11,3 +11,5 @@ survey-runner-queue/*.pem
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+survey-runner-secrets/secrets

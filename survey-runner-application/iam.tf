@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "elasticbeanstalk_survey_runner" {
         "dynamodb:Query"
     ],
     "resources" = [
-        "arn:aws:dynamodb:${var.aws_default_region}:${data.aws_caller_identity.current.account_id}:table/${var.credstash_dynamodb_table}"
+        "arn:aws:dynamodb:${var.aws_default_region}:${data.aws_caller_identity.current.account_id}:table/${var.env}-credential-store"
     ]
   }
   "statement" = {
