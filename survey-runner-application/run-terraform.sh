@@ -41,7 +41,7 @@ if [ -z "$private_route_table_ids" ]; then
     exit 1
 fi
 
-credstash_kms_key=`aws kms list-aliases --query 'Aliases[*].AliasArn' --output text  | tr '\t' '\n' | grep ${AWS_ENVIRONMENT_NAME}`
+credstash_kms_key=`aws kms describe-key --key-id $(aws kms list-aliases --query 'Aliases[*].AliasArn' --output text  | tr '\t' '\n' | grep ${AWS_ENVIRONMENT_NAME}) --query 'KeyMetadata.Arn' --output text`
 if [ -z "$credstash_kms_key" ]; then
     echo "Nothing to ${action}, no KMS key exists!"
     exit 1

@@ -141,16 +141,6 @@ variable "database_name" {
   default     = "digitaleqrds"
 }
 
-variable "database_user" {
-  description = "The master username for the database"
-  default     = "digitaleq12345"
-}
-
-variable "database_password" {
-  description = "The password for the master username of the database"
-  default     = "digitaleq12345"
-}
-
 # RabbitMQ
 variable "rabbitmq_ip_prime" {
   description = "Static IP of prime rabbitmq server"
@@ -158,30 +148,6 @@ variable "rabbitmq_ip_prime" {
 
 variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
-}
-
-variable "rabbitmq_admin_user" {
-  description = "The admin user to create for rabbitmq"
-}
-
-variable "rabbitmq_admin_password" {
-  description = "The admin user password for rabbitmq"
-}
-
-variable "rabbitmq_read_user" {
-  description = "The 'read-only' user to create for rabbitmq"
-}
-
-variable "rabbitmq_read_password" {
-  description = "The 'read-only' user password for rabbitmq"
-}
-
-variable "rabbitmq_write_user" {
-  description = "The 'write-only' user to create for rabbitmq"
-}
-
-variable "rabbitmq_write_password" {
-  description = "The 'write-only' user password for rabbitmq"
 }
 
 variable "credstash_kms_key" {

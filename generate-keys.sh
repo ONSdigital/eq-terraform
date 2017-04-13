@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-echo $(openssl rand -base64 16) > ./test-keys/sdc-storage-encryption-user-pepper.txt
-echo $(openssl rand -base64 16) > ./test-keys/sdc-storage-user-id-salt.txt
-echo $(openssl rand -base64 16) > ./test-keys/sdc-storage-user-ik-salt.txt
+LC_CTYPE=C 
 
-echo $(openssl rand -base64 16) > ./test-keys/eq-rabbitmq-username.txt
-echo $(openssl rand -base64 16) > ./test-keys/eq-rabbitmq-password.txt
+echo -n $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/sdc-storage-encryption-user-pepper.txt
+echo -n $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/sdc-storage-user-id-salt.txt
+echo -n  $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/sdc-storage-user-ik-salt.txt
 
-echo $(openssl rand -base64 16) > ./test-keys/eq-database-username.txt
-echo $(openssl rand -base64 16) > ./test-keys/eq-database-password.txt
+echo -n  $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/eq-rabbitmq-username.txt
+echo -n  $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/eq-rabbitmq-password.txt
 
-echo $(openssl rand -base64 16) > ./test-keys/eq-secret-key.txt
+echo -n  $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/eq-database-username.txt
+echo -n  $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/eq-database-password.txt
+
+echo -n  $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 16) > ./test-keys/eq-secret-key.txt

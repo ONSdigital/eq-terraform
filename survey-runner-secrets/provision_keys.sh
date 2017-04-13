@@ -31,9 +31,9 @@ credstash --table $table put -k $key "EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY" "@
 credstash --table $table put -k $key "EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_PASSWORD" "@secrets/sdc-user-authentication-signing-rrm-private-key-password.txt" -a
 
 
-credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT" "@secrets/sdc-storage-user-id-salt.txt"
-credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT" "@secrets/sdc-storage-user-ik-salt.txt"
-credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER" "@secrets/sdc-storage-encryption-user-pepper.txt"
+credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT" "@secrets/sdc-storage-user-id-salt.txt" -a
+credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT" "@secrets/sdc-storage-user-ik-salt.txt" -a
+credstash --table $table put -k $key "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_KEY_PEPPER" "@secrets/sdc-storage-encryption-user-pepper.txt" -a
 
 deactivate
 rmvirtualenv credstash
