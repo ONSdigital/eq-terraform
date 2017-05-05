@@ -41,5 +41,10 @@ if [ -z "$private_route_table_ids" ]; then
     exit 1
 fi
 
-terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var "database_address=${database_address}" -var "database_port=${database_port}" -var "database_name=${database_name}" -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
+credstash_kms_key=`aws kms describe-key --key-id $(aws kms list-aliases --query 'Aliases[*].AliasArn' --output text  | tr '\t' '\n' | grep ${AWS_ENVIRONMENT_NAME}) --query 'KeyMetadata.Arn' --output text`
+if [ -z "$credstash_kms_key" ]; then
+    echo "Nothing to ${action}, no KMS key exists!"
+    exit 1
+fi
 
+terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var "database_address=${database_address}" -var "database_port=${database_port}" -var "database_name=${database_name}" -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}" -var "credstash_kms_key=${credstash_kms_key}"

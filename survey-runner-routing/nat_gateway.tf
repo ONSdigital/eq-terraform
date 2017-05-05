@@ -35,4 +35,8 @@ resource "aws_route" "private_vpc_peering_route" {
   destination_cidr_block = "${var.vpc_peer_cidr_block}"
   vpc_peering_connection_id = "${var.vpc_peer_connection_id}"
   depends_on             = ["aws_route_table.private"]
+
+  tags {
+    Environment = "${var.env}"
+  }
 }

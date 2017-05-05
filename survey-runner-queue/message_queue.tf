@@ -20,6 +20,7 @@ resource "aws_instance" "rabbitmq" {
 
   tags {
     Name = "${var.env}-rabbitmq-${count.index + 1}"
+    Environment = "${var.env}"
   }
 }
 

@@ -18,6 +18,10 @@ resource "aws_security_group" "provision-allow-ssh-REMOVE" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags {
+    Environment = "${var.env}"
+  }
 }
 
 resource "aws_security_group" "rabbit_required" {
@@ -64,6 +68,10 @@ resource "aws_security_group" "rabbit_required" {
   }
 
   # End RabbitMQ ports
+
+  tags {
+    Environment = "${var.env}"
+  }
 }
 
 # VPN services control group
@@ -101,6 +109,10 @@ resource "aws_security_group" "survey_runner_vpn_services_logging_auditing" {
     protocol    = "tcp"
     cidr_blocks = ["${var.logserver_cidr}"]
   }
+
+  tags {
+    Environment = "${var.env}"
+  }
 }
 
 resource "aws_security_group" "survey_runner_vpn_sdx_access" {
@@ -114,5 +126,9 @@ resource "aws_security_group" "survey_runner_vpn_sdx_access" {
     to_port     = 5672
     protocol    = "tcp"
     cidr_blocks = "${var.sdx_cidrs}"
+  }
+
+  tags {
+    Environment = "${var.env}"
   }
 }

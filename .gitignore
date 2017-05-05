@@ -4,10 +4,12 @@ tmp
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
-*.pem
+survey-runner-queue/*.pem
 
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+survey-runner-secrets/secrets

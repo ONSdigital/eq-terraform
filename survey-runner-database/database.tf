@@ -12,6 +12,7 @@ resource "aws_security_group" "survey_runner_rds_access" {
 
   tags {
     Name = "${var.env}-db-security-group"
+    Environment = "${var.env}"
   }
 }
 
@@ -22,6 +23,7 @@ resource "aws_db_subnet_group" "survey_runner_rds" {
 
   tags {
     Name = "${var.env}-db-subnet-group"
+    Environment = "${var.env}"
   }
 }
 

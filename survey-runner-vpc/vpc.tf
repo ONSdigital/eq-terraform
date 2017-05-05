@@ -5,6 +5,7 @@ resource "aws_vpc" "survey_runner" {
 
   tags {
     Name = "${var.env}-vpc"
+    Environment = "${var.env}"
   }
 }
 
@@ -13,5 +14,6 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.survey_runner.id}"
   tags {
     Name = "${var.env}-internet-gateway"
+    Environment = "${var.env}"
   }
 }

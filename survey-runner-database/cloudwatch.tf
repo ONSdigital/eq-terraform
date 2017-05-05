@@ -50,4 +50,5 @@ resource "aws_cloudwatch_metric_alarm" "database_free_memory_alert" {
   dimensions {
     "DBInstanceIdentifier" = "${aws_db_instance.survey_runner_database.identifier}"
   }
+
 }

@@ -39,6 +39,24 @@ data "aws_iam_policy_document" "elasticbeanstalk_survey_runner" {
   "statement" = {
     "effect" = "Allow",
     "actions" = [
+        "dynamodb:Query"
+    ],
+    "resources" = [
+        "arn:aws:dynamodb:${var.aws_default_region}:${data.aws_caller_identity.current.account_id}:table/${var.env}-credential-store"
+    ]
+  }
+  "statement" = {
+    "effect" = "Allow",
+    "actions" = [
+        "kms:Decrypt"
+    ],
+    "resources" = [
+        "${var.credstash_kms_key}"
+    ]
+  }
+  "statement" = {
+    "effect" = "Allow",
+    "actions" = [
         "logs:PutLogEvents",
         "logs:CreateLogStream"
     ],
