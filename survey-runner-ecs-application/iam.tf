@@ -1,6 +1,6 @@
 resource "aws_iam_instance_profile" "eq_ecs" {
   name  = "${var.env}_iam_instance_profile_for_eq_ecs"
-  roles = ["${aws_iam_role.survey_runner_ecs.name}"]
+  roles = ["${aws_iam_role.eq_ecs.name}"]
 }
 
 resource "aws_iam_role" "eq_ecs" {

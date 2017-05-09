@@ -11,7 +11,7 @@ resource "aws_alb" "eq" {
 }
 
 resource "aws_alb_target_group" "go_launch_a_survey_ecs" {
-  depends_on = ["aws_alb.survey_runner"]
+  depends_on = ["aws_alb.eq"]
   name     = "go-launch-a-survey-ecs"
   port     = 80
   protocol = "HTTP"
