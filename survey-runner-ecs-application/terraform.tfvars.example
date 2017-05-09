@@ -1,3 +1,6 @@
 aws_access_key="XXXXXXXXXXXX"
 aws_secret_key = "XXXXXXXXXXXX"
 application_cidrs=["10.30.20.192/28", "10.30.20.208/28", "10.30.20.224/28"]
+
+dns_zone_id="ZENEOAYVXUWJ3"
+dns_zone_name="dev.eq.ons.digital"

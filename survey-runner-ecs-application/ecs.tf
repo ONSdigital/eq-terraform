@@ -13,7 +13,6 @@ data "template_file" "go-launch-a-survey" {
 resource "aws_ecs_task_definition" "go-launch-a-survey" {
   family                = "${var.env}-go-launch-a-survey"
   container_definitions = "${data.template_file.go-launch-a-survey.rendered}"
-  task_role_arn = "${aws_iam_role.survey_runner.arn}"
 }
 
 resource "aws_ecs_service" "go-launch-a-survey" {
@@ -22,7 +21,7 @@ resource "aws_ecs_service" "go-launch-a-survey" {
   cluster         = "${aws_ecs_cluster.survey_runner.id}"
   task_definition = "${aws_ecs_task_definition.go-launch-a-survey.arn}"
   desired_count   = 3
-  iam_role        = "${aws_iam_role.survey_runner.arn}"
+  iam_role        = "${aws_iam_role.go_launch_a_survey.arn}"
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.go-launch-a-survey_ecs.arn}"
@@ -36,7 +35,7 @@ resource "aws_launch_configuration" "ecs" {
   image_id               = "ami-175f1964" // Amazon ECS-Optimized AMI
   instance_type          = "${var.ecs_instance_type}"
   key_name               = "${var.ecs_aws_key_pair}"
-  iam_instance_profile   = "${aws_iam_instance_profile.survey_runner.id}"
+  iam_instance_profile   = "${aws_iam_instance_profile.survey_runner_ecs.id}"
   security_groups        = ["${aws_security_group.survey_runner_ecs.id}"]
   user_data              = "#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.survey_runner.name} > /etc/ecs/ecs.config"
 }

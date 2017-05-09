@@ -1,10 +1,10 @@
-resource "aws_iam_instance_profile" "survey_runner" {
-  name  = "${var.env}_iam_for_survey_runner_ecs"
-  roles = ["${aws_iam_role.survey_runner.name}"]
+resource "aws_iam_instance_profile" "survey_runner_ecs" {
+  name  = "${var.env}_iam_instance_profile_for_survey_runner_ecs"
+  roles = ["${aws_iam_role.survey_runner_ecs.name}"]
 }
 
-resource "aws_iam_role" "survey_runner" {
-  name = "${var.env}_iam_for_survey_runner_ecs"
+resource "aws_iam_role" "survey_runner_ecs" {
+  name = "${var.env}_iam_instance_profile_for_survey_runner_ecs"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -23,13 +23,11 @@ EOF
 }
 
 
-data "aws_iam_policy_document" "survey_runner" {
+data "aws_iam_policy_document" "survey_runner_ecs" {
   "statement" = {
       "effect" = "Allow",
       "actions" = [
         "elasticloadbalancing:*",
-        "ec2:Describe*",
-        "ec2:AuthorizeSecurityGroupIngress"
       ],
       "resources" = [
         "*"
@@ -52,31 +50,48 @@ data "aws_iam_policy_document" "survey_runner" {
         "*"
       ]
     }
-
-  "statement" = {
-    "effect" = "Allow",
-    "actions" = [
-        "logs:PutLogEvents",
-        "logs:CreateLogStream"
-    ],
-    "resources" = [
-        "arn:aws:logs:*:*:log-group:*"
-    ]
-  }
-  "statement" = {
-    "effect" = "Allow",
-    "actions" = [
-        "cloudwatch:*"
-    ],
-    "resources" = [
-        "*"
-    ]
-  }
-
 }
 
-resource "aws_iam_role_policy" "survey_runner" {
-  name = "${var.env}_iam_for_survey_runner_ecs"
-  role = "${aws_iam_role.survey_runner.id}"
-  policy = "${data.aws_iam_policy_document.survey_runner.json}"
+resource "aws_iam_role_policy" "survey_runner_ecs" {
+  name = "${var.env}_iam_instance_profile_for_survey_runner_ecs"
+  role = "${aws_iam_role.survey_runner_ecs.id}"
+  policy = "${data.aws_iam_policy_document.survey_runner_ecs.json}"
+}
+
+resource "aws_iam_role" "go_launch_a_survey" {
+  name = "${var.env}_iam_for_go_launch_a_survey"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+
+data "aws_iam_policy_document" "go_launch_a_survey" {
+  "statement" = {
+      "effect" = "Allow",
+      "actions" = [
+        "elasticloadbalancing:*",
+      ],
+      "resources" = [
+        "*"
+      ]
+    }
+}
+
+resource "aws_iam_role_policy" "go_launch_a_survey" {
+  name = "${var.env}_iam_for_go_launch_a_survey"
+  role = "${aws_iam_role.go_launch_a_survey.id}"
+  policy = "${data.aws_iam_policy_document.go_launch_a_survey.json}"
 }

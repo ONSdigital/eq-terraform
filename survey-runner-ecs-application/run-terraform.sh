@@ -33,5 +33,5 @@ if [ -z "$private_route_table_ids" ]; then
     exit 1
 fi
 
-terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
+terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
 
