@@ -4,8 +4,8 @@ resource "aws_security_group" "survey_runner_alb" {
   vpc_id      = "${var.vpc_id}"
 
   ingress {
-    from_port   = "80"
-    to_port     = "80"
+    from_port   = "443"
+    to_port     = "443"
     protocol    = "tcp"
     cidr_blocks = ["${var.vpc_peer_cidr_block}"]
   }

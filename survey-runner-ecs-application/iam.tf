@@ -12,7 +12,7 @@ resource "aws_iam_role" "survey_runner_ecs" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": ["ecs.amazonaws.com"]
+        "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com"]
       },
       "Effect": "Allow",
       "Sid": ""
@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "survey_runner_ecs" {
         "ecs:RegisterContainerInstance",
       ],
       "resources" = [
-        "arn:aws:ecs:eu-west-1:${data.aws_caller_identity.current.account_id}:container-instance/*"
+        "*"
       ]
     }
 }
