@@ -26,6 +26,21 @@ variable "ecs_aws_key_pair" {
   default     = ""
 }
 
+variable "ecs_cluster_min_size" {
+  description = "ECS Cluster Minimum number of instances"
+  default     = "1"
+}
+
+variable "ecs_cluster_max_size" {
+  description = "ECS Cluster Maximum number of instances"
+  default     = "3"
+}
+
+variable "ecs_cluster_desired_size" {
+  description = "ECS Cluster Desired number of instances"
+  default     = "1"
+}
+
 variable "vpc_id" {
   description = "The survey runner VPC ID"
 }

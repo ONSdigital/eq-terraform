@@ -56,18 +56,6 @@ data "aws_iam_policy_document" "survey_runner" {
   "statement" = {
     "effect" = "Allow",
     "actions" = [
-        "s3:Get*",
-        "s3:List*",
-        "s3:PutObject"
-    ],
-    "resources" = [
-        "arn:aws:s3:::elasticbeanstalk-*",
-        "arn:aws:s3:::elasticbeanstalk-*/*"
-    ]
-  }
-  "statement" = {
-    "effect" = "Allow",
-    "actions" = [
         "logs:PutLogEvents",
         "logs:CreateLogStream"
     ],

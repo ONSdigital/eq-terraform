@@ -71,7 +71,7 @@ resource "aws_ecs_service" "go-launch-a-survey" {
 
 resource "aws_launch_configuration" "ecs" {
   name                   = "${var.env}-survey-runner-ecs"
-  image_id               = "ami-175f1964"
+  image_id               = "ami-175f1964" // Amazon ECS-Optimized AMI
   instance_type          = "${var.ecs_instance_type}"
   key_name               = "${var.ecs_aws_key_pair}"
   iam_instance_profile   = "${aws_iam_instance_profile.survey_runner.id}"
@@ -84,7 +84,7 @@ resource "aws_autoscaling_group" "survey_runner" {
   availability_zones   = ["${var.availability_zones}"]
   launch_configuration = "${aws_launch_configuration.ecs.name}"
   vpc_zone_identifier = ["${aws_subnet.application.*.id}"]
-  min_size             = 1
-  max_size             = 3
-  desired_capacity     = 1
+  min_size             = "${var.ecs_cluster_min_size}"
+  max_size             = "${var.ecs_cluster_max_size}"
+  desired_capacity     = "${var.ecs_cluster_desired_size}"
 }
