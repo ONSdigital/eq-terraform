@@ -12,7 +12,7 @@ resource "aws_iam_role" "survey_runner_ecs" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
+        "Service": ["ecs.amazonaws.com"]
       },
       "Effect": "Allow",
       "Sid": ""
@@ -22,32 +22,30 @@ resource "aws_iam_role" "survey_runner_ecs" {
 EOF
 }
 
-
 data "aws_iam_policy_document" "survey_runner_ecs" {
   "statement" = {
       "effect" = "Allow",
       "actions" = [
-        "elasticloadbalancing:*",
+        "ecs:CreateCluster",
+        "ecs:DiscoverPollEndpoint",
+        "ecs:Poll",
+        "ecs:StartTelemetrySession",
+        "ecs:Submit*",
+        "ecs:StartTask"
       ],
       "resources" = [
-        "*"
+        "arn:aws:ecs:eu-west-1:${data.aws_caller_identity.current.account_id}:cluster/${aws_ecs_cluster.survey_runner.name}"
       ]
     }
 
   "statement" = {
       "effect" = "Allow",
       "actions" = [
-        "ecs:CreateCluster",
         "ecs:DeregisterContainerInstance",
-        "ecs:DiscoverPollEndpoint",
-        "ecs:Poll",
         "ecs:RegisterContainerInstance",
-        "ecs:StartTelemetrySession",
-        "ecs:Submit*",
-        "ecs:StartTask"
       ],
       "resources" = [
-        "*"
+        "arn:aws:ecs:eu-west-1:${data.aws_caller_identity.current.account_id}:container-instance/*"
       ]
     }
 }
@@ -67,7 +65,7 @@ resource "aws_iam_role" "go_launch_a_survey" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": ["ecs.amazonaws.com", "ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
+        "Service": ["ecs.amazonaws.com", "ecs-tasks.amazonaws.com"]
       },
       "Effect": "Allow",
       "Sid": ""
@@ -76,7 +74,6 @@ resource "aws_iam_role" "go_launch_a_survey" {
 }
 EOF
 }
-
 
 data "aws_iam_policy_document" "go_launch_a_survey" {
   "statement" = {

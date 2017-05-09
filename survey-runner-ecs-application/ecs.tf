@@ -1,8 +1,8 @@
 resource "aws_ecs_cluster" "survey_runner" {
-  name = "${var.env}-survey_runner"
+  name = "${var.env}-survey-runner"
 }
 
-data "template_file" "go-launch-a-survey" {
+data "template_file" "go_launch_a_survey" {
   template = "${file("task-definitions/go-launch-a-survey.json")}"
 
   vars {
@@ -10,21 +10,21 @@ data "template_file" "go-launch-a-survey" {
   }
 }
 
-resource "aws_ecs_task_definition" "go-launch-a-survey" {
+resource "aws_ecs_task_definition" "go_launch_a_survey" {
   family                = "${var.env}-go-launch-a-survey"
-  container_definitions = "${data.template_file.go-launch-a-survey.rendered}"
+  container_definitions = "${data.template_file.go_launch_a_survey.rendered}"
 }
 
-resource "aws_ecs_service" "go-launch-a-survey" {
-  depends_on = ["aws_alb_target_group.go-launch-a-survey_ecs"]
+resource "aws_ecs_service" "go_launch_a_survey" {
+  depends_on = ["aws_alb_target_group.go_launch_a_survey_ecs"]
   name            = "${var.env}-go-launch-a-survey"
   cluster         = "${aws_ecs_cluster.survey_runner.id}"
-  task_definition = "${aws_ecs_task_definition.go-launch-a-survey.arn}"
+  task_definition = "${aws_ecs_task_definition.go_launch_a_survey.arn}"
   desired_count   = 3
   iam_role        = "${aws_iam_role.go_launch_a_survey.arn}"
 
   load_balancer {
-    target_group_arn = "${aws_alb_target_group.go-launch-a-survey_ecs.arn}"
+    target_group_arn = "${aws_alb_target_group.go_launch_a_survey_ecs.arn}"
     container_name = "go-launch-a-survey"
     container_port = 8000
   }

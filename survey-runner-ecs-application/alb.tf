@@ -10,7 +10,7 @@ resource "aws_alb" "survey_runner" {
   }
 }
 
-resource "aws_alb_target_group" "go-launch-a-survey_ecs" {
+resource "aws_alb_target_group" "go_launch_a_survey_ecs" {
   depends_on = ["aws_alb.survey_runner"]
   name     = "go-launch-a-survey-ecs"
   port     = 80
@@ -32,7 +32,7 @@ resource "aws_alb_listener" "survey_runner" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.go-launch-a-survey_ecs.arn}"
+    target_group_arn = "${aws_alb_target_group.go_launch_a_survey_ecs.arn}"
     type             = "forward"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_alb_listener_rule" "survey_runner_dev" {
 
   action {
     type             = "forward"
-    target_group_arn = "${aws_alb_target_group.go-launch-a-survey_ecs.arn}"
+    target_group_arn = "${aws_alb_target_group.go_launch_a_survey_ecs.arn}"
   }
 
   condition {
