@@ -1,10 +1,10 @@
-resource "aws_iam_instance_profile" "survey_runner_ecs" {
-  name  = "${var.env}_iam_instance_profile_for_survey_runner_ecs"
+resource "aws_iam_instance_profile" "eq_ecs" {
+  name  = "${var.env}_iam_instance_profile_for_eq_ecs"
   roles = ["${aws_iam_role.survey_runner_ecs.name}"]
 }
 
-resource "aws_iam_role" "survey_runner_ecs" {
-  name = "${var.env}_iam_instance_profile_for_survey_runner_ecs"
+resource "aws_iam_role" "eq_ecs" {
+  name = "${var.env}_iam_instance_profile_for_eq_ecs"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -22,7 +22,7 @@ resource "aws_iam_role" "survey_runner_ecs" {
 EOF
 }
 
-data "aws_iam_policy_document" "survey_runner_ecs" {
+data "aws_iam_policy_document" "eq_ecs" {
   "statement" = {
       "effect" = "Allow",
       "actions" = [
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "survey_runner_ecs" {
         "ecs:StartTask"
       ],
       "resources" = [
-        "arn:aws:ecs:eu-west-1:${data.aws_caller_identity.current.account_id}:cluster/${aws_ecs_cluster.survey_runner.name}"
+        "arn:aws:ecs:eu-west-1:${data.aws_caller_identity.current.account_id}:cluster/${aws_ecs_cluster.eq.name}"
       ]
     }
 
@@ -50,10 +50,10 @@ data "aws_iam_policy_document" "survey_runner_ecs" {
     }
 }
 
-resource "aws_iam_role_policy" "survey_runner_ecs" {
-  name = "${var.env}_iam_instance_profile_for_survey_runner_ecs"
-  role = "${aws_iam_role.survey_runner_ecs.id}"
-  policy = "${data.aws_iam_policy_document.survey_runner_ecs.json}"
+resource "aws_iam_role_policy" "eq_ecs" {
+  name = "${var.env}_iam_instance_profile_for_eq_ecs"
+  role = "${aws_iam_role.eq_ecs.id}"
+  policy = "${data.aws_iam_policy_document.eq_ecs.json}"
 }
 
 resource "aws_iam_role" "go_launch_a_survey" {

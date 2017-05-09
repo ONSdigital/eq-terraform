@@ -23,8 +23,8 @@ resource "aws_security_group" "survey_runner_alb" {
   }
 }
 
-resource "aws_security_group" "survey_runner_ecs" {
-  name        = "${var.env}-survey-runner-ecs"
+resource "aws_security_group" "eq_ecs" {
+  name        = "${var.env}-eq-ecs"
   description = "Allow access from the internet or WAF"
   vpc_id      = "${var.vpc_id}"
 
@@ -43,7 +43,7 @@ resource "aws_security_group" "survey_runner_ecs" {
   }
 
   tags {
-    Name = "${var.env}-survey-runner-access"
+    Name = "${var.env}-eq-ecs-access"
     Environment = "${var.env}"
   }
 }

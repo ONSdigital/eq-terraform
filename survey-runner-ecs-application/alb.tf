@@ -1,5 +1,5 @@
-resource "aws_alb" "survey_runner" {
-  name            = "survey-runner-alb"
+resource "aws_alb" "eq" {
+  name            = "eq-alb"
   internal        = false
   security_groups = ["${aws_security_group.survey_runner_alb.id}"]
   subnets         = ["${split(",", var.public_subnet_ids)}"]
@@ -27,7 +27,7 @@ resource "aws_alb_target_group" "go_launch_a_survey_ecs" {
 }
 
 resource "aws_alb_listener" "survey_runner" {
-  load_balancer_arn = "${aws_alb.survey_runner.arn}"
+  load_balancer_arn = "${aws_alb.eq.arn}"
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
@@ -59,5 +59,5 @@ resource "aws_route53_record" "launch_survey_runner" {
   name    = "${var.env}-surveys-launch.${var.dns_zone_name}"
   type    = "CNAME"
   ttl     = "60"
-  records = ["${aws_alb.survey_runner.dns_name}"]
+  records = ["${aws_alb.eq.dns_name}"]
 }
