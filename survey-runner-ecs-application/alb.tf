@@ -10,22 +10,6 @@ resource "aws_alb" "survey_runner" {
   }
 }
 
-resource "aws_alb_target_group" "survey_runner_ecs" {
-  name     = "survey-runner-alb-ecs"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = "${var.vpc_id}"
-  health_check = {
-    interval = 5
-    timeout = 2
-    path = "/status"
-  }
-
-  tags {
-    Environment = "${var.env}"
-  }
-}
-
 resource "aws_alb_target_group" "go-launch-a-survey_ecs" {
   name     = "go-launch-a-survey-ecs"
   port     = 80
@@ -47,7 +31,7 @@ resource "aws_alb_listener" "survey_runner" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.survey_runner_ecs.arn}"
+    target_group_arn = "${aws_alb_target_group.go-launch-a-survey_ecs.arn}"
     type             = "forward"
   }
 }
@@ -66,14 +50,6 @@ resource "aws_alb_listener_rule" "survey_runner_dev" {
     values = ["${aws_route53_record.launch_survey_runner.name}"]
   }
 }
-
-//resource "aws_route53_record" "survey_runner" {
-//  zone_id = "${var.dns_zone_id}"
-//  name    = "${var.env}-surveys.${var.dns_zone_name}"
-//  type    = "CNAME"
-//  ttl     = "60"
-//  records = ["${aws_alb.survey_runner.dns_name}"]
-//}
 
 resource "aws_route53_record" "launch_survey_runner" {
   zone_id = "${var.dns_zone_id}"

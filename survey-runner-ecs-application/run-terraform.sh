@@ -19,14 +19,6 @@ if [ -z "$vpc_id" ]; then
     exit 1
 fi
 
-database_address=`aws rds describe-db-instances --db-instance-identifier=${AWS_ENVIRONMENT_NAME}-digitaleqrds --query 'DBInstances[*].Endpoint.Address' --output text`
-database_port=`aws rds describe-db-instances --db-instance-identifier=${AWS_ENVIRONMENT_NAME}-digitaleqrds --query 'DBInstances[*].Endpoint.Port' --output text`
-database_name=`aws rds describe-db-instances --db-instance-identifier=${AWS_ENVIRONMENT_NAME}-digitaleqrds --query 'DBInstances[*].DBName' --output text`
-if [ -z "$database_address" ]; then
-    echo "Nothing to ${action}, no database exists!"
-    exit 1
-fi
-
 # get the public subnet ids as a comma separated list
 public_subnet_ids=`aws ec2 describe-subnets --filters "Name=tag:Environment,Values=${AWS_ENVIRONMENT_NAME}" "Name=tag:Type,Values=Public" --query 'Subnets[*].SubnetId' --output text | tr '\t' ','`
 if [ -z "$public_subnet_ids" ]; then
@@ -41,5 +33,5 @@ if [ -z "$private_route_table_ids" ]; then
     exit 1
 fi
 
-terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var "database_address=${database_address}" -var "database_port=${database_port}" -var "database_name=${database_name}" -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
+terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
 
