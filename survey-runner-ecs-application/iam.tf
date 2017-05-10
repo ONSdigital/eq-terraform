@@ -27,11 +27,9 @@ data "aws_iam_policy_document" "eq_ecs" {
       "effect" = "Allow",
       "actions" = [
         "ecs:CreateCluster",
-        "ecs:DiscoverPollEndpoint",
-        "ecs:Poll",
+        "ecs:DeregisterContainerInstance",
+        "ecs:RegisterContainerInstance",
         "ecs:StartTelemetrySession",
-        "ecs:Submit*",
-        "ecs:StartTask"
       ],
       "resources" = [
         "arn:aws:ecs:eu-west-1:${data.aws_caller_identity.current.account_id}:cluster/${aws_ecs_cluster.eq.name}"
@@ -41,13 +39,17 @@ data "aws_iam_policy_document" "eq_ecs" {
   "statement" = {
       "effect" = "Allow",
       "actions" = [
-        "ecs:DeregisterContainerInstance",
-        "ecs:RegisterContainerInstance",
+        "ecs:DiscoverPollEndpoint",
+        "ecs:Poll",
+        "ecs:SubmitContainerStateChange",
+        "ecs:SubmitTaskStateChange",
       ],
       "resources" = [
         "*"
       ]
     }
+
+
 }
 
 resource "aws_iam_role_policy" "eq_ecs" {
