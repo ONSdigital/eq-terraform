@@ -26,10 +26,14 @@ if [ $ACTION == 'plan' ] || [ $ACTION == 'apply' ]; then
     ./run-terraform.sh $ACTION
     cd ../survey-runner-application
     ./run-terraform.sh $ACTION
+    cd ../survey-runner-ecs-application
+    ./run-terraform.sh $ACTION
 fi
 
 if [ $ACTION == 'destroy' ]; then
-    cd survey-runner-application
+    cd survey-runner-ecs-application
+    ./run-terraform.sh destroy
+    cd ../survey-runner-application
     ./run-terraform.sh destroy
     cd ../survey-runner-queue
     ./run-terraform.sh destroy

@@ -1,6 +1,6 @@
 aws_access_key="XXXXXXXXXXXX"
 aws_secret_key = "XXXXXXXXXXXX"
-application_cidrs=["10.30.20.48/28"]
+application_cidrs=["10.30.20.48/28", "10.30.20.64/28", "10.30.20.80/28"]
 ons_access_ips="XXXXXXX,XXXXXXX"
 eb_min_size=1
 eb_max_size=1
