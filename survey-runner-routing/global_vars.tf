@@ -12,12 +12,10 @@ variable "aws_access_key" {
 
 variable "vpc_id" {
   description = "An existing VPC ID"
-  default     = ""
 }
 
 variable "internet_gateway_id" {
   description = "An existing VPC Internet Gateway ID"
-  default     = ""
 }
 
 variable "public_cidrs" {

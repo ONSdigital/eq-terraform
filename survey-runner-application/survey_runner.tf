@@ -34,7 +34,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBSubnets"
-    value     = "${var.use_internal_elb ? join(",", aws_subnet.application.*.id) : var.public_subnet_ids}"
+    value     = "${var.use_internal_elb ? join(",", aws_subnet.application.*.id) : join(",", var.public_subnet_ids)}"
   }
   setting {
     namespace = "aws:ec2:vpc"

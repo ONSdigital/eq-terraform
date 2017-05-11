@@ -1,6 +1,7 @@
 rendered
 tmp
 .idea
+.terraform
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars

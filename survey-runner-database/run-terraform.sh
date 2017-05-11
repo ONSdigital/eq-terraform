@@ -21,7 +21,7 @@ if [ -z "$vpc_id" ]; then
 fi
 
 # get the private route table ids as a comma separated list
-private_route_table_ids=`aws ec2 describe-route-tables --filters "Name=tag:Environment,Values=${AWS_ENVIRONMENT_NAME}" "Name=tag:Type,Values=Private" --query 'RouteTables[*].RouteTableId' --output text | tr '\t' ','`
+private_route_table_ids="[\"$(aws ec2 describe-route-tables --filters "Name=tag:Environment,Values=${AWS_ENVIRONMENT_NAME}" "Name=tag:Type,Values=Private" --query 'RouteTables[*].RouteTableId' --output text | tr '\t' ',' | sed -e 's/,/","/g')\"]"
 if [ -z "$private_route_table_ids" ]; then
     echo "Nothing to ${action}, no private route tables exists!"
     exit 1

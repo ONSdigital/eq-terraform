@@ -16,5 +16,5 @@ resource "aws_subnet" "database" {
 resource "aws_route_table_association" "private" {
   count          = "${length(var.database_cidrs)}"
   subnet_id      = "${element(aws_subnet.database.*.id, count.index)}"
-  route_table_id = "${element(split(",", var.private_route_table_ids), count.index)}"
+  route_table_id = "${var.private_route_table_ids[count.index]}"
 }
