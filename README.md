@@ -46,19 +46,19 @@ brew install terraform
 chmod 400 mykey.pem
 ```
 
-1. Move the ssh key to `eq-terraform/survey-runner-queue`
+1. Move the ssh key to `eq-terraform`
 
-1. Copy `terraform.tfvars.example` to `terraform.tfvars` in both author and all survey-runner-* directories. You'll need to change all values containing an 'X' to match your requirements, including the AWS credentials you set up previously.
+1. Copy `terraform.tfvars.example` to `terraform.tfvars`. You'll need to change all values to match your requirements, including the AWS credentials you set up previously.
 
 1. To deploy survey-runner:
 
-  - Export an `AWS_ENVIRONMENT_NAME` environment variable e.g. `export AWS_ENVIRONMENT_NAME=preprod` or `export AWS_ENVIRONMENT_NAME=$USER`
+  - Run `terraform get` to import the different modules
+  
+  - Run `terraform plan` to check the output of terraform
 
-  - Run `survey-runner.sh plan` to check the output of terraform
+  - Run `terraform apply` to create your infrastructure environment
 
-  - Run `survey-runner.sh apply` to create your infrastructure environment
-
-  - Run `survey-runner.sh destroy` to destroy your infrastructure environment
+  - Run `terraform destroy` to destroy your infrastructure environment
 
 Note. If using a named profile ensure you have set the profile e.g. `export AWS_DEFAULT_PROFILE=ons`
 

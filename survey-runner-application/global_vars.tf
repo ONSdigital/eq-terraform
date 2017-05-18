@@ -24,10 +24,12 @@ variable "vpc_peer_cidr_block" {
 }
 
 variable "public_subnet_ids" {
+  type = "list"
   description = "The IDs of the public subnets for the external ELBs"
 }
 
 variable "private_route_table_ids" {
+  type = "list"
   description = "Route tables with route to NAT gateway"
 }
 

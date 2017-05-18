@@ -41,7 +41,6 @@ variable "sdx_cidrs" {
 
 variable "internet_gateway_id" {
   description = "An existing VPC Internet Gateway ID"
-  default     = ""
 }
 
 variable "virtual_private_gateway_id" {
@@ -69,6 +68,7 @@ variable "rabbitmq_instance_type" {
 variable "rabbitmq_ips" {
   type        = "list"
   description = "Static IPs of rabbitmq servers (prime,secondary)"
+  default = ["10.30.20.15","10.30.20.16"]
 }
 
 variable "aws_key_pair" {

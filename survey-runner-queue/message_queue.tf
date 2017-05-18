@@ -23,8 +23,8 @@ resource "aws_instance" "rabbitmq" {
   }
 }
 
-resource "template_file" "hosts" {
-  template = "${file("templates/hosts")}"
+data "template_file" "hosts" {
+  template = "${file("${path.module}/templates/hosts")}"
 
   vars = {
     rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
@@ -40,7 +40,7 @@ resource "null_resource" "aws_hosts" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${template_file.hosts.rendered}' > tmp/hosts"
+    command = "echo '${data.template_file.hosts.rendered}' > tmp/hosts"
   }
 
   provisioner "file" {

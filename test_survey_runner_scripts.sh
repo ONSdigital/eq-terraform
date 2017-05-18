@@ -9,7 +9,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 export ACTION=$1
 
 if [ $ACTION != 'apply' ] && [ $ACTION != 'plan' ] && [ $ACTION != 'destroy' ]; then
-    echo "You must provide an action (apply/plan/destroy) e.g. ./survey-runner.sh plan"
+    echo "You must provide an action (apply/plan/destroy) e.g. ./test_survey_runner_scripts.sh plan"
     exit 1
 fi
 
