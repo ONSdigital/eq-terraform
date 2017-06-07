@@ -169,12 +169,43 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   # Survey Runner Application Specific Environment variables
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SECRET_KEY"
+    value     = "${var.application_secret_key}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_URL"
-    value     = "${var.rabbitmq_ip_prime}"
+    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${var.rabbitmq_ip_prime}:5672/%2F"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_URL_SECONDARY"
+    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${var.rabbitmq_ip_failover}:5672/%2F"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_ENCRYPTION"
+    value     = "${var.eq_server_side_storage_encryption}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_TYPE"
+    value     = "${var.eq_server_side_storage_type}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
+    value     = "postgresql://${var.database_user}:${var.database_password}@${var.database_address}:${var.database_port}/${var.database_name}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_RABBITMQ_HOST"
+    value     = "${var.rabbitmq_ip_prime}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_RABBITMQ_HOST_SECONDARY"
     value     = "${var.rabbitmq_ip_failover}"
   }
   setting {
