@@ -34,6 +34,20 @@ module "survey-runner-application" {
   dns_zone_name = "${var.dns_zone_name}"
 }
 
+module "survey-runner-ecs" {
+  source = "github.com/ONSdigital/eq-terraform-ecs"
+  env = "${var.env}"
+  aws_access_key = "${var.aws_access_key}"
+  aws_secret_key = "${var.aws_secret_key}"
+  dns_zone_id = "${var.dns_zone_id}"
+  dns_zone_name = "${var.dns_zone_name}"
+  certificate_arn = "${var.certificate_arn}"
+  vpc_id = "${module.survey-runner-vpc.vpc_id}"
+  public_subnet_ids = "${module.survey-runner-routing.public_subnet_ids}"
+  ecs_application_cidrs = "${var.ecs_application_cidrs}"
+  private_route_table_ids = "${module.survey-runner-routing.private_route_table_ids}"
+}
+
 module "survey-runner-database" {
   source = "./survey-runner-database"
   env = "${var.env}"
@@ -92,4 +106,8 @@ module "survey-runner-vpc" {
 
 output "survey_runner_address" {
   value = "${module.survey-runner-application.survey_runner_elb_address}"
+}
+
+output "survey_runner_launcher_address" {
+  value = "${module.survey-runner-ecs.survey_runner_launcher_address}"
 }

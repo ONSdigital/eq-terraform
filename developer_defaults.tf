@@ -30,10 +30,16 @@ variable "vpc_cidr_block" {
   default = "10.30.20.0/24"
 }
 
-variable "public_cidrs" {
+variable "queue_cidrs" {
   type        = "list"
-  description = "CIDR blocks for public subnets"
-  default = ["10.30.20.144/28", "10.30.20.160/28", "10.30.20.176/28"]
+  description = "CIDR blocks for queue subnets"
+  default = ["10.30.20.0/27"]
+}
+
+variable "ecs_application_cidrs" {
+  type        = "list"
+  description = "CIDR blocks for application subnets"
+  default = ["10.30.20.32/28", "10.30.20.48/28", "10.30.20.64/28"]
 }
 
 variable "database_cidrs" {
@@ -42,16 +48,16 @@ variable "database_cidrs" {
   default = ["10.30.20.96/28","10.30.20.112/28"]
 }
 
+variable "public_cidrs" {
+  type        = "list"
+  description = "CIDR blocks for public subnets"
+  default = ["10.30.20.144/28", "10.30.20.160/28", "10.30.20.176/28"]
+}
+
 variable "application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
   default = ["10.30.20.192/28", "10.30.20.208/28", "10.30.20.224/28"]
-}
-
-variable "queue_cidrs" {
-  type        = "list"
-  description = "CIDR blocks for queue subnets"
-  default = ["10.30.20.0/27"]
 }
 
 variable "sdx_cidrs" {
