@@ -67,7 +67,7 @@ variable "dns_zone_name" {
 # EB Configuration
 variable "aws_elastic_beanstalk_solution_stack_name" {
   description = "Elastic Beanstalk Amazon Linux version"
-  default     = "64bit Amazon Linux 2016.09 v2.3.1 running Python 3.4"
+  default     = "64bit Amazon Linux 2017.03 v2.4.0 running Python 3.4"
 }
 
 variable "eb_instance_type" {
@@ -139,6 +139,16 @@ variable "application_secret_key" {
 variable "dev_mode" {
   description = "Flag to enabled DEV Mode defaulted to False"
   default     = "False"
+}
+
+variable "deployment_policy" {
+  description = "Elastic Beanstalk DeploymentPolicy"
+  default     = "Immutable"
+}
+
+variable "rolling_update_enabled" {
+  description = "Elastic Beanstalk RollingUpdateEnabled"
+  default     = "true"
 }
 
 # Database

@@ -144,3 +144,13 @@ variable "backup_retention_period" {
   description = "How many days database backup to keep"
   default     = 0
 }
+
+variable "eb_deployment_policy" {
+  description = "Elastic Beanstalk DeploymentPolicy"
+  default     = "AllAtOnce"
+}
+
+variable "eb_rolling_update_enabled" {
+  description = "Elastic Beanstalk RollingUpdateEnabled"
+  default     = "false"
+}
