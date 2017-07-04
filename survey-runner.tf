@@ -90,6 +90,7 @@ module "survey-runner-queue" {
   dns_zone_name = "${var.dns_zone_name}"
   aws_key_pair = "${var.aws_key_pair}"
   internet_gateway_id = "${module.survey-runner-vpc.internet_gateway_id}"
+  ebs_snapshot_retention_days = "${var.queue_ebs_snapshot_retention_days}"
 }
 
 module "survey-runner-routing" {

@@ -145,6 +145,11 @@ variable "backup_retention_period" {
   default     = 0
 }
 
+variable "queue_ebs_snapshot_retention_days" {
+  description = "How many days to keep backup of queues"
+  default     = 1
+}
+
 variable "eb_deployment_policy" {
   description = "Elastic Beanstalk DeploymentPolicy"
   default     = "AllAtOnce"
