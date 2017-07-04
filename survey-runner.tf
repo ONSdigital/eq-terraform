@@ -49,6 +49,9 @@ module "survey-runner-ecs" {
   ecs_application_cidrs = "${var.ecs_application_cidrs}"
   private_route_table_ids = "${module.survey-runner-routing.private_route_table_ids}"
   survey_runner_url = "https://${var.env}-surveys.${var.dns_zone_name}"
+  s3_secrets_bucket = "${var.survey_launcher_s3_secrets_bucket}"
+  jwt_signing_key_path = "${var.survey_launcher_jwt_signing_key_path}"
+  jwt_encryption_key_path = "${var.survey_launcher_jwt_encryption_key_path}"
 }
 
 module "survey-runner-database" {

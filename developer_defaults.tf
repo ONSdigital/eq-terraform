@@ -154,3 +154,18 @@ variable "eb_rolling_update_enabled" {
   description = "Elastic Beanstalk RollingUpdateEnabled"
   default     = "false"
 }
+
+variable "survey_launcher_s3_secrets_bucket" {
+  description = "The S3 bucket that contains the secrets"
+  default = ""
+}
+
+variable "survey_launcher_jwt_encryption_key_path" {
+  description = "Path to the JWT Encryption Key (PEM format)"
+  default = "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem"
+}
+
+variable "survey_launcher_jwt_signing_key_path" {
+  description = "Path to the JWT Signing Key (PEM format)"
+  default = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
+}
