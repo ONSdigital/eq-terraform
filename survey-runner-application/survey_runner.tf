@@ -50,13 +50,13 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:command"
     name      = "DeploymentPolicy"
-    value     = "Immutable"
+    value     = "${var.deployment_policy}"
   }
   # Configuration Updates
   setting {
     namespace = "aws:autoscaling:updatepolicy:rollingupdate"
     name      = "RollingUpdateEnabled"
-    value     = "true"
+    value     = "${var.rolling_update_enabled}"
   }
   setting {
     namespace = "aws:autoscaling:updatepolicy:rollingupdate"

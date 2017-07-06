@@ -32,6 +32,8 @@ module "survey-runner-application" {
   rabbitmq_read_password = "${var.rabbitmq_read_password}"
   dns_zone_id = "${var.dns_zone_id}"
   dns_zone_name = "${var.dns_zone_name}"
+  deployment_policy = "${var.eb_deployment_policy}"
+  rolling_update_enabled = "${var.eb_rolling_update_enabled}"
 }
 
 module "survey-runner-ecs" {
@@ -46,6 +48,10 @@ module "survey-runner-ecs" {
   public_subnet_ids = "${module.survey-runner-routing.public_subnet_ids}"
   ecs_application_cidrs = "${var.ecs_application_cidrs}"
   private_route_table_ids = "${module.survey-runner-routing.private_route_table_ids}"
+  survey_runner_url = "https://${var.env}-surveys.${var.dns_zone_name}"
+  s3_secrets_bucket = "${var.survey_launcher_s3_secrets_bucket}"
+  jwt_signing_key_path = "${var.survey_launcher_jwt_signing_key_path}"
+  jwt_encryption_key_path = "${var.survey_launcher_jwt_encryption_key_path}"
 }
 
 module "survey-runner-database" {

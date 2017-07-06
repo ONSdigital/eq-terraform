@@ -1,6 +1,6 @@
 resource "aws_iam_instance_profile" "elasticbeanstalk_survey_runner" {
   name  = "${var.env}_iam_for_elasticbeanstalk_survey_runner"
-  roles = ["${aws_iam_role.elasticbeanstalk_survey_runner.name}"]
+  role  = "${aws_iam_role.elasticbeanstalk_survey_runner.name}"
 }
 
 resource "aws_iam_role" "elasticbeanstalk_survey_runner" {
