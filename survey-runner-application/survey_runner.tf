@@ -74,6 +74,11 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     name      = "ManagedSecurityGroup"
     value     = "${aws_security_group.survey_runner_access.id}"
   }
+  setting {
+    namespace = "aws:elb:loadbalancer"
+    name      = "CrossZone"
+    value     = "true"
+  }
   # this setting allows SSH access to the ec2 instances running elastic beanstalk (note this should be blank in prod)
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
