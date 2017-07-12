@@ -40,7 +40,7 @@ variable "application_cidrs" {
 
 variable "use_internal_elb" {
   description = "Set to true to use an internal load balancer"
-  default     = false
+  default     = true
 }
 
 variable "availability_zones" {
@@ -77,22 +77,22 @@ variable "eb_instance_type" {
 
 variable "eb_min_size" {
   description = "Elastic Beanstalk Minimum number of instances"
-  default     = "2"
+  default     = "3"
 }
 
 variable "eb_max_size" {
   description = "Elastic Beanstalk Maximum number of instances"
-  default     = "2"
+  default     = "24"
 }
 
 variable "wsgi_number_of_processes" {
   description = "The number of daemon processes that should be started for the process group when running WSGI applications"
-  default     = 1
+  default     = 15
 }
 
 variable "wsgi_number_of_threads" {
   description = "The number of threads to be created to handle requests in each daemon process within the process group when running WSGI applications"
-  default     = 15
+  default     = 10
 }
 
 variable "elastic_beanstalk_aws_key_pair" {
@@ -115,30 +115,8 @@ variable "eq_log_level" {
   default     = "INFO"
 }
 
-variable "survey_runner_env" {
-  description = "The name of the survey runner environment, which is set as a environment variable."
-  default     = "development"
-}
-
-variable "eq_server_side_storage_encryption" {
-  default = "True"
-}
-
-variable "eq_server_side_storage_type" {
-  default = "DATABASE"
-}
-
 variable "google_analytics_code" {
   description = "The google analytics UA Code"
-}
-
-variable "application_secret_key" {
-  description = "The Flask secret key for secure cookie storage"
-}
-
-variable "dev_mode" {
-  description = "Flag to enabled DEV Mode defaulted to False"
-  default     = "False"
 }
 
 variable "deployment_policy" {
@@ -162,17 +140,6 @@ variable "database_port" {
 
 variable "database_name" {
   description = "The name of the database"
-  default     = "digitaleqrds"
-}
-
-variable "database_user" {
-  description = "The master username for the database"
-  default     = "digitaleq12345"
-}
-
-variable "database_password" {
-  description = "The password for the master username of the database"
-  default     = "digitaleq12345"
 }
 
 # RabbitMQ
@@ -184,36 +151,7 @@ variable "rabbitmq_ip_failover" {
   description = "Static IP of secondary failover rabbitmq server"
 }
 
-variable "rabbitmq_admin_user" {
-  description = "The admin user to create for rabbitmq"
-}
-
-variable "rabbitmq_admin_password" {
-  description = "The admin user password for rabbitmq"
-}
-
-variable "rabbitmq_read_user" {
-  description = "The 'read-only' user to create for rabbitmq"
-}
-
-variable "rabbitmq_read_password" {
-  description = "The 'read-only' user password for rabbitmq"
-}
-
-variable "rabbitmq_write_user" {
-  description = "The 'write-only' user to create for rabbitmq"
-}
-
-variable "rabbitmq_write_password" {
-  description = "The 'write-only' user password for rabbitmq"
-}
-
 variable "message_queue_name" {
   description = "RabbitMQ submission queue name"
   default     = "submit_q"
-}
-
-variable "message_test_queue_name" {
-  description = "RabbitMQ health check queue name"
-  default     = "test_q"
 }

@@ -12,8 +12,12 @@ module "survey-runner-application" {
   aws_access_key = "${var.aws_access_key}"
   aws_secret_key = "${var.aws_secret_key}"
   vpc_id = "${module.survey-runner-vpc.vpc_id}"
+  use_internal_elb = "${var.use_internal_elb}"
+  eb_instance_type = "${var.eb_instance_type}"
+  eb_min_size = "${var.eb_min_size}"
   database_address = "${module.survey-runner-database.database_address}"
   database_port = "${module.survey-runner-database.database_port}"
+  database_name = "${var.database_name}"
   vpc_cidr_block = "${var.vpc_cidr_block}"
   application_cidrs = "${var.application_cidrs}"
   rabbitmq_ip_prime = "${module.survey-runner-queue.rabbitmq_ip_prime}"
@@ -23,13 +27,6 @@ module "survey-runner-application" {
   ons_access_ips = "${var.ons_access_ips}"
   google_analytics_code = "${var.google_analytics_code}"
   certificate_arn = "${var.certificate_arn}"
-  application_secret_key = "${var.application_secret_key}"
-  rabbitmq_admin_user = "${var.rabbitmq_admin_user}"
-  rabbitmq_admin_password = "${var.rabbitmq_admin_password}"
-  rabbitmq_write_user = "${var.rabbitmq_write_user}"
-  rabbitmq_write_password = "${var.rabbitmq_write_password}"
-  rabbitmq_read_user = "${var.rabbitmq_read_user}"
-  rabbitmq_read_password = "${var.rabbitmq_read_password}"
   dns_zone_id = "${var.dns_zone_id}"
   dns_zone_name = "${var.dns_zone_name}"
   deployment_policy = "${var.eb_deployment_policy}"
@@ -65,6 +62,13 @@ module "survey-runner-database" {
   private_route_table_ids = "${module.survey-runner-routing.private_route_table_ids}"
   multi_az = "${var.multi_az}"
   backup_retention_period = "${var.backup_retention_period}"
+  database_apply_immediately = "${var.database_apply_immediately}"
+  database_instance_class = "${var.database_instance_class}"
+  database_allocated_storage = "${var.database_allocated_storage}"
+  database_free_memory_alert_level = "${var.database_free_memory_alert_level}"
+  database_name = "${var.database_name}"
+  database_user = "${var.database_user}"
+  database_password = "${var.database_password}"
 }
 
 module "survey-runner-queue" {
@@ -80,6 +84,7 @@ module "survey-runner-queue" {
   audit_cidr = "${var.audit_cidr}"
   rsyslogd_server_ip = "${var.rsyslogd_server_ip}"
   logserver_cidr = "${var.logserver_cidr}"
+  rabbitmq_instance_type = "${var.rabbitmq_instance_type}"
   rabbitmq_admin_user = "${var.rabbitmq_admin_user}"
   rabbitmq_admin_password = "${var.rabbitmq_admin_password}"
   rabbitmq_write_user = "${var.rabbitmq_write_user}"
@@ -90,6 +95,7 @@ module "survey-runner-queue" {
   dns_zone_name = "${var.dns_zone_name}"
   aws_key_pair = "${var.aws_key_pair}"
   internet_gateway_id = "${module.survey-runner-vpc.internet_gateway_id}"
+  delete_volume_on_termination = "${var.rabbitmq_delete_volume_on_termination}"
 }
 
 module "survey-runner-routing" {

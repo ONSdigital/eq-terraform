@@ -15,6 +15,7 @@ resource "aws_instance" "rabbitmq" {
   ]
 
   root_block_device {
+    volume_type = "gp2"
     delete_on_termination = "${var.delete_volume_on_termination}"
   }
 

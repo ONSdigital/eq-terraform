@@ -37,12 +37,12 @@ variable "database_cidrs" {
 
 variable "database_allocated_storage" {
   description = "The allocated storage for the database (in GB)"
-  default     = 100
+  default     = 640
 }
 
 variable "database_engine_version" {
   description = "The Postgres database engine version"
-  default     = "9.4.9"
+  default     = "9.4.7"
 }
 
 variable "allow_major_version_upgrade" {
@@ -52,7 +52,7 @@ variable "allow_major_version_upgrade" {
 
 variable "database_instance_class" {
   description = "The size of the DB instance"
-  default     = "db.m1.small"
+  default     = "db.r3.4xlarge"
 }
 
 variable "multi_az" {
@@ -67,17 +67,14 @@ variable "backup_retention_period" {
 
 variable "database_name" {
   description = "The name of the database"
-  default     = "digitaleqrds"
 }
 
 variable "database_user" {
   description = "The master username for the database"
-  default     = "digitaleq12345"
 }
 
 variable "database_password" {
   description = "The password for the master username of the database"
-  default     = "digitaleq12345"
 }
 
 variable "database_apply_immediately" {
