@@ -174,37 +174,6 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   # Survey Runner Application Specific Environment variables
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_SECRET_KEY"
-    value     = "${var.application_secret_key}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_RABBITMQ_URL"
-    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${var.rabbitmq_ip_prime}:5672/%2F"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_RABBITMQ_URL_SECONDARY"
-    value     = "amqp://${var.rabbitmq_write_user}:${var.rabbitmq_write_password}@${var.rabbitmq_ip_failover}:5672/%2F"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_SERVER_SIDE_STORAGE_ENCRYPTION"
-    value     = "${var.eq_server_side_storage_encryption}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_SERVER_SIDE_STORAGE_TYPE"
-    value     = "${var.eq_server_side_storage_type}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_URL"
-    value     = "postgresql://${var.database_user}:${var.database_password}@${var.database_address}:${var.database_port}/${var.database_name}"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_RABBITMQ_HOST"
     value     = "${var.rabbitmq_ip_prime}"
   }
@@ -220,13 +189,18 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_RABBITMQ_TEST_QUEUE_NAME"
-    value     = "${var.message_test_queue_name}"
+    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_HOST"
+    value     = "${var.database_address}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_HOST"
-    value     = "${var.database_address}"
+    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_PORT"
+    value     = "${var.database_port}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SERVER_SIDE_STORAGE_DATABASE_NAME"
+    value     = "${var.database_name}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
@@ -242,11 +216,6 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_UA_ID"
     value     = "${var.google_analytics_code}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "EQ_DEV_MODE"
-    value     = "${var.dev_mode}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:container:python"

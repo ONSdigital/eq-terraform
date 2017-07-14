@@ -44,8 +44,9 @@ variable "internet_gateway_id" {
 }
 
 variable "virtual_private_gateway_id" {
-    description = "An existing Virtual Private Gateway ID"
-    default = []
+  type = "list"
+  description = "An existing Virtual Private Gateway ID"
+  default = []
 }
 
 # DNS
@@ -62,7 +63,7 @@ variable "dns_zone_name" {
 # RabbitMQ
 variable "rabbitmq_instance_type" {
   description = "Rabbit MQ Instance type"
-  default     = "t2.small"
+  default     = "t2.medium"
 }
 
 variable "rabbitmq_ips" {
@@ -73,7 +74,6 @@ variable "rabbitmq_ips" {
 
 variable "aws_key_pair" {
   description = "AWS key pair for queue servers"
-  default     = "pre-prod"
 }
 
 variable "rabbitmq_admin_user" {

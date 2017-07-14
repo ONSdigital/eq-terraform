@@ -16,7 +16,7 @@ You may also need to explicitly tell Ansible to perform non-host key checking:
 
 Make sure you've installed all the roles from eq-messaging
 
- `sudo ansible-galaxy install alexeymedvedchikov.rabbitmq,v0.0.2`
+ `sudo ansible-galaxy install git+https://github.com/alexey-medvedchikov/ansible-rabbitmq.git,3e3531c0a12e2d5c597f2f45d1fdf8e449730574`
 
  `sudo ansible-galaxy install jnv.unattended-upgrades`
 
