@@ -1,5 +1,5 @@
 module "ebs_bckup" {
-  source = "github.com/kgorskowski/terraform/modules//tf_ebs_bckup"
+  source = "source = "github.com/kgorskowski/ebs_bckup?ref=b08b842cac687af3dda4ccfc342bc4c2c0c692e5"
   EC2_INSTANCE_TAG = "${var.env}-RabbitMQ"
   RETENTION_DAYS   = "${var.ebs_snapshot_retention_days}"
   unique_name      = "rabbitmq_ebs_snapshot"
