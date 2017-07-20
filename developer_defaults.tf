@@ -167,6 +167,11 @@ variable "rabbitmq_delete_volume_on_termination" {
   default     = true
 }
 
+variable "queue_ebs_snapshot_retention_days" {
+  description = "How many days to keep backup of queues"
+  default     = 1
+}
+
 // RDS
 variable "database_instance_class" {
   description = "The size of the DB instance"
@@ -211,11 +216,6 @@ variable "multi_az" {
 variable "backup_retention_period" {
   description = "How many days database backup to keep"
   default     = 0
-}
-
-variable "queue_ebs_snapshot_retention_days" {
-  description = "How many days to keep backup of queues"
-  default     = 1
 }
 
 // ECS Launcher
