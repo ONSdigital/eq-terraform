@@ -45,7 +45,7 @@ variable "ecs_application_cidrs" {
 variable "database_cidrs" {
   type        = "list"
   description = "CIDR blocks for database subnets"
-  default = ["10.30.20.96/28","10.30.20.112/28"]
+  default = ["10.30.20.96/28","10.30.20.112/28", "10.30.20.128/28"]
 }
 
 variable "public_cidrs" {
@@ -81,15 +81,26 @@ variable "audit_cidr" {
   default = "10.99.0.4/32"
 }
 
-
+// Alerting
 variable "slack_webhook_path" {
   description = "Slack Webhook path for the alert. Obtained via, https://api.slack.com/incoming-webhooks"
 }
 
 
-variable "application_secret_key" {
-  description = "The Flask secret key for secure cookie storage"
-  default = "you'll never guess it"
+// Survey Runner Application
+variable "eb_instance_type" {
+  description = "Elastic Beanstalk Instance Type"
+  default     = "t2.nano"
+}
+
+variable "eb_min_size" {
+  description = "Elastic Beanstalk Minimum number of instances"
+  default     = "1"
+}
+
+variable "use_internal_elb" {
+  description = "Set to true to use an internal load balancer"
+  default     = false
 }
 
 variable "ons_access_ips" {
@@ -103,6 +114,22 @@ variable "google_analytics_code" {
 
 variable "certificate_arn" {
   description = "ARN of the IAM loaded TLS certificate for public ELB"
+}
+
+variable "eb_deployment_policy" {
+  description = "Elastic Beanstalk DeploymentPolicy"
+  default     = "AllAtOnce"
+}
+
+variable "eb_rolling_update_enabled" {
+  description = "Elastic Beanstalk RollingUpdateEnabled"
+  default     = "false"
+}
+
+// RabbitMQ
+variable "rabbitmq_instance_type" {
+  description = "Rabbit MQ Instance type"
+  default     = "t2.nano"
 }
 
 variable "rabbitmq_admin_user" {
@@ -135,6 +162,47 @@ variable "rabbitmq_read_password" {
   default = "test3"
 }
 
+variable "rabbitmq_delete_volume_on_termination" {
+  description = "Delete RabbitMQ EC2 volumes on termination of EC2 instance."
+  default     = true
+}
+
+// RDS
+variable "database_instance_class" {
+  description = "The size of the DB instance"
+  default     = "db.t2.micro"
+}
+
+variable "database_allocated_storage" {
+  description = "The allocated storage for the database (in GB)"
+  default     = 10
+}
+
+variable "database_free_memory_alert_level" {
+  description = "The level at which to alert about lack of freeable memory (MB)"
+  default     = 128
+}
+
+variable "database_apply_immediately" {
+  description = "Apply changes to the database immediately and not during next maintenance window"
+  default     = true
+}
+
+variable "database_name" {
+  description = "The name of the database"
+  default     = "digitaleqrds"
+}
+
+variable "database_user" {
+  description = "The master username for the database"
+  default     = "digitaleq12345"
+}
+
+variable "database_password" {
+  description = "The password for the master username of the database"
+  default     = "digitaleq12345"
+}
+
 variable "multi_az" {
   description = "Distribute database across multiple availability zones"
   default     = false
@@ -145,6 +213,7 @@ variable "backup_retention_period" {
   default     = 0
 }
 
+<<<<<<< HEAD
 variable "queue_ebs_snapshot_retention_days" {
   description = "How many days to keep backup of queues"
   default     = 1
@@ -160,6 +229,8 @@ variable "eb_rolling_update_enabled" {
   default     = "false"
 }
 
+
+// ECS Launcher
 variable "survey_launcher_s3_secrets_bucket" {
   description = "The S3 bucket that contains the secrets"
   default = ""
