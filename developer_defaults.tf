@@ -167,7 +167,7 @@ variable "rabbitmq_delete_volume_on_termination" {
   default     = true
 }
 
-variable "queue_ebs_snapshot_retention_days" {
+variable "rabbitmq_ebs_snapshot_retention_days" {
   description = "How many days to keep backup of queues"
   default     = 1
 }
