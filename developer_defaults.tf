@@ -213,22 +213,10 @@ variable "backup_retention_period" {
   default     = 0
 }
 
-<<<<<<< HEAD
 variable "queue_ebs_snapshot_retention_days" {
   description = "How many days to keep backup of queues"
   default     = 1
 }
-
-variable "eb_deployment_policy" {
-  description = "Elastic Beanstalk DeploymentPolicy"
-  default     = "AllAtOnce"
-}
-
-variable "eb_rolling_update_enabled" {
-  description = "Elastic Beanstalk RollingUpdateEnabled"
-  default     = "false"
-}
-
 
 // ECS Launcher
 variable "survey_launcher_s3_secrets_bucket" {
