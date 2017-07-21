@@ -167,6 +167,11 @@ variable "rabbitmq_delete_volume_on_termination" {
   default     = true
 }
 
+variable "rabbitmq_ebs_snapshot_retention_days" {
+  description = "How many days to keep backup of queues"
+  default     = 1
+}
+
 // RDS
 variable "database_instance_class" {
   description = "The size of the DB instance"
