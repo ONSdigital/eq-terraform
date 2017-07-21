@@ -24,12 +24,12 @@ variable "vpc_peer_cidr_block" {
 }
 
 variable "public_subnet_ids" {
-  type = "list"
+  type        = "list"
   description = "The IDs of the public subnets for the external ELBs"
 }
 
 variable "private_route_table_ids" {
-  type = "list"
+  type        = "list"
   description = "Route tables with route to NAT gateway"
 }
 
@@ -127,6 +127,11 @@ variable "deployment_policy" {
 variable "rolling_update_enabled" {
   description = "Elastic Beanstalk RollingUpdateEnabled"
   default     = "true"
+}
+
+variable "secrets_file_name" {
+  description = "The filename of the file containing the application secrets"
+  default     = "secrets.yml"
 }
 
 # Database

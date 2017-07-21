@@ -24,61 +24,60 @@ variable "aws_key_pair" {
   description = "AWS key pair for queue servers"
 }
 
-
 variable "vpc_cidr_block" {
   description = "VPC CIDR block"
-  default = "10.30.20.0/24"
+  default     = "10.30.20.0/24"
 }
 
 variable "queue_cidrs" {
   type        = "list"
   description = "CIDR blocks for queue subnets"
-  default = ["10.30.20.0/27"]
+  default     = ["10.30.20.0/27"]
 }
 
 variable "ecs_application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
-  default = ["10.30.20.32/28", "10.30.20.48/28", "10.30.20.64/28"]
+  default     = ["10.30.20.32/28", "10.30.20.48/28", "10.30.20.64/28"]
 }
 
 variable "database_cidrs" {
   type        = "list"
   description = "CIDR blocks for database subnets"
-  default = ["10.30.20.96/28","10.30.20.112/28", "10.30.20.128/28"]
+  default     = ["10.30.20.96/28", "10.30.20.112/28", "10.30.20.128/28"]
 }
 
 variable "public_cidrs" {
   type        = "list"
   description = "CIDR blocks for public subnets"
-  default = ["10.30.20.144/28", "10.30.20.160/28", "10.30.20.176/28"]
+  default     = ["10.30.20.144/28", "10.30.20.160/28", "10.30.20.176/28"]
 }
 
 variable "application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
-  default = ["10.30.20.192/28", "10.30.20.208/28", "10.30.20.224/28"]
+  default     = ["10.30.20.192/28", "10.30.20.208/28", "10.30.20.224/28"]
 }
 
 variable "sdx_cidrs" {
   type        = "list"
   description = "CIDR blocks of the sdx system"
-  default = ["10.99.0.1/32"]
+  default     = ["10.99.0.1/32"]
 }
 
 variable "rsyslogd_server_ip" {
   description = "The IP of the centralised syslog service."
-  default = "10.99.0.2"
+  default     = "10.99.0.2"
 }
 
 variable "logserver_cidr" {
   description = "CIDR block of the centralised logging service"
-  default = "10.99.0.3/32"
+  default     = "10.99.0.3/32"
 }
 
 variable "audit_cidr" {
   description = "CIDR block of the centralised auditing service."
-  default = "10.99.0.4/32"
+  default     = "10.99.0.4/32"
 }
 
 // Alerting
@@ -86,11 +85,26 @@ variable "slack_webhook_path" {
   description = "Slack Webhook path for the alert. Obtained via, https://api.slack.com/incoming-webhooks"
 }
 
+// ECS
+variable "ecs_instance_type" {
+  description = "ECS Instance Type"
+  default     = "t2.micro"
+}
 
-// Survey Runner Application
+variable "ecs_cluster_min_size" {
+  description = "ECS Cluster Minimum number of instances"
+  default     = "1"
+}
+
+variable "ecs_cluster_max_size" {
+  description = "ECS Cluster Maximum number of instances"
+  default     = "3"
+}
+
+// Survey Runner on Elastic Beanstalk
 variable "eb_instance_type" {
   description = "Elastic Beanstalk Instance Type"
-  default     = "t2.nano"
+  default     = "t2.small"
 }
 
 variable "eb_min_size" {
@@ -109,7 +123,7 @@ variable "ons_access_ips" {
 
 variable "google_analytics_code" {
   description = "The google analytics UA Code"
-  default = ""
+  default     = ""
 }
 
 variable "certificate_arn" {
@@ -126,6 +140,32 @@ variable "eb_rolling_update_enabled" {
   default     = "false"
 }
 
+# Survey Runner on ECS
+variable "survey_runner_s3_secrets_bucket" {
+  description = "The S3 bucket that contains the secrets"
+  default     = ""
+}
+
+variable "survey_runner_secrets_file_name" {
+  description = "The filename of the file containing the application secrets"
+  default     = "docker-secrets.yml"
+}
+
+variable "survey_runner_docker_registry" {
+  description = "The docker repository for the Survey Runner image"
+  default     = "onsdigital"
+}
+
+variable "survey_runner_tag" {
+  description = "The tag for the Survey Runner image to run"
+  default     = "latest"
+}
+
+variable "survey_runner_min_tasks" {
+  description = "The minimum number of Survey Runner tasks to run"
+  default     = "1"
+}
+
 // RabbitMQ
 variable "rabbitmq_instance_type" {
   description = "Rabbit MQ Instance type"
@@ -134,32 +174,32 @@ variable "rabbitmq_instance_type" {
 
 variable "rabbitmq_admin_user" {
   description = "The admin user to create for rabbitmq"
-  default = "admin"
+  default     = "admin"
 }
 
 variable "rabbitmq_admin_password" {
   description = "The admin user password for rabbitmq"
-  default = "test1"
+  default     = "test1"
 }
 
 variable "rabbitmq_write_user" {
   description = "The 'write-only' user to create for rabbitmq"
-  default = "writeonly"
+  default     = "digitaleq"
 }
 
 variable "rabbitmq_write_password" {
   description = "The 'write-only' user password for rabbitmq"
-  default = "test2"
+  default     = "digitaleq"
 }
 
 variable "rabbitmq_read_user" {
   description = "The 'read-only' user to create for rabbitmq"
-  default = "readonly"
+  default     = "readonly"
 }
 
 variable "rabbitmq_read_password" {
   description = "The 'read-only' user password for rabbitmq"
-  default = "test3"
+  default     = "test3"
 }
 
 variable "rabbitmq_delete_volume_on_termination" {
@@ -175,7 +215,7 @@ variable "rabbitmq_ebs_snapshot_retention_days" {
 // RDS
 variable "database_instance_class" {
   description = "The size of the DB instance"
-  default     = "db.t2.micro"
+  default     = "db.t2.small"
 }
 
 variable "database_allocated_storage" {
@@ -200,12 +240,12 @@ variable "database_name" {
 
 variable "database_user" {
   description = "The master username for the database"
-  default     = "digitaleq12345"
+  default     = "digitaleq"
 }
 
 variable "database_password" {
   description = "The password for the master username of the database"
-  default     = "digitaleq12345"
+  default     = "digitaleq"
 }
 
 variable "multi_az" {
@@ -221,15 +261,15 @@ variable "backup_retention_period" {
 // ECS Launcher
 variable "survey_launcher_s3_secrets_bucket" {
   description = "The S3 bucket that contains the secrets"
-  default = ""
+  default     = ""
 }
 
 variable "survey_launcher_jwt_encryption_key_path" {
   description = "Path to the JWT Encryption Key (PEM format)"
-  default = "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem"
+  default     = "jwt-test-keys/sdc-user-authentication-encryption-sr-public-key.pem"
 }
 
 variable "survey_launcher_jwt_signing_key_path" {
   description = "Path to the JWT Signing Key (PEM format)"
-  default = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
+  default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
 }
