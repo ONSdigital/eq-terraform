@@ -78,13 +78,13 @@ resource "aws_cloudwatch_metric_alarm" "min_host_count" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "no_database_connections_remaining" {
-  name           = "no_remaining_database_connections"
+  name           = "${var.env}_survey_runner_no_remaining_database_connections"
   pattern        = "\"remaining connection slots are reserved for non-replication superuser connections\""
   log_group_name = "/aws/elasticbeanstalk/${var.env}-prime/var/log/httpd/error_log"
 
   metric_transformation {
-    name      = "no_remaining_database_connections"
-    namespace = "SurveyRunner"
+    name      = "${var.env}_survey_runner_no_remaining_database_connections"
+    namespace = "${var.env}_SurveyRunner"
     value     = "1"
   }
 }
@@ -93,8 +93,8 @@ resource "aws_cloudwatch_metric_alarm" "no_remaining_database_connections" {
   alarm_name = "${var.env}-survey-runner-no_remaining_database_connections"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods = "1"
-  metric_name = "no_remaining_database_connections"
-  namespace = "SurveyRunner"
+  metric_name = "${var.env}_survey_runner_no_remaining_database_connections"
+  namespace = "${var.env}_SurveyRunner"
   period = "60"
   statistic = "Maximum"
   threshold = "1"
