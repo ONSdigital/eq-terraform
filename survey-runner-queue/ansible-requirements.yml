@@ -1,0 +1,5 @@
+- src: https://github.com/alexey-medvedchikov/ansible-rabbitmq.git
+  version: 3e3531c0a12e2d5c597f2f45d1fdf8e449730574
+  name: alexeymedvedchikov.rabbitmq
+- src: jnv.unattended-upgrades
+  version: v1.3.0
