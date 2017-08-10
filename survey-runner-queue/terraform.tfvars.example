@@ -11,7 +11,6 @@ rabbitmq_write_password="test2" # "writeonly" password
 rabbitmq_read_user="readonly" # "readonly" username
 rabbitmq_read_password="test3" # "readonly" password
 
-dns_zone_id="XXXXXXX"
 dns_zone_name="dev.eq.ons.digital"
 
 application_cidrs=["10.30.20.48/28"]

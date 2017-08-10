@@ -32,7 +32,7 @@ data "template_file" "hosts" {
     rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
     rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
     deploy_env   = "${var.env}"
-    deploy_dns   = "${var.dns_zone_name}"
+    deploy_dns   = "${data.aws_route53_zone.dns_zone.name}"
   }
 }
 
@@ -116,7 +116,7 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${var.env}-rabbitmq1.${var.dns_zone_name},${var.env}-rabbitmq2.${var.dns_zone_name}'  --private-key ${var.aws_key_pair}.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"deploy_dns\":\"${var.dns_zone_name}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\", \"rsyslogd_server_IP\":\"${var.rsyslogd_server_ip}\", \"region\":\"${var.aws_default_region}\"}'"
+    command = "ansible-playbook -i '${var.env}-rabbitmq1.${data.aws_route53_zone.dns_zone.name},${var.env}-rabbitmq2.${data.aws_route53_zone.dns_zone.name}'  --private-key ${var.aws_key_pair}.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"deploy_dns\":\"${var.dns_zone_name}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\", \"rsyslogd_server_IP\":\"${var.rsyslogd_server_ip}\", \"region\":\"${var.aws_default_region}\"}'"
   }
 
   provisioner "local-exec" {
@@ -126,8 +126,8 @@ resource "null_resource" "ansible" {
 
 resource "aws_route53_record" "rabbitmq" {
   count   = 2
-  zone_id = "${var.dns_zone_id}"
-  name    = "${var.env}-rabbitmq${count.index + 1}.${var.dns_zone_name}"
+  zone_id = "${data.aws_route53_zone.dns_zone.id}"
+  name    = "${var.env}-rabbitmq${count.index + 1}.${data.aws_route53_zone.dns_zone.name}"
   type    = "A"
   ttl     = "60"
   records = ["${element(aws_instance.rabbitmq.*.public_ip,count.index)}"]

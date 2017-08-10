@@ -15,11 +15,6 @@ fi
 
 vpc_name=${AWS_ENVIRONMENT_NAME}-vpc
 vpc_id=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values=${vpc_name} --query 'Vpcs[*].VpcId'`
-vpc_cidr_block=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values=${AWS_ENVIRONMENT_NAME}-vpc --query 'Vpcs[*].CidrBlock'`
-if [ -z "$vpc_id" ]; then
-    echo "Nothing to ${action}, no vpc exists!"
-    exit 1
-fi
 
 internet_gateway_id=`aws ec2 describe-internet-gateways --output text --filter Name=tag:Name,Values=${AWS_ENVIRONMENT_NAME}-internet-gateway --query 'InternetGateways[*].InternetGatewayId'`
 if [ -z "$internet_gateway_id" ]; then
@@ -34,6 +29,6 @@ else
     virtual_private_gateway_id_value="[\"${virtual_private_gateway_id}\"]"
 fi
 
-terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var "internet_gateway_id=${internet_gateway_id}" -var "virtual_private_gateway_id=${virtual_private_gateway_id_value}"
+terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "internet_gateway_id=${internet_gateway_id}" -var "virtual_private_gateway_id=${virtual_private_gateway_id_value}"
 
 

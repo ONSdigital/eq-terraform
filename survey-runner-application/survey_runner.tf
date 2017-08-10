@@ -328,8 +328,8 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
 
 resource "aws_route53_record" "survey_runner" {
   count   = "${var.use_internal_elb ? 0 : 1}"
-  zone_id = "${var.dns_zone_id}"
-  name    = "${var.env}-surveys.${var.dns_zone_name}"
+  zone_id = "${data.aws_route53_zone.dns_zone.id}"
+  name    = "${var.env}-surveys.${data.aws_route53_zone.dns_zone.name}"
   type    = "CNAME"
   ttl     = "60"
   records = ["${aws_elastic_beanstalk_environment.survey_runner_prime.cname}"]

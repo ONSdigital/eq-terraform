@@ -20,10 +20,6 @@ variable "vpc_id" {
   description = "The survey runner VPC ID"
 }
 
-variable "vpc_cidr_block" {
-  description = "CIDR block of the VPC"
-}
-
 variable "queue_cidrs" {
   type        = "list"
   description = "CIDR blocks for queue subnets"
@@ -50,11 +46,6 @@ variable "virtual_private_gateway_id" {
 }
 
 # DNS
-variable "dns_zone_id" {
-  description = "Amazon Route53 DNS zone identifier"
-  default     = "Z2XIERRF1SJEYP"
-}
-
 variable "dns_zone_name" {
   description = "Amazon Route53 DNS zone name"
   default     = "eq.ons.digital."
