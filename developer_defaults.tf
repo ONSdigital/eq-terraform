@@ -11,10 +11,6 @@ variable "aws_access_key" {
 }
 
 # DNS
-variable "dns_zone_id" {
-  description = "Amazon Route53 DNS zone identifier"
-}
-
 variable "dns_zone_name" {
   description = "Amazon Route53 DNS zone name"
   default     = "dev.eq.ons.digital"

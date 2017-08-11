@@ -14,10 +14,6 @@ variable "vpc_id" {
   description = "The survey runner VPC ID"
 }
 
-variable "vpc_cidr_block" {
-  description = "CIDR block of the VPC"
-}
-
 variable "vpc_peer_cidr_block" {
   description = "The CIDR block of the peered VPC, optional"
   default     = ""
@@ -54,11 +50,6 @@ variable "ons_access_ips" {
 }
 
 # DNS
-variable "dns_zone_id" {
-  description = "Amazon Route53 DNS zone identifier"
-  default     = "Z2XIERRF1SJEYP"
-}
-
 variable "dns_zone_name" {
   description = "Amazon Route53 DNS zone name"
   default     = "eq.ons.digital."

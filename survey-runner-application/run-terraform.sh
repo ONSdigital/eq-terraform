@@ -13,11 +13,6 @@ if [ $action != "apply" ] && [ $action != "plan" ] && [ $action != "destroy" ]; 
 fi
 
 vpc_id=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values=${AWS_ENVIRONMENT_NAME}-vpc --query 'Vpcs[*].VpcId'`
-vpc_cidr_block=`aws ec2 describe-vpcs --output text --filter Name=tag:Name,Values=${AWS_ENVIRONMENT_NAME}-vpc --query 'Vpcs[*].CidrBlock'`
-if [ -z "$vpc_id" ]; then
-    echo "Nothing to ${action}, no vpc exists!"
-    exit 1
-fi
 
 database_address=`aws rds describe-db-instances --db-instance-identifier=${AWS_ENVIRONMENT_NAME}-digitaleqrds --query 'DBInstances[*].Endpoint.Address' --output text`
 database_port=`aws rds describe-db-instances --db-instance-identifier=${AWS_ENVIRONMENT_NAME}-digitaleqrds --query 'DBInstances[*].Endpoint.Port' --output text`
@@ -41,5 +36,5 @@ if [ -z "$private_route_table_ids" ]; then
     exit 1
 fi
 
-terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "vpc_cidr_block=${vpc_cidr_block}" -var "database_address=${database_address}" -var "database_port=${database_port}" -var "database_name=${database_name}" -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
+terraform $action -var "env=${AWS_ENVIRONMENT_NAME}" -var "vpc_id=${vpc_id}" -var "database_address=${database_address}" -var "database_port=${database_port}" -var "database_name=${database_name}" -var "public_subnet_ids=${public_subnet_ids}" -var "private_route_table_ids=${private_route_table_ids}"
 
