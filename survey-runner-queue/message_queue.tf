@@ -7,6 +7,7 @@ resource "aws_instance" "rabbitmq" {
   subnet_id                   = "${aws_subnet.queue.id}"
   private_ip                  = "${var.rabbitmq_ips[count.index]}"
   associate_public_ip_address = true
+  monitoring                  = true
 
   vpc_security_group_ids = ["${aws_security_group.rabbit_required.id}",
     "${aws_security_group.provision-allow-ssh-REMOVE.id}",
@@ -15,12 +16,12 @@ resource "aws_instance" "rabbitmq" {
   ]
 
   root_block_device {
-    volume_type = "gp2"
+    volume_type           = "gp2"
     delete_on_termination = "${var.delete_volume_on_termination}"
   }
 
   tags {
-    Name = "${var.env}-rabbitmq-${count.index + 1}"
+    Name    = "${var.env}-rabbitmq-${count.index + 1}"
     Service = "${var.env}-RabbitMQ"
   }
 }
@@ -29,11 +30,11 @@ data "template_file" "hosts" {
   template = "${file("${path.module}/templates/hosts")}"
 
   vars = {
-    rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
-    rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
+    rabbitmq1_ip   = "${aws_instance.rabbitmq.0.private_ip}"
+    rabbitmq2_ip   = "${aws_instance.rabbitmq.1.private_ip}"
     rabbitmq1_fqdn = "${element(aws_route53_record.rabbitmq.*.fqdn, 1)}"
     rabbitmq2_fqdn = "${element(aws_route53_record.rabbitmq.*.fqdn, 2)}"
-    deploy_env   = "${var.env}"
+    deploy_env     = "${var.env}"
   }
 }
 
