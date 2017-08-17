@@ -31,8 +31,9 @@ data "template_file" "hosts" {
   vars = {
     rabbitmq1_ip = "${aws_instance.rabbitmq.0.private_ip}"
     rabbitmq2_ip = "${aws_instance.rabbitmq.1.private_ip}"
+    rabbitmq1_fqdn = "${element(aws_route53_record.rabbitmq.*.fqdn, 1)}"
+    rabbitmq2_fqdn = "${element(aws_route53_record.rabbitmq.*.fqdn, 2)}"
     deploy_env   = "${var.env}"
-    deploy_dns   = "${data.aws_route53_zone.dns_zone.name}"
   }
 }
 
@@ -116,7 +117,7 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${var.env}-rabbitmq1.${data.aws_route53_zone.dns_zone.name},${var.env}-rabbitmq2.${data.aws_route53_zone.dns_zone.name}'  --private-key ${var.aws_key_pair}.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"deploy_dns\":\"${var.dns_zone_name}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\", \"rsyslogd_server_IP\":\"${var.rsyslogd_server_ip}\", \"region\":\"${var.aws_default_region}\"}'"
+    command = "ansible-playbook -i '${element(aws_route53_record.rabbitmq.*.fqdn, 1)},${element(aws_route53_record.rabbitmq.*.fqdn, 2)}'  --private-key ${var.aws_key_pair}.pem tmp/eq-messaging/ansible/rabbitmq-cluster.yml --extra-vars '{\"deploy_env\":\"${var.env}\",\"deploy_dns\":\"${var.dns_zone_name}\",\"rabbitmq_admin_user\":\"${var.rabbitmq_admin_user}\",\"rabbitmq_admin_password\":\"${var.rabbitmq_admin_password}\",\"rabbitmq_write_user\":\"${var.rabbitmq_write_user}\",\"rabbitmq_write_password\":\"${var.rabbitmq_write_password}\",\"rabbitmq_read_user\":\"${var.rabbitmq_read_user}\",\"rabbitmq_read_password\":\"${var.rabbitmq_read_password}\", \"rsyslogd_server_IP\":\"${var.rsyslogd_server_ip}\", \"region\":\"${var.aws_default_region}\"}'"
   }
 
   provisioner "local-exec" {
