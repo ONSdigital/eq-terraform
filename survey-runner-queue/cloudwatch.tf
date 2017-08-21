@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "rabbitmq_cluster_status" {
   count                     = 2
   alarm_name                = "${var.env}-rabbitmq${count.index + 1}-cluster-alert"
-  evaluation_periods        = "1"
+  evaluation_periods        = "2"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   metric_name               = "${var.env}-rabbitmq${count.index + 1}"
   namespace                 = "RabbitMQClusterStatus"
