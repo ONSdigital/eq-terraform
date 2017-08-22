@@ -42,9 +42,21 @@ Install roles required by [eq-messaging](https://github.com/ONSdigital/eq-messag
 
   - Run `terraform destroy` to destroy your infrastructure environment
 
+## Deploying a Survey Runner Branch
+
+  1. You have to submit a github pull request for your branch
+  1. Wait for the Travis build to pass
+  1. Go to [Docker Hub](https://hub.docker.com/r/onsdigital/eq-survey-runner/tags/)
+  1. Copy your tag (should be your branch name)
+  1. Open `developer_defaults.tf`
+  1. Find the `survey_runner_tag` variable
+  1. Set the default to the docker tag you copied
+  1. Run `terraform plan`
+  1. Run `terraform apply`
+
 ## Alerting
 
-A webhook will need to be created for a new integration via https://api.slack.com/incoming-webhooks. Alternatively, your team may already have a webhook url configured to send messages to your slack.  
+A webhook will need to be created for a new integration via https://api.slack.com/incoming-webhooks. Alternatively, your team may already have a webhook url configured to send messages to your slack.
 
 Create a slack channel with the name `eq-<your-env-name>-alerts`, for example `eq-preprod-alerts`
 
