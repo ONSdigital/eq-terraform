@@ -115,4 +115,11 @@ resource "aws_security_group" "survey_runner_vpn_sdx_access" {
     protocol    = "tcp"
     cidr_blocks = "${var.sdx_cidrs}"
   }
+  # RabbitMQ API - Used for Monitoring
+  ingress {
+    from_port   = 15672
+    to_port     = 15672
+    protocol    = "tcp"
+    cidr_blocks = "${var.sdx_cidrs}"
+  }
 }
