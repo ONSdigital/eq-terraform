@@ -13,3 +13,7 @@ variable "aws_access_key" {
 variable "slack_webhook_path" {
   description = "Slack Webhook path for the alert. Obtained via, https://api.slack.com/incoming-webhooks"
 }
+
+variable "slack_channel" {
+  description = "The slack channel to send alerts to"
+}

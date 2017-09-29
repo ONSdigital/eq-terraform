@@ -11,6 +11,7 @@ module "survey-runner-alerting" {
   aws_access_key     = "${var.aws_access_key}"
   aws_secret_key     = "${var.aws_secret_key}"
   slack_webhook_path = "${var.slack_webhook_path}"
+  slack_channel      = "eq-${var.env}-alerts"
 }
 
 module "survey-runner-on-beanstalk" {
