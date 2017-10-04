@@ -40,18 +40,20 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                  = "github.com/ONSdigital/eq-terraform-ecs"
-  env                     = "${var.env}"
-  aws_access_key          = "${var.aws_access_key}"
-  aws_secret_key          = "${var.aws_secret_key}"
-  ecs_instance_type       = "${var.ecs_instance_type}"
-  certificate_arn         = "${var.certificate_arn}"
-  vpc_id                  = "${module.survey-runner-vpc.vpc_id}"
-  public_subnet_ids       = "${module.survey-runner-routing.public_subnet_ids}"
-  ecs_application_cidrs   = "${var.ecs_application_cidrs}"
-  private_route_table_ids = "${module.survey-runner-routing.private_route_table_ids}"
-  ecs_cluster_min_size    = "${var.ecs_cluster_min_size}"
-  ecs_cluster_max_size    = "${var.ecs_cluster_max_size}"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs"
+  env                      = "${var.env}"
+  aws_access_key           = "${var.aws_access_key}"
+  aws_secret_key           = "${var.aws_secret_key}"
+  ecs_instance_type        = "${var.ecs_instance_type}"
+  certificate_arn          = "${var.certificate_arn}"
+  vpc_id                   = "${module.survey-runner-vpc.vpc_id}"
+  public_subnet_ids        = "${module.survey-runner-routing.public_subnet_ids}"
+  ecs_application_cidrs    = "${var.ecs_application_cidrs}"
+  private_route_table_ids  = "${module.survey-runner-routing.private_route_table_ids}"
+  ecs_cluster_min_size     = "${var.ecs_cluster_min_size}"
+  ecs_cluster_max_size     = "${var.ecs_cluster_max_size}"
+  auto_deploy_updated_tags = "${var.auto_deploy_updated_tags}"
+  ons_access_ips           = ["${split(",", var.ons_access_ips)}"]
 }
 
 module "survey-runner-on-ecs" {

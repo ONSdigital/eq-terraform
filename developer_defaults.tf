@@ -97,6 +97,11 @@ variable "ecs_cluster_max_size" {
   default     = "3"
 }
 
+variable "auto_deploy_updated_tags" {
+  description = "Should updated tags of images be automatically deployed"
+  default     = true
+}
+
 // Survey Runner on Elastic Beanstalk
 variable "eb_instance_type" {
   description = "Elastic Beanstalk Instance Type"
