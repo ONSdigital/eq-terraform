@@ -149,6 +149,17 @@ module "survey-launcher-for-ecs" {
   EOF
 }
 
+module "author" {
+  source                  = "github.com/ONSdigital/eq-author-deploy?ref=initial-deploy"
+  env                     = "${var.env}"
+  aws_access_key          = "${var.aws_access_key}"
+  aws_secret_key          = "${var.aws_secret_key}"
+  dns_zone_name           = "${var.dns_zone_name}"
+  ecs_cluster_name        = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn    = "${module.eq-ecs.aws_alb_listener_arn}"
+  application_cidrs       = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
+}
+
 module "survey-runner-database" {
   source                           = "./survey-runner-database"
   env                              = "${var.env}"
@@ -227,4 +238,8 @@ output "survey_runner_ecs" {
 
 output "survey_launcher_for_ecs" {
   value = "${module.survey-launcher-for-ecs.service_address}"
+}
+
+output "author_address" {
+  value = "${module.author.author_address}"
 }

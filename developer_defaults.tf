@@ -89,7 +89,7 @@ variable "ecs_instance_type" {
 
 variable "ecs_cluster_min_size" {
   description = "ECS Cluster Minimum number of instances"
-  default     = "1"
+  default     = "2"
 }
 
 variable "auto_deploy_updated_tags" {
