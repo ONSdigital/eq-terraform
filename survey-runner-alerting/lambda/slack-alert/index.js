@@ -10,11 +10,11 @@ exports.handler = function(event, context){
 
      var alertState = JSON.parse(event.Records[0].Sns.Message);
 
-     console.log("Sending alert to Slack Channel: #eq-" + process.env.environment_name + "-alerts");
+     console.log("Sending alert to Slack Channel: #" + process.env.slack_channel);
 
      var payload = JSON.stringify(
          {
-            "channel": "#eq-" + process.env.environment_name + "-alerts",
+            "channel": "#" + process.env.slack_channel,
             "attachments": [{   
                 "fallback": alertState.AlarmDescription + ": " + alertState.NewStateReason,
                 "text" : "",
@@ -30,11 +30,11 @@ exports.handler = function(event, context){
     
     var req = https.request(options, function(res) {
         res.on("data", function() {
-            console.log("Successfully sent alert to Slack Channel: #eq-" + process.env.environment_name + "-alerts");
+            console.log("Successfully sent alert to Slack Channel: #" + process.env.slack_channel);
             context.done(null, 'done!');
         });
     }).on('error', function(e) {
-        console.log("Failed sending alert to Slack Channel: #eq-" + process.env.environment_name + "-alerts");
+        console.log("Failed sending alert to Slack Channel: #" + process.env.slack_channel);
         console.error(e);
         context.done('error', e);
     });
