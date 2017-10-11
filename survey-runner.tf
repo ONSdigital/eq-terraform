@@ -38,6 +38,7 @@ module "survey-runner-on-beanstalk" {
   deployment_policy       = "${var.eb_deployment_policy}"
   rolling_update_enabled  = "${var.eb_rolling_update_enabled}"
   secrets_file_name       = "${var.survey_runner_secrets_file_name}"
+  respondent_account_url  = "${var.respondent_account_url}"
 }
 
 module "eq-ecs" {
@@ -75,6 +76,7 @@ module "survey-runner-on-ecs" {
   docker_registry         = "${var.survey_runner_docker_registry}"
   survey_runner_tag       = "${var.survey_runner_tag}"
   secrets_file_name       = "${var.survey_runner_secrets_file_name}"
+  respondent_account_url  = "${var.respondent_account_url}"
 }
 
 module "survey-launcher-for-elastic-beanstalk" {

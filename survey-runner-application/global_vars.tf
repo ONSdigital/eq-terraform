@@ -125,6 +125,11 @@ variable "secrets_file_name" {
   default     = "secrets.yml"
 }
 
+variable "respondent_account_url" {
+  description = "The url for the respondent log in"
+  default     = "https://survey.ons.gov.uk/"
+}
+
 # Database
 variable "database_address" {
   description = "The address of the postgres database"
