@@ -84,17 +84,12 @@ variable "slack_webhook_path" {
 // ECS
 variable "ecs_instance_type" {
   description = "ECS Instance Type"
-  default     = "t2.micro"
+  default     = "t2.medium"
 }
 
 variable "ecs_cluster_min_size" {
   description = "ECS Cluster Minimum number of instances"
   default     = "1"
-}
-
-variable "ecs_cluster_max_size" {
-  description = "ECS Cluster Maximum number of instances"
-  default     = "3"
 }
 
 variable "auto_deploy_updated_tags" {
