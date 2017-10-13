@@ -52,7 +52,6 @@ module "eq-ecs" {
   ecs_application_cidrs    = "${var.ecs_application_cidrs}"
   private_route_table_ids  = "${module.survey-runner-routing.private_route_table_ids}"
   ecs_cluster_min_size     = "${var.ecs_cluster_min_size}"
-  ecs_cluster_max_size     = "${var.ecs_cluster_max_size}"
   auto_deploy_updated_tags = "${var.auto_deploy_updated_tags}"
   ons_access_ips           = ["${split(",", var.ons_access_ips)}"]
 }
