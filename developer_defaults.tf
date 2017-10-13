@@ -284,3 +284,14 @@ variable "survey_launcher_jwt_signing_key_path" {
   description = "Path to the JWT Signing Key (PEM format)"
   default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
 }
+
+// Schema Validator
+variable "schema_validator_registry" {
+  description = "The docker repository for the Schema Validator image to run"
+  default     = "onsdigital"
+}
+
+variable "schema_validator_tag" {
+  description = "The tag for the Schema Validator image to run"
+  default     = "latest"
+}
