@@ -284,3 +284,19 @@ variable "survey_launcher_jwt_signing_key_path" {
   description = "Path to the JWT Signing Key (PEM format)"
   default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
 }
+
+// Author
+variable "author_tag" {
+  description = "The tag for the Author image to run"
+  default     = "latest"
+}
+
+variable "author_api_tag" {
+  description = "The tag for the Author API image to run"
+  default     = "latest"
+}
+
+variable "publisher_tag" {
+  description = "The tag for the Publisher image to run"
+  default     = "latest"
+}

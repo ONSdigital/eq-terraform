@@ -150,7 +150,7 @@ module "survey-launcher-for-ecs" {
 }
 
 module "author" {
-  source                  = "github.com/ONSdigital/eq-author-deploy?ref=initial-deploy"
+  source                  = "github.com/ONSdigital/eq-author-deploy"
   env                     = "${var.env}"
   aws_access_key          = "${var.aws_access_key}"
   aws_secret_key          = "${var.aws_secret_key}"
@@ -158,6 +158,9 @@ module "author" {
   ecs_cluster_name        = "${module.eq-ecs.ecs_cluster_name}"
   aws_alb_listener_arn    = "${module.eq-ecs.aws_alb_listener_arn}"
   application_cidrs       = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
+  author_tag              = "${var.author_tag}"
+  author_api_tag          = "${var.author_api_tag}"
+  publisher_tag           = "${var.publisher_tag}"
 }
 
 module "survey-runner-database" {
