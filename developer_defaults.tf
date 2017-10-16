@@ -255,6 +255,16 @@ variable "backup_retention_period" {
 }
 
 // ECS Launcher
+variable "survey_launcher_registry" {
+  description = "The docker repository for the Survey Launcher image to run"
+  default     = "onsdigital"
+}
+
+variable "survey_launcher_tag" {
+  description = "The tag for the Survey Launcher image to run"
+  default     = "latest"
+}
+
 variable "survey_launcher_s3_secrets_bucket" {
   description = "The S3 bucket that contains the secrets"
   default     = ""
