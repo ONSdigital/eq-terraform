@@ -15,28 +15,28 @@ module "survey-runner-alerting" {
 }
 
 module "survey-runner-on-beanstalk" {
-  source = "./survey-runner-application"
-  env = "${var.env}"
-  aws_access_key = "${var.aws_access_key}"
-  aws_secret_key = "${var.aws_secret_key}"
-  vpc_id = "${module.survey-runner-vpc.vpc_id}"
-  use_internal_elb = "${var.use_internal_elb}"
-  eb_instance_type = "${var.eb_instance_type}"
-  eb_min_size = "${var.eb_min_size}"
-  database_address = "${module.survey-runner-database.database_address}"
-  database_port = "${module.survey-runner-database.database_port}"
-  database_name = "${var.database_name}"
-  application_cidrs = "${var.application_cidrs}"
-  rabbitmq_ip_prime = "${module.survey-runner-queue.rabbitmq_ip_prime}"
-  rabbitmq_ip_failover = "${module.survey-runner-queue.rabbitmq_ip_failover}"
+  source                  = "./survey-runner-application"
+  env                     = "${var.env}"
+  aws_access_key          = "${var.aws_access_key}"
+  aws_secret_key          = "${var.aws_secret_key}"
+  vpc_id                  = "${module.survey-runner-vpc.vpc_id}"
+  use_internal_elb        = "${var.use_internal_elb}"
+  eb_instance_type        = "${var.eb_instance_type}"
+  eb_min_size             = "${var.eb_min_size}"
+  database_address        = "${module.survey-runner-database.database_address}"
+  database_port           = "${module.survey-runner-database.database_port}"
+  database_name           = "${var.database_name}"
+  application_cidrs       = "${var.application_cidrs}"
+  rabbitmq_ip_prime       = "${module.survey-runner-queue.rabbitmq_ip_prime}"
+  rabbitmq_ip_failover    = "${module.survey-runner-queue.rabbitmq_ip_failover}"
   private_route_table_ids = "${module.survey-runner-routing.private_route_table_ids}"
-  public_subnet_ids = "${module.survey-runner-routing.public_subnet_ids}"
-  ons_access_ips = "${var.ons_access_ips}"
-  google_analytics_code = "${var.google_analytics_code}"
-  certificate_arn = "${var.certificate_arn}"
-  dns_zone_name = "${var.dns_zone_name}"
-  deployment_policy = "${var.eb_deployment_policy}"
-  rolling_update_enabled = "${var.eb_rolling_update_enabled}"
+  public_subnet_ids       = "${module.survey-runner-routing.public_subnet_ids}"
+  ons_access_ips          = "${var.ons_access_ips}"
+  google_analytics_code   = "${var.google_analytics_code}"
+  certificate_arn         = "${var.certificate_arn}"
+  dns_zone_name           = "${var.dns_zone_name}"
+  deployment_policy       = "${var.eb_deployment_policy}"
+  rolling_update_enabled  = "${var.eb_rolling_update_enabled}"
   secrets_file_name       = "${var.survey_runner_secrets_file_name}"
 }
 
@@ -78,32 +78,71 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                  = "github.com/ONSdigital/eq-survey-launcher-deploy"
-  env                     = "${var.env}"
-  aws_access_key          = "${var.aws_access_key}"
-  aws_secret_key          = "${var.aws_secret_key}"
-  dns_zone_name           = "${var.dns_zone_name}"
-  ecs_cluster_name        = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn    = "${module.eq-ecs.aws_alb_listener_arn}"
-  survey_runner_url       = "https://${var.env}-surveys.${var.dns_zone_name}"
-  s3_secrets_bucket       = "${var.survey_launcher_s3_secrets_bucket}"
-  jwt_signing_key_path    = "${var.survey_launcher_jwt_signing_key_path}"
-  jwt_encryption_key_path = "${var.survey_launcher_jwt_encryption_key_path}"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy"
+  env                    = "${var.env}"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  listener_rule_priority = 100
+  docker_registry        = "${var.survey_launcher_registry}"
+  container_name         = "go-launch-a-survey"
+  container_port         = 8000
+  container_tag          = "${var.survey_launcher_tag}"
+
+  container_environment_variables = <<EOF
+      {
+        "name": "SURVEY_RUNNER_URL",
+        "value": "https://${var.env}-surveys.${var.dns_zone_name}"
+      },
+      {
+        "name": "JWT_ENCRYPTION_KEY_PATH",
+        "value": "${var.survey_launcher_jwt_encryption_key_path}"
+      },
+      {
+        "name": "JWT_SIGNING_KEY_PATH",
+        "value": "${var.survey_launcher_jwt_signing_key_path}"
+      },
+      {
+        "name": "SECRETS_S3_BUCKET",
+        "value": "${var.survey_launcher_s3_secrets_bucket}"
+      }
+  EOF
 }
 
 module "survey-launcher-for-ecs" {
-  source                  = "github.com/ONSdigital/eq-survey-launcher-deploy"
-  env                     = "${var.env}-new"
-  aws_access_key          = "${var.aws_access_key}"
-  aws_secret_key          = "${var.aws_secret_key}"
-  dns_zone_name           = "${var.dns_zone_name}"
-  ecs_cluster_name        = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn    = "${module.eq-ecs.aws_alb_listener_arn}"
-  survey_runner_url       = "https://${var.env}-new-surveys.${var.dns_zone_name}"
-  s3_secrets_bucket       = "${var.survey_launcher_s3_secrets_bucket}"
-  jwt_signing_key_path    = "${var.survey_launcher_jwt_signing_key_path}"
-  jwt_encryption_key_path = "${var.survey_launcher_jwt_encryption_key_path}"
-  alb_listener_rule_priority_offset = 1
+  source                 = "github.com/ONSdigital/eq-ecs-deploy"
+  env                    = "${var.env}-new"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  listener_rule_priority = 101
+  docker_registry        = "${var.survey_launcher_registry}"
+  container_name         = "go-launch-a-survey"
+  container_port         = 8000
+  container_tag          = "${var.survey_launcher_tag}"
+
+  container_environment_variables = <<EOF
+      {
+        "name": "SURVEY_RUNNER_URL",
+        "value": "https://${var.env}-new-surveys.${var.dns_zone_name}"
+      },
+      {
+        "name": "JWT_ENCRYPTION_KEY_PATH",
+        "value": "${var.survey_launcher_jwt_encryption_key_path}"
+      },
+      {
+        "name": "JWT_SIGNING_KEY_PATH",
+        "value": "${var.survey_launcher_jwt_signing_key_path}"
+      },
+      {
+        "name": "SECRETS_S3_BUCKET",
+        "value": "${var.survey_launcher_s3_secrets_bucket}"
+      }
+  EOF
 }
 
 module "survey-runner-database" {
@@ -175,7 +214,7 @@ output "survey_runner_beanstalk" {
 }
 
 output "survey_launcher_for_beanstalk" {
-  value = "${module.survey-launcher-for-elastic-beanstalk.survey_runner_launcher_address}"
+  value = "${module.survey-launcher-for-elastic-beanstalk.service_address}"
 }
 
 output "survey_runner_ecs" {
@@ -183,5 +222,5 @@ output "survey_runner_ecs" {
 }
 
 output "survey_launcher_for_ecs" {
-  value = "${module.survey-launcher-for-ecs.survey_runner_launcher_address}"
+  value = "${module.survey-launcher-for-ecs.service_address}"
 }
