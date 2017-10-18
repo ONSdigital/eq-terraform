@@ -94,7 +94,7 @@ variable "ecs_cluster_min_size" {
 
 variable "auto_deploy_updated_tags" {
   description = "Should updated tags of images be automatically deployed"
-  default     = true
+  default     = "true"
 }
 
 // Survey Runner on Elastic Beanstalk
