@@ -87,6 +87,7 @@ module "survey-launcher-for-elastic-beanstalk" {
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name           = "surveys-launch"
   listener_rule_priority = 100
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
@@ -121,6 +122,7 @@ module "survey-launcher-for-ecs" {
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name           = "surveys-launch"
   listener_rule_priority = 101
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
