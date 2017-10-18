@@ -162,6 +162,11 @@ variable "survey_runner_min_tasks" {
   default     = "1"
 }
 
+variable "respondent_account_url" {
+  description = "The url for the respondent log in"
+  default     = "https://survey.ons.gov.uk/"
+}
+
 // RabbitMQ
 variable "rabbitmq_instance_type" {
   description = "Rabbit MQ Instance type"
