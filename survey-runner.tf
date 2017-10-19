@@ -161,6 +161,7 @@ module "author" {
   author_tag              = "${var.author_tag}"
   author_api_tag          = "${var.author_api_tag}"
   publisher_tag           = "${var.publisher_tag}"
+  survey_launcher_url     = "${module.survey-launcher-for-ecs.service_address}"
 }
 
 module "survey-runner-database" {
