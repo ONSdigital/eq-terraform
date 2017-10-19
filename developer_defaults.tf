@@ -287,6 +287,11 @@ variable "survey_launcher_jwt_signing_key_path" {
 
 
 // Author
+variable "author_registry" {
+  description = "The docker repository for the author images to run"
+  default     = "onsdigital"
+}
+
 variable "author_tag" {
   description = "The tag for the Author image to run"
   default     = "latest"
