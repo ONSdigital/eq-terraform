@@ -80,7 +80,7 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -115,7 +115,7 @@ module "survey-launcher-for-elastic-beanstalk" {
 }
 
 module "survey-launcher-for-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
   env                    = "${var.env}-new"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -147,6 +147,23 @@ module "survey-launcher-for-ecs" {
         "value": "${var.survey_launcher_s3_secrets_bucket}"
       }
   EOF
+}
+
+module "schema-validator" {
+  source                          = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  env                             = "${var.env}"
+  aws_access_key                  = "${var.aws_access_key}"
+  aws_secret_key                  = "${var.aws_secret_key}"
+  dns_zone_name                   = "${var.dns_zone_name}"
+  ecs_cluster_name                = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn            = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name                    = "schema-validator"
+  listener_rule_priority          = 500
+  docker_registry                 = "${var.schema_validator_registry}"
+  container_name                  = "eq-schema-validator"
+  container_port                  = 5000
+  container_tag                   = "${var.schema_validator_tag}"
+  healthcheck_path                = "/status"
 }
 
 module "survey-runner-database" {
