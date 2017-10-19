@@ -89,7 +89,7 @@ variable "ecs_instance_type" {
 
 variable "ecs_cluster_min_size" {
   description = "ECS Cluster Minimum number of instances"
-  default     = "1"
+  default     = "2"
 }
 
 variable "auto_deploy_updated_tags" {
@@ -283,6 +283,23 @@ variable "survey_launcher_jwt_encryption_key_path" {
 variable "survey_launcher_jwt_signing_key_path" {
   description = "Path to the JWT Signing Key (PEM format)"
   default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
+}
+
+
+// Author
+variable "author_tag" {
+  description = "The tag for the Author image to run"
+  default     = "latest"
+}
+
+variable "author_api_tag" {
+  description = "The tag for the Author API image to run"
+  default     = "latest"
+}
+
+variable "publisher_tag" {
+  description = "The tag for the Publisher image to run"
+  default     = "latest"
 }
 
 // Schema Validator
