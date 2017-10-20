@@ -147,6 +147,11 @@ variable "survey_runner_secrets_file_name" {
   default     = "docker-secrets.yml"
 }
 
+variable "survey_runner_keys_file_name" {
+  description = "The filename of the file containing the application keys"
+  default     = "docker-keys.yml"
+}
+
 variable "survey_runner_docker_registry" {
   description = "The docker repository for the Survey Runner image"
   default     = "onsdigital"

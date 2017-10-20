@@ -42,7 +42,7 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=allow-alb-access-from-ecs"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs"
   env                      = "${var.env}"
   aws_access_key           = "${var.aws_access_key}"
   aws_secret_key           = "${var.aws_secret_key}"
@@ -77,6 +77,7 @@ module "survey-runner-on-ecs" {
   docker_registry         = "${var.survey_runner_docker_registry}"
   survey_runner_tag       = "${var.survey_runner_tag}"
   secrets_file_name       = "${var.survey_runner_secrets_file_name}"
+  keys_file_name          = "${var.survey_runner_keys_file_name}"
   respondent_account_url  = "${var.respondent_account_url}"
 }
 
