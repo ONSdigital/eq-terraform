@@ -77,6 +77,7 @@ module "survey-runner-on-ecs" {
   docker_registry         = "${var.survey_runner_docker_registry}"
   survey_runner_tag       = "${var.survey_runner_tag}"
   secrets_file_name       = "${var.survey_runner_secrets_file_name}"
+  keys_file_name          = "${var.survey_runner_keys_file_name}"
   respondent_account_url  = "${var.respondent_account_url}"
 }
 
