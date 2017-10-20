@@ -42,7 +42,7 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=allow-alb-access-from-ecs"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs"
   env                      = "${var.env}"
   aws_access_key           = "${var.aws_access_key}"
   aws_secret_key           = "${var.aws_secret_key}"
