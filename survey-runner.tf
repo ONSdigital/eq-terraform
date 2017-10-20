@@ -42,7 +42,7 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=allow-alb-access-from-ecs"
   env                      = "${var.env}"
   aws_access_key           = "${var.aws_access_key}"
   aws_secret_key           = "${var.aws_secret_key}"
@@ -55,6 +55,7 @@ module "eq-ecs" {
   ecs_cluster_min_size     = "${var.ecs_cluster_min_size}"
   auto_deploy_updated_tags = "${var.auto_deploy_updated_tags}"
   ons_access_ips           = ["${split(",", var.ons_access_ips)}"]
+  eq_gateway_ips           = ["${module.survey-runner-routing.nat_gateway_ips}"]
 }
 
 module "survey-runner-on-ecs" {
