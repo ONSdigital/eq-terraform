@@ -185,6 +185,22 @@ module "schema-validator" {
   healthcheck_path                = "/status"
 }
 
+module "survey-register" {
+  source                          = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  env                             = "${var.env}"
+  aws_access_key                  = "${var.aws_access_key}"
+  aws_secret_key                  = "${var.aws_secret_key}"
+  dns_zone_name                   = "${var.dns_zone_name}"
+  ecs_cluster_name                = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn            = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name                    = "survey-register"
+  listener_rule_priority          = 600
+  docker_registry                 = "${var.survey_register_registry}"
+  container_name                  = "eq-survey-register"
+  container_port                  = 8080
+  container_tag                   = "${var.survey_register_tag}"
+}
+
 module "survey-runner-database" {
   source                           = "./survey-runner-database"
   env                              = "${var.env}"
