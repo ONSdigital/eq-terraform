@@ -322,3 +322,14 @@ variable "schema_validator_tag" {
   description = "The tag for the Schema Validator image to run"
   default     = "latest"
 }
+
+// Survey Register
+variable "survey_register_registry" {
+  description = "The docker repository for the Survey Register image to run"
+  default     = "onsdigital"
+}
+
+variable "survey_register_tag" {
+  description = "The tag for the Survey Register image to run"
+  default     = "latest"
+}
