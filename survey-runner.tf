@@ -151,38 +151,37 @@ module "survey-launcher-for-ecs" {
   EOF
 }
 
-
 module "author" {
-  source                  = "github.com/ONSdigital/eq-author-deploy"
-  env                     = "${var.env}"
-  aws_access_key          = "${var.aws_access_key}"
-  aws_secret_key          = "${var.aws_secret_key}"
-  dns_zone_name           = "${var.dns_zone_name}"
-  ecs_cluster_name        = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn    = "${module.eq-ecs.aws_alb_listener_arn}"
-  application_cidrs       = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
-  docker_registry         = "${var.author_registry}"
-  author_tag              = "${var.author_tag}"
-  author_api_tag          = "${var.author_api_tag}"
-  publisher_tag           = "${var.publisher_tag}"
-  survey_launcher_url     = "${module.survey-launcher-for-ecs.service_address}"
+  source               = "github.com/ONSdigital/eq-author-deploy"
+  env                  = "${var.env}"
+  aws_access_key       = "${var.aws_access_key}"
+  aws_secret_key       = "${var.aws_secret_key}"
+  dns_zone_name        = "${var.dns_zone_name}"
+  ecs_cluster_name     = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn = "${module.eq-ecs.aws_alb_listener_arn}"
+  application_cidrs    = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
+  docker_registry      = "${var.author_registry}"
+  author_tag           = "${var.author_tag}"
+  author_api_tag       = "${var.author_api_tag}"
+  publisher_tag        = "${var.publisher_tag}"
+  survey_launcher_url  = "${module.survey-launcher-for-ecs.service_address}"
 }
 
 module "schema-validator" {
-  source                          = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
-  env                             = "${var.env}"
-  aws_access_key                  = "${var.aws_access_key}"
-  aws_secret_key                  = "${var.aws_secret_key}"
-  dns_zone_name                   = "${var.dns_zone_name}"
-  ecs_cluster_name                = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn            = "${module.eq-ecs.aws_alb_listener_arn}"
-  service_name                    = "schema-validator"
-  listener_rule_priority          = 500
-  docker_registry                 = "${var.schema_validator_registry}"
-  container_name                  = "eq-schema-validator"
-  container_port                  = 5000
-  container_tag                   = "${var.schema_validator_tag}"
-  healthcheck_path                = "/status"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  env                    = "${var.env}"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name           = "schema-validator"
+  listener_rule_priority = 500
+  docker_registry        = "${var.schema_validator_registry}"
+  container_name         = "eq-schema-validator"
+  container_port         = 5000
+  container_tag          = "${var.schema_validator_tag}"
+  healthcheck_path       = "/status"
 }
 
 module "survey-register" {
@@ -263,6 +262,15 @@ module "survey-runner-vpc" {
   aws_access_key = "${var.aws_access_key}"
   aws_secret_key = "${var.aws_secret_key}"
   vpc_cidr_block = "${var.vpc_cidr_block}"
+}
+
+module "survey-runner-dynamodb" {
+  source                             = "github.com/ONSdigital/eq-terraform-dynamodb"
+  env                                = "${var.env}"
+  aws_access_key                     = "${var.aws_access_key}"
+  aws_secret_key                     = "${var.aws_secret_key}"
+  submitted_responses_read_capacity  = 1
+  submitted_responses_write_capacity = 1
 }
 
 output "survey_runner_beanstalk" {
