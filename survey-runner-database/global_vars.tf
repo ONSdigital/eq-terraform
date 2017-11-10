@@ -52,7 +52,7 @@ variable "allow_major_version_upgrade" {
 
 variable "database_instance_class" {
   description = "The size of the DB instance"
-  default     = "db.r3.4xlarge"
+  default     = "db.r3.xlarge"
 }
 
 variable "multi_az" {
@@ -94,4 +94,8 @@ variable "database_free_storage_alert_level" {
 
 variable "snapshot_identifier" {
   default     = ""
+}
+
+variable "preferred_maintenance_window"{
+  default   = "Tue:02:00-Tue:02:30"
 }
