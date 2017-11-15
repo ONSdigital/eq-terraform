@@ -44,6 +44,7 @@ resource "aws_db_instance" "survey_runner_database" {
   apply_immediately           = "${var.database_apply_immediately}"
   snapshot_identifier         = "${var.snapshot_identifier}"
   skip_final_snapshot         = true
+  maintenance_window          = "${var.preferred_maintenance_window}"
 
   tags {
     Name        = "${var.env}-db-instance"
