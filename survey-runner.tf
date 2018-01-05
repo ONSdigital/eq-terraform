@@ -152,19 +152,23 @@ module "survey-launcher-for-ecs" {
 }
 
 module "author" {
-  source               = "github.com/ONSdigital/eq-author-deploy"
-  env                  = "${var.env}"
-  aws_access_key       = "${var.aws_access_key}"
-  aws_secret_key       = "${var.aws_secret_key}"
-  dns_zone_name        = "${var.dns_zone_name}"
-  ecs_cluster_name     = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn = "${module.eq-ecs.aws_alb_listener_arn}"
-  application_cidrs    = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
-  docker_registry      = "${var.author_registry}"
-  author_tag           = "${var.author_tag}"
-  author_api_tag       = "${var.author_api_tag}"
-  publisher_tag        = "${var.publisher_tag}"
-  survey_launcher_url  = "${module.survey-launcher-for-ecs.service_address}"
+  source                       = "github.com/ONSdigital/eq-author-deploy"
+  env                          = "${var.env}"
+  aws_access_key               = "${var.aws_access_key}"
+  aws_secret_key               = "${var.aws_secret_key}"
+  dns_zone_name                = "${var.dns_zone_name}"
+  ecs_cluster_name             = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn         = "${module.eq-ecs.aws_alb_listener_arn}"
+  application_cidrs            = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
+  docker_registry              = "${var.author_registry}"
+  author_tag                   = "296-auth-investigation"
+  author_api_tag               = "${var.author_api_tag}"
+  publisher_tag                = "${var.publisher_tag}"
+  survey_launcher_url          = "${module.survey-launcher-for-ecs.service_address}"
+  enable_auth                  = "${var.author_enable_auth}"
+  firebase_project_id          = "${var.author_firebase_project_id}"
+  firebase_api_key             = "${var.author_firebase_api_key}"
+  firebase_messaging_sender_id = "${var.author_firebase_messaging_sender_id}"
 }
 
 module "schema-validator" {
@@ -185,19 +189,19 @@ module "schema-validator" {
 }
 
 module "survey-register" {
-  source                          = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
-  env                             = "${var.env}"
-  aws_access_key                  = "${var.aws_access_key}"
-  aws_secret_key                  = "${var.aws_secret_key}"
-  dns_zone_name                   = "${var.dns_zone_name}"
-  ecs_cluster_name                = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn            = "${module.eq-ecs.aws_alb_listener_arn}"
-  service_name                    = "survey-register"
-  listener_rule_priority          = 600
-  docker_registry                 = "${var.survey_register_registry}"
-  container_name                  = "eq-survey-register"
-  container_port                  = 8080
-  container_tag                   = "${var.survey_register_tag}"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  env                    = "${var.env}"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name           = "survey-register"
+  listener_rule_priority = 600
+  docker_registry        = "${var.survey_register_registry}"
+  container_name         = "eq-survey-register"
+  container_port         = 8080
+  container_tag          = "${var.survey_register_tag}"
 }
 
 module "survey-runner-database" {

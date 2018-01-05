@@ -290,7 +290,6 @@ variable "survey_launcher_jwt_signing_key_path" {
   default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
 }
 
-
 // Author
 variable "author_registry" {
   description = "The docker repository for the author images to run"
@@ -310,6 +309,26 @@ variable "author_api_tag" {
 variable "publisher_tag" {
   description = "The tag for the Publisher image to run"
   default     = "latest"
+}
+
+variable "author_enable_auth" {
+  description = "Whether authentication is enabled for Author"
+  default     = "false"
+}
+
+variable "author_firebase_project_id" {
+  description = "The Firebase authentication project id"
+  default     = "FAKE_ID"
+}
+
+variable "author_firebase_api_key" {
+  description = "The Firebase authentication API key"
+  default     = "FAKE_API_KEY"
+}
+
+variable "author_firebase_messaging_sender_id" {
+  description = "The Firebase authentication sender id"
+  default     = "FAKE_SENDER_ID"
 }
 
 // Schema Validator
