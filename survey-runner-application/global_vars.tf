@@ -156,3 +156,7 @@ variable "message_queue_name" {
   description = "RabbitMQ submission queue name"
   default     = "submit_q"
 }
+
+variable "submitted_responses_table_name" {
+  description = "Table name of table used for storing Submitted Responses"
+}
