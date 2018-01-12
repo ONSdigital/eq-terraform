@@ -3,3 +3,7 @@ provider "aws" {
   secret_key = "${var.aws_secret_key}"
   region     = "eu-west-1"
 }
+
+data "aws_region" "current" {
+  current = true
+}
