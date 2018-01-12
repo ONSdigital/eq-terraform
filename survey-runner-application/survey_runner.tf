@@ -4,9 +4,9 @@ resource "aws_elastic_beanstalk_application" "survey_runner" {
 }
 
 resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
-  name                = "${var.env}-prime"
-  application         = "${aws_elastic_beanstalk_application.survey_runner.name}"
-  solution_stack_name = "${var.aws_elastic_beanstalk_solution_stack_name}"
+  name                   = "${var.env}-prime"
+  application            = "${aws_elastic_beanstalk_application.survey_runner.name}"
+  solution_stack_name    = "${var.aws_elastic_beanstalk_solution_stack_name}"
   wait_for_ready_timeout = "20m"
 
   # The configuration settings for this section can be found here
@@ -226,6 +226,11 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "RESPONDENT_ACCOUNT_URL"
     value     = "${var.respondent_account_url}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SUBMITTED_RESPONSES_TABLE_NAME"
+    value     = "${var.submitted_responses_table_name}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:container:python"

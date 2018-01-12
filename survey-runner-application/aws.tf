@@ -6,6 +6,10 @@ provider "aws" {
 
 data "aws_caller_identity" "current" {}
 
+data "aws_region" "current" {
+  current = true
+}
+
 data "aws_route53_zone" "dns_zone" {
-  name         = "${var.dns_zone_name}"
+  name = "${var.dns_zone_name}"
 }
