@@ -163,7 +163,7 @@ module "author" {
   aws_alb_listener_arn         = "${module.eq-ecs.aws_alb_listener_arn}"
   application_cidrs            = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
   docker_registry              = "${var.author_registry}"
-  author_tag                   = "296-auth-investigation"
+  author_tag                   = "${var.author_tag}"
   author_api_tag               = "${var.author_api_tag}"
   publisher_tag                = "${var.publisher_tag}"
   survey_launcher_url          = "${module.survey-launcher-for-ecs.service_address}"
