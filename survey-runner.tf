@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 0.10.0, < 0.11.0"
   backend "s3" {
     bucket = "eq-terraform-state"
     region = "eu-west-1"
