@@ -67,6 +67,7 @@ module "survey-runner-on-ecs" {
   aws_secret_key                 = "${var.aws_secret_key}"
   dns_zone_name                  = "${var.dns_zone_name}"
   ecs_cluster_name               = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn                    = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn           = "${module.eq-ecs.aws_alb_listener_arn}"
   s3_secrets_bucket              = "${var.survey_runner_s3_secrets_bucket}"
   database_host                  = "${module.survey-runner-database.database_address}"
@@ -82,6 +83,7 @@ module "survey-runner-on-ecs" {
   keys_file_name                 = "${var.survey_runner_keys_file_name}"
   respondent_account_url         = "${var.respondent_account_url}"
   submitted_responses_table_name = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
+  slack_alert_sns_arn            = "${module.survey-runner-alerting.slack_alert_sns_arn}"
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
