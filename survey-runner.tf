@@ -296,6 +296,10 @@ output "survey_launcher_for_ecs" {
   value = "${module.survey-launcher-for-ecs.service_address}"
 }
 
+output "survey_validator_for_ecs" {
+  value = "${module.schema-validator.service_address}"
+}
+
 output "author_address" {
   value = "${module.author.author_address}"
 }
