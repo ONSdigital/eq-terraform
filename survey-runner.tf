@@ -172,6 +172,7 @@ module "author" {
   firebase_project_id          = "${var.author_firebase_project_id}"
   firebase_api_key             = "${var.author_firebase_api_key}"
   firebase_messaging_sender_id = "${var.author_firebase_messaging_sender_id}"
+  schema_validator_url         = "${module.schema-validator.service_address}"
 }
 
 module "schema-validator" {
@@ -294,10 +295,6 @@ output "survey_runner_ecs" {
 
 output "survey_launcher_for_ecs" {
   value = "${module.survey-launcher-for-ecs.service_address}"
-}
-
-output "survey_validator_for_ecs" {
-  value = "${module.schema-validator.service_address}"
 }
 
 output "author_address" {
