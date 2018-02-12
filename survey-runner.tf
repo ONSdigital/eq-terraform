@@ -172,6 +172,7 @@ module "author" {
   firebase_project_id          = "${var.author_firebase_project_id}"
   firebase_api_key             = "${var.author_firebase_api_key}"
   firebase_messaging_sender_id = "${var.author_firebase_messaging_sender_id}"
+  schema_validator_url         = "${module.schema-validator.service_address}"
 }
 
 module "schema-validator" {
