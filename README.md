@@ -24,13 +24,29 @@ Install roles required by [eq-messaging](https://github.com/ONSdigital/eq-messag
 
 ## Setting up Terraform
 
-1. Install [Terraform](https://terraform.io) - `brew install terraform`
+1. Install [Terraform Version Manager](https://github.com/kamatama41/tfenv) - `brew install tfenv`
 
-1. Generate an SSH key pair in AWS with a unique name (e.g. your name) and save it to the top level (eq-terraform) directory
+1. Install [Terraform](https://terraform.io) - `tfenv install`
+
+1. Generate an SSH key pair in AWS (Services > EC2 > Key Pairs > Create Key Pair) with a unique name (e.g. your name) and save it to the top level (eq-terraform) directory
 
 1. Restrict access to the key - `chmod 400 mykey.pem`
 
-1. Copy `terraform.tfvars.example` to `terraform.tfvars`. You'll need to change all values to match your requirements, including the AWS credentials you set up previously. Ask another developer for any values you don't know.
+1. Copy `terraform.tfvars.example` to `terraform.tfvars`. 
+
+```
+env="" # your name
+aws_access_key="" # your access key
+aws_secret_key="" # your secret
+aws_key_pair = "" # your name
+
+# ask somebody on the team to send these values to you
+ons_access_ips=""
+certificate_arn=""
+slack_webhook_path=""
+```
+
+1. Run `aws configure`. Add your AWS access key and secret key when prompted for S3. Use "eu-west-1" as your region name. Leave any other values as default.
 
 ## Running Terraform
 
