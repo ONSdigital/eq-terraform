@@ -167,6 +167,11 @@ variable "survey_runner_min_tasks" {
   default     = "1"
 }
 
+variable "survey_runner_static_min_tasks" {
+  description = "The minimum number of Survey Runner Static tasks to run"
+  default     = "1"
+}
+
 variable "respondent_account_url" {
   description = "The url for the respondent log in"
   default     = "https://survey.ons.gov.uk/"
@@ -290,6 +295,26 @@ variable "survey_launcher_jwt_signing_key_path" {
   default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
 }
 
+variable "survey_launcher_for_elastic_beanstalk_min_tasks" {
+  description = "The minimum number of Survey Launcher tasks to run"
+  default     = "1"
+}
+
+variable "survey_launcher_for_ecs_min_tasks" {
+  description = "The minimum number of Survey Launcher tasks to run"
+  default     = "1"
+}
+
+variable "schema_validator_min_tasks" {
+  description = "The minimum number of Schema Validator tasks to run"
+  default     = "1"
+}
+
+variable "survey_register_min_tasks" {
+  description = "The minimum number of Survey Register tasks to run"
+  default     = "1"
+}
+
 // Author
 variable "author_registry" {
   description = "The docker repository for the author images to run"
@@ -329,6 +354,21 @@ variable "author_firebase_api_key" {
 variable "author_firebase_messaging_sender_id" {
   description = "The Firebase authentication sender id"
   default     = "FAKE_SENDER_ID"
+}
+
+variable "author_min_tasks" {
+  description = "The minimum number of Author tasks to run"
+  default     = "1"
+}
+
+variable "author_api_min_tasks" {
+  description = "The minimum number of Author API tasks to run"
+  default     = "1"
+}
+
+variable "publisher_min_tasks" {
+  description = "The minimum number of Publisher tasks to run"
+  default     = "1"
 }
 
 // Schema Validator
