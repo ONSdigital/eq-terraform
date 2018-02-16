@@ -58,6 +58,16 @@ slack_webhook_path=""
 
   - Run `terraform destroy` to destroy your infrastructure environment
 
+## Updating infrastructure with new config
+
+After making changes to your terraform config you can update your environment rather than destroying and recreating:
+
+  - Run `terraform get --update` to import the updated modules to your local .terraform dir
+
+  - Run `terraform plan` to check the output of terraform
+
+  - Run `terraform apply` to apply the changes to your infrastructure environment
+
 ## Deploying a Survey Runner Branch
 
   1. You have to submit a github pull request for your branch
