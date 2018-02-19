@@ -1,7 +1,7 @@
 # Private database subnets
 resource "aws_subnet" "database" {
   count             = "${length(var.database_cidrs)}"
-  vpc_id            = "${var.vpc_id}"
+  vpc_id            = "${aws_vpc.survey_runner.id}"
   cidr_block        = "${var.database_cidrs[count.index]}"
   availability_zone = "${var.availability_zones[count.index]}"
 
@@ -12,9 +12,12 @@ resource "aws_subnet" "database" {
   }
 }
 
-# Associate subnets with route table to NAT gateway
-resource "aws_route_table_association" "private" {
-  count          = "${length(var.database_cidrs)}"
-  subnet_id      = "${element(aws_subnet.database.*.id, count.index)}"
-  route_table_id = "${var.private_route_table_ids[count.index]}"
+resource "aws_db_subnet_group" "eq_rds" {
+  name        = "${var.env}-eq-rds"
+  description = "Database subnet group"
+  subnet_ids  = ["${aws_subnet.database.*.id}"]
+
+  tags {
+    Name = "${var.env}-db-subnet-group"
+  }
 }
