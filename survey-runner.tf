@@ -77,6 +77,7 @@ module "survey-runner-on-ecs" {
   rabbitmq_ip_failover           = "${module.survey-runner-queue.rabbitmq_ip_failover}"
   google_analytics_code          = "${var.google_analytics_code}"
   survey_runner_min_tasks        = "${var.survey_runner_min_tasks}"
+  survey_runner_static_min_tasks = "${var.survey_runner_static_min_tasks}"
   docker_registry                = "${var.survey_runner_docker_registry}"
   survey_runner_tag              = "${var.survey_runner_tag}"
   secrets_file_name              = "${var.survey_runner_secrets_file_name}"
@@ -87,7 +88,7 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -100,6 +101,7 @@ module "survey-launcher-for-elastic-beanstalk" {
   container_name         = "go-launch-a-survey"
   container_port         = 8000
   container_tag          = "${var.survey_launcher_tag}"
+  application_min_tasks  = "${var.survey_launcher_for_elastic_beanstalk_min_tasks}"
 
   container_environment_variables = <<EOF
       {
@@ -122,7 +124,7 @@ module "survey-launcher-for-elastic-beanstalk" {
 }
 
 module "survey-launcher-for-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
   env                    = "${var.env}-new"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -135,6 +137,7 @@ module "survey-launcher-for-ecs" {
   container_name         = "go-launch-a-survey"
   container_port         = 8000
   container_tag          = "${var.survey_launcher_tag}"
+  application_min_tasks  = "${var.survey_launcher_for_ecs_min_tasks}"
 
   container_environment_variables = <<EOF
       {
@@ -175,10 +178,13 @@ module "author" {
   firebase_api_key             = "${var.author_firebase_api_key}"
   firebase_messaging_sender_id = "${var.author_firebase_messaging_sender_id}"
   schema_validator_url         = "${module.schema-validator.service_address}"
+  author_min_tasks             = "${var.author_min_tasks}"
+  author_api_min_tasks         = "${var.author_api_min_tasks}"
+  publisher_min_tasks          = "${var.publisher_min_tasks}"
 }
 
 module "schema-validator" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -192,10 +198,11 @@ module "schema-validator" {
   container_port         = 5000
   container_tag          = "${var.schema_validator_tag}"
   healthcheck_path       = "/status"
+  application_min_tasks  = "${var.schema_validator_min_tasks}"
 }
 
 module "survey-register" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.0.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -208,6 +215,7 @@ module "survey-register" {
   container_name         = "eq-survey-register"
   container_port         = 8080
   container_tag          = "${var.survey_register_tag}"
+  application_min_tasks  = "${var.survey_register_min_tasks}"
 }
 
 module "survey-runner-database" {
