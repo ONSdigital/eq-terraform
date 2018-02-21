@@ -1,5 +1,6 @@
 terraform {
   required_version = ">= 0.10.0, < 0.11.0"
+
   backend "s3" {
     bucket = "eq-terraform-state"
     region = "eu-west-1"
@@ -65,6 +66,7 @@ module "survey-runner-on-ecs" {
   env                            = "${var.env}-new"
   aws_access_key                 = "${var.aws_access_key}"
   aws_secret_key                 = "${var.aws_secret_key}"
+  vpc_id                         = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name                  = "${var.dns_zone_name}"
   ecs_cluster_name               = "${module.eq-ecs.ecs_cluster_name}"
   aws_alb_arn                    = "${module.eq-ecs.aws_alb_arn}"
@@ -88,13 +90,14 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.2.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   service_name           = "surveys-launch"
   listener_rule_priority = 100
   docker_registry        = "${var.survey_launcher_registry}"
@@ -124,13 +127,14 @@ module "survey-launcher-for-elastic-beanstalk" {
 }
 
 module "survey-launcher-for-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.2.0"
   env                    = "${var.env}-new"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   service_name           = "surveys-launch"
   listener_rule_priority = 101
   docker_registry        = "${var.survey_launcher_registry}"
@@ -164,9 +168,10 @@ module "author" {
   env                          = "${var.env}"
   aws_access_key               = "${var.aws_access_key}"
   aws_secret_key               = "${var.aws_secret_key}"
+  vpc_id                       = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name                = "${var.dns_zone_name}"
   ecs_cluster_name             = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn         = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn                  = "${module.eq-ecs.aws_alb_arn}"
   application_cidrs            = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
   docker_registry              = "${var.author_registry}"
   author_tag                   = "${var.author_tag}"
@@ -184,13 +189,14 @@ module "author" {
 }
 
 module "schema-validator" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.2.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   service_name           = "schema-validator"
   listener_rule_priority = 500
   docker_registry        = "${var.schema_validator_registry}"
@@ -202,13 +208,14 @@ module "schema-validator" {
 }
 
 module "survey-register" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.1.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.2.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   service_name           = "survey-register"
   listener_rule_priority = 600
   docker_registry        = "${var.survey_register_registry}"
