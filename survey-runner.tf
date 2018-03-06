@@ -62,31 +62,138 @@ module "eq-ecs" {
 }
 
 module "survey-runner-on-ecs" {
-  source                         = "github.com/ONSdigital/eq-survey-runner-deploy"
-  env                            = "${var.env}-new"
-  aws_access_key                 = "${var.aws_access_key}"
-  aws_secret_key                 = "${var.aws_secret_key}"
-  vpc_id                         = "${module.survey-runner-vpc.vpc_id}"
-  dns_zone_name                  = "${var.dns_zone_name}"
-  ecs_cluster_name               = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn                    = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn           = "${module.eq-ecs.aws_alb_listener_arn}"
-  s3_secrets_bucket              = "${var.survey_runner_s3_secrets_bucket}"
-  database_host                  = "${module.survey-runner-database.database_address}"
-  database_port                  = "${module.survey-runner-database.database_port}"
-  database_name                  = "${var.database_name}"
-  rabbitmq_ip_prime              = "${module.survey-runner-queue.rabbitmq_ip_prime}"
-  rabbitmq_ip_failover           = "${module.survey-runner-queue.rabbitmq_ip_failover}"
-  google_analytics_code          = "${var.google_analytics_code}"
-  survey_runner_min_tasks        = "${var.survey_runner_min_tasks}"
-  survey_runner_static_min_tasks = "${var.survey_runner_static_min_tasks}"
-  docker_registry                = "${var.survey_runner_docker_registry}"
-  survey_runner_tag              = "${var.survey_runner_tag}"
-  secrets_file_name              = "${var.survey_runner_secrets_file_name}"
-  keys_file_name                 = "${var.survey_runner_keys_file_name}"
-  respondent_account_url         = "${var.respondent_account_url}"
-  submitted_responses_table_name = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
-  slack_alert_sns_arn            = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  env                    = "${var.env}-new"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  service_name           = "surveys"
+  listener_rule_priority = 10
+  docker_registry        = "${var.survey_runner_docker_registry}"
+  container_name         = "eq-survey-runner"
+  container_port         = 5000
+  healthcheck_path       = "/status"
+  container_tag          = "${var.survey_runner_tag}"
+  application_min_tasks  = "${var.survey_runner_min_tasks}"
+  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+
+  container_environment_variables = <<EOF
+      {
+        "name": "EQ_RABBITMQ_HOST",
+        "value": "${module.survey-runner-queue.rabbitmq_ip_prime}"
+      },
+      {
+        "name": "EQ_RABBITMQ_HOST_SECONDARY",
+        "value": "${module.survey-runner-queue.rabbitmq_ip_failover}"
+      },
+      {
+        "name": "EQ_RABBITMQ_QUEUE_NAME",
+        "value": "${var.survey_runner_message_queue_name}"
+      },
+      {
+        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_HOST",
+        "value": "${module.survey-runner-database.database_address}"
+      },
+      {
+        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_PORT",
+        "value": "${module.survey-runner-database.database_port}"
+      },
+      {
+        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_NAME",
+        "value": "${var.database_name}"
+      },
+      {
+        "name": "EQ_LOG_LEVEL",
+        "value": "${var.survey_runner_log_level}"
+      },
+      {
+        "name": "EQ_UA_ID",
+        "value": "${var.google_analytics_code}"
+      },
+      {
+        "name": "SECRETS_S3_BUCKET",
+        "value": "${var.survey_runner_s3_secrets_bucket}"
+      },
+      {
+        "name": "EQ_SECRETS_FILE",
+        "value": "${var.survey_runner_secrets_file_name}"
+      },
+      {
+        "name": "EQ_KEYS_FILE",
+        "value": "${var.survey_runner_keys_file_name}"
+      },
+      {
+        "name": "RESPONDENT_ACCOUNT_URL",
+        "value": "${var.respondent_account_url}"
+      },
+      {
+        "name": "EQ_SUBMITTED_RESPONSES_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.submitted_responses_table_name}"
+      },
+      {
+        "name": "EQ_NEW_RELIC_ENABLED",
+        "value": "${var.survey_runner_new_relic_enabled}"
+      },
+      {
+        "name": "NEW_RELIC_APP_NAME",
+        "value": "${var.survey_runner_new_relic_app_name}"
+      },
+      {
+        "name": "NEW_RELIC_LICENSE_KEY",
+        "value": "${var.survey_runner_new_relic_licence_key}"
+      }
+  EOF
+
+  task_has_iam_policy = true
+  task_iam_policy_json = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "s3:ListObjects",
+              "s3:ListBucket",
+              "s3:GetObject"
+          ],
+          "Resource": "arn:aws:s3:::*"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.submitted_responses_table_arn}"
+      }
+  ]
+}
+  EOF
+}
+module "survey-runner-static-on-ecs" {
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  env                    = "${var.env}-new"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  dns_record_name        = "${var.env}-new-surveys.${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  service_name           = "surveys-static"
+  listener_rule_priority = 5
+  docker_registry        = "${var.survey_runner_docker_registry}"
+  container_name         = "eq-survey-runner-static"
+  container_port         = 80
+  container_tag          = "${var.survey_runner_tag}"
+  application_min_tasks  = "${var.survey_runner_min_tasks}"
+  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  alb_listener_path_pattern = "/s/*"
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
@@ -105,7 +212,7 @@ module "survey-launcher-for-elastic-beanstalk" {
   container_name         = "go-launch-a-survey"
   container_port         = 8000
   container_tag          = "${var.survey_launcher_tag}"
-  application_min_tasks  = "${var.survey_launcher_for_elastic_beanstalk_min_tasks}"
+  application_min_tasks  = "${var.survey_launcher_min_tasks}"
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
@@ -139,12 +246,12 @@ module "survey-launcher-for-ecs" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "surveys-launch"
-  listener_rule_priority = 101
+  listener_rule_priority = 15
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
   container_port         = 8000
   container_tag          = "${var.survey_launcher_tag}"
-  application_min_tasks  = "${var.survey_launcher_for_ecs_min_tasks}"
+  application_min_tasks  = "${var.survey_launcher_min_tasks}"
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
@@ -315,7 +422,7 @@ output "survey_launcher_for_beanstalk" {
 }
 
 output "survey_runner_ecs" {
-  value = "${module.survey-runner-on-ecs.survey_runner_address}"
+  value = "${module.survey-runner-on-ecs.service_address}"
 }
 
 output "survey_launcher_for_ecs" {
