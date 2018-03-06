@@ -177,6 +177,32 @@ variable "respondent_account_url" {
   default     = "https://survey.ons.gov.uk/"
 }
 
+variable "survey_runner_message_queue_name" {
+  description = "RabbitMQ submission queue name"
+  default     = "submit_q"
+}
+
+variable "survey_runner_log_level" {
+  description = "The Survey Runner logging level (One of ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])"
+  default     = "INFO"
+}
+
+  # Survey Runner New Relic
+variable "survey_runner_new_relic_enabled" {
+  description = "Enable NewRelic monitoring"
+  default     = "False"
+}
+
+variable "survey_runner_new_relic_app_name" {
+  description = "NewRelic App Name"
+  default     = "Survey Runner"
+}
+
+variable "survey_runner_new_relic_licence_key" {
+  description = "NewRelic Licence Key"
+  default     = ""
+}
+
 // RabbitMQ
 variable "rabbitmq_instance_type" {
   description = "Rabbit MQ Instance type"
@@ -280,6 +306,11 @@ variable "survey_launcher_tag" {
   default     = "latest"
 }
 
+variable "survey_launcher_min_tasks" {
+  description = "The minimum number of Survey Launcher tasks to run"
+  default     = "1"
+}
+
 variable "survey_launcher_s3_secrets_bucket" {
   description = "The S3 bucket that contains the secrets"
   default     = ""
@@ -295,25 +326,6 @@ variable "survey_launcher_jwt_signing_key_path" {
   default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
 }
 
-variable "survey_launcher_for_elastic_beanstalk_min_tasks" {
-  description = "The minimum number of Survey Launcher tasks to run"
-  default     = "1"
-}
-
-variable "survey_launcher_for_ecs_min_tasks" {
-  description = "The minimum number of Survey Launcher tasks to run"
-  default     = "1"
-}
-
-variable "schema_validator_min_tasks" {
-  description = "The minimum number of Schema Validator tasks to run"
-  default     = "1"
-}
-
-variable "survey_register_min_tasks" {
-  description = "The minimum number of Survey Register tasks to run"
-  default     = "1"
-}
 
 // Author
 variable "author_registry" {
@@ -382,6 +394,11 @@ variable "schema_validator_tag" {
   default     = "latest"
 }
 
+variable "schema_validator_min_tasks" {
+  description = "The minimum number of Schema Validator tasks to run"
+  default     = "1"
+}
+
 // Survey Register
 variable "survey_register_registry" {
   description = "The docker repository for the Survey Register image to run"
@@ -391,4 +408,9 @@ variable "survey_register_registry" {
 variable "survey_register_tag" {
   description = "The tag for the Survey Register image to run"
   default     = "latest"
+}
+
+variable "survey_register_min_tasks" {
+  description = "The minimum number of Survey Register tasks to run"
+  default     = "1"
 }
