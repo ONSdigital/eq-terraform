@@ -1,5 +1,5 @@
 resource "aws_security_group" "survey_runner_rds_access" {
-  name        = "${var.env}-rds-access"
+  name        = "${var.rds_security_group_name}"
   description = "Database access from the application subnet"
   vpc_id      = "${var.vpc_id}"
 
@@ -15,19 +15,9 @@ resource "aws_security_group" "survey_runner_rds_access" {
   }
 }
 
-resource "aws_db_subnet_group" "survey_runner_rds" {
-  name        = "${var.env}-eq-rds"
-  description = "Database subnet group"
-  subnet_ids  = ["${aws_subnet.database.*.id}"]
-
-  tags {
-    Name = "${var.env}-db-subnet-group"
-  }
-}
-
 resource "aws_db_instance" "survey_runner_database" {
   allocated_storage           = "${var.database_allocated_storage}"
-  identifier                  = "${var.env}-digitaleqrds"
+  identifier                  = "${var.database_identifier}"
   engine                      = "postgres"
   engine_version              = "${var.database_engine_version}"
   allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
@@ -38,7 +28,7 @@ resource "aws_db_instance" "survey_runner_database" {
   multi_az                    = "${var.multi_az}"
   publicly_accessible         = false
   backup_retention_period     = "${var.backup_retention_period}"
-  db_subnet_group_name        = "${aws_db_subnet_group.survey_runner_rds.name}"
+  db_subnet_group_name        = "${var.db_subnet_group_name}"
   vpc_security_group_ids      = ["${aws_security_group.survey_runner_rds_access.id}"]
   storage_type                = "gp2"
   apply_immediately           = "${var.database_apply_immediately}"

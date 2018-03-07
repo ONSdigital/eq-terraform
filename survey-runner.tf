@@ -175,6 +175,7 @@ module "survey-runner-on-ecs" {
 }
   EOF
 }
+
 module "survey-runner-static-on-ecs" {
   source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
   env                    = "${var.env}-new"
@@ -273,28 +274,130 @@ module "survey-launcher-for-ecs" {
 }
 
 module "author" {
-  source                       = "github.com/ONSdigital/eq-author-deploy"
-  env                          = "${var.env}"
-  aws_access_key               = "${var.aws_access_key}"
-  aws_secret_key               = "${var.aws_secret_key}"
-  vpc_id                       = "${module.survey-runner-vpc.vpc_id}"
-  dns_zone_name                = "${var.dns_zone_name}"
-  ecs_cluster_name             = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn                  = "${module.eq-ecs.aws_alb_arn}"
-  application_cidrs            = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
-  docker_registry              = "${var.author_registry}"
-  author_tag                   = "${var.author_tag}"
-  author_api_tag               = "${var.author_api_tag}"
-  publisher_tag                = "${var.publisher_tag}"
-  survey_launcher_url          = "${module.survey-launcher-for-ecs.service_address}"
-  enable_auth                  = "${var.author_enable_auth}"
-  firebase_project_id          = "${var.author_firebase_project_id}"
-  firebase_api_key             = "${var.author_firebase_api_key}"
-  firebase_messaging_sender_id = "${var.author_firebase_messaging_sender_id}"
-  schema_validator_url         = "${module.schema-validator.service_address}"
-  author_min_tasks             = "${var.author_min_tasks}"
-  author_api_min_tasks         = "${var.author_api_min_tasks}"
-  publisher_min_tasks          = "${var.publisher_min_tasks}"
+  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  env                              = "${var.env}"
+  aws_access_key                   = "${var.aws_access_key}"
+  aws_secret_key                   = "${var.aws_secret_key}"
+  dns_zone_name                    = "${var.dns_zone_name}"
+  ecs_cluster_name                 = "${module.eq-ecs.ecs_cluster_name}"
+  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
+  aws_alb_arn                      = "${module.eq-ecs.aws_alb_arn}"
+  service_name                     = "author"
+  listener_rule_priority           = 102
+  docker_registry                  = "${var.author_registry}"
+  container_name                   = "eq-author"
+  container_port                   = 3000
+  container_tag                    = "${var.author_tag}"
+  healthcheck_path                 = "/status.json"
+  healthcheck_grace_period_seconds = 60
+  slack_alert_sns_arn              = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  application_min_tasks            = "${var.author_min_tasks}"
+  high_cpu_threshold               = 80
+
+  container_environment_variables = <<EOF
+      {
+        "name": "REACT_APP_BASE_NAME",
+        "value": "/eq-author"
+      },
+      {
+        "name": "REACT_APP_USE_MOCK_API",
+        "value": "false"
+      },
+      {
+        "name": "REACT_APP_API_URL",
+        "value": "${module.author-api.service_address}/graphql"
+      },
+      {
+        "name": "REACT_APP_PUBLISHER_URL",
+        "value": "${module.publisher.service_address}/publish"
+      },
+      {
+        "name": "REACT_APP_GO_LAUNCH_A_SURVEY_URL",
+        "value": "${module.survey-launcher-for-ecs.service_address}/quick-launch"
+      },
+      {
+        "name": "REACT_APP_USE_FULLSTORY",
+        "value": "${var.author_use_fullstory}"
+      },
+      {
+        "name": "REACT_APP_USE_SENTRY",
+        "value": "${var.author_use_sentry}"
+      },
+      {
+        "name": "REACT_APP_ENABLE_AUTH",
+        "value": "${var.author_enable_auth}"
+      },
+      {
+        "name": "REACT_APP_FIREBASE_PROJECT_ID",
+        "value": "${var.author_firebase_project_id}"
+      },
+      {
+        "name": "REACT_APP_FIREBASE_API_KEY",
+        "value": "${var.author_firebase_api_key}"
+      },
+      {
+        "name": "REACT_APP_FIREBASE_MESSAGING_SENDER_ID",
+        "value": "${var.author_firebase_messaging_sender_id}"
+      }
+  EOF
+}
+
+module "author-api" {
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  env                    = "${var.env}"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  service_name           = "author-api"
+  listener_rule_priority = 103
+  docker_registry        = "${var.author_registry}"
+  container_name         = "eq-author-api"
+  container_port         = 4000
+  container_tag          = "${var.author_api_tag}"
+  healthcheck_path       = "/status"
+  application_min_tasks  = "${var.author_api_min_tasks}"
+  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+
+  container_environment_variables = <<EOF
+      {
+        "name": "DB_CONNECTION_URI",
+        "value": "postgres://${var.author_database_user}:${var.author_database_password}@${module.author-database.database_address}:${module.author-database.database_port}/${var.author_database_name}"
+      }
+  EOF
+}
+
+module "publisher" {
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  env                    = "${var.env}"
+  aws_access_key         = "${var.aws_access_key}"
+  aws_secret_key         = "${var.aws_secret_key}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  service_name           = "publisher"
+  listener_rule_priority = 104
+  docker_registry        = "${var.author_registry}"
+  container_name         = "eq-publisher"
+  container_port         = 9000
+  container_tag          = "${var.publisher_tag}"
+  healthcheck_path       = "/status"
+  application_min_tasks  = "${var.publisher_min_tasks}"
+  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+
+  container_environment_variables = <<EOF
+      {
+        "name": "EQ_AUTHOR_API_URL",
+        "value": "${module.author-api.service_address}/graphql"
+      },
+      {
+        "name": "EQ_SCHEMA_VALIDATOR_URL",
+        "value": "${module.schema-validator.service_address}/validate"
+      }
+  EOF
 }
 
 module "schema-validator" {
@@ -343,7 +446,6 @@ module "survey-runner-database" {
   aws_secret_key                   = "${var.aws_secret_key}"
   vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
   application_cidrs                = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
-  database_cidrs                   = "${var.database_cidrs}"
   private_route_table_ids          = "${module.survey-runner-routing.private_route_table_ids}"
   multi_az                         = "${var.multi_az}"
   backup_retention_period          = "${var.backup_retention_period}"
@@ -354,6 +456,31 @@ module "survey-runner-database" {
   database_name                    = "${var.database_name}"
   database_user                    = "${var.database_user}"
   database_password                = "${var.database_password}"
+  db_subnet_group_name             = "${module.survey-runner-vpc.database_subnet_group_name}"
+  database_identifier              = "${var.env}-digitaleqrds"
+  rds_security_group_name          = "${var.env}-rds-access"
+}
+
+module "author-database" {
+  source                           = "./survey-runner-database"
+  env                              = "${var.env}"
+  aws_access_key                   = "${var.aws_access_key}"
+  aws_secret_key                   = "${var.aws_secret_key}"
+  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
+  application_cidrs                = "${var.ecs_application_cidrs}"
+  private_route_table_ids          = "${module.survey-runner-routing.private_route_table_ids}"
+  multi_az                         = "${var.multi_az}"
+  backup_retention_period          = "${var.backup_retention_period}"
+  database_apply_immediately       = "${var.database_apply_immediately}"
+  database_instance_class          = "${var.database_instance_class}"
+  database_allocated_storage       = "${var.database_allocated_storage}"
+  database_free_memory_alert_level = "${var.database_free_memory_alert_level}"
+  database_name                    = "${var.author_database_name}"
+  database_user                    = "${var.author_database_user}"
+  database_password                = "${var.author_database_password}"
+  db_subnet_group_name             = "${module.survey-runner-vpc.database_subnet_group_name}"
+  database_identifier              = "${var.env}-authorrds"
+  rds_security_group_name          = "${var.env}-author-rds-access"
 }
 
 module "survey-runner-queue" {
@@ -390,6 +517,8 @@ module "survey-runner-routing" {
   public_cidrs        = "${var.public_cidrs}"
   vpc_id              = "${module.survey-runner-vpc.vpc_id}"
   internet_gateway_id = "${module.survey-runner-vpc.internet_gateway_id}"
+  database_subnet_ids = "${module.survey-runner-vpc.database_subnet_ids}"
+  database_cidrs      = "${var.database_cidrs}"
 }
 
 module "survey-runner-vpc" {
@@ -398,6 +527,7 @@ module "survey-runner-vpc" {
   aws_access_key = "${var.aws_access_key}"
   aws_secret_key = "${var.aws_secret_key}"
   vpc_cidr_block = "${var.vpc_cidr_block}"
+  database_cidrs = "${var.database_cidrs}"
 }
 
 module "survey-runner-dynamodb" {
@@ -426,5 +556,5 @@ output "survey_launcher_for_ecs" {
 }
 
 output "author_address" {
-  value = "${module.author.author_address}"
+  value = "${module.author.service_address}"
 }

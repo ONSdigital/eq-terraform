@@ -5,3 +5,12 @@ output "vpc_id" {
 output "internet_gateway_id" {
   value = "${aws_internet_gateway.igw.id}"
 }
+
+output "database_subnet_ids" {
+  value = ["${aws_subnet.database.*.id}"]
+}
+
+
+output "database_subnet_group_name" {
+  value = "${aws_db_subnet_group.eq_rds.name}"
+}

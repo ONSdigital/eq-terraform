@@ -7,7 +7,6 @@ resource "aws_cloudwatch_metric_alarm" "database_storage_alert" {
   period              = "300"
   statistic           = "Minimum"
   threshold           = "${var.database_free_storage_alert_level * 1024 * 1024 * 1024}"
-  evaluation_periods  = "1"
   alarm_description   = "Alert generated if the DB has less than a ${var.database_free_storage_alert_level}GB of spage left"
   alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
 
@@ -25,7 +24,6 @@ resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
   period              = "300"
   statistic           = "Average"
   threshold           = "80"
-  evaluation_periods  = "1"
   alarm_description   = "Alert generated if the DB is using more than 80% CPU"
   alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
 
@@ -43,7 +41,6 @@ resource "aws_cloudwatch_metric_alarm" "database_free_memory_alert" {
   period              = "300"
   statistic           = "Average"
   threshold           = "${var.database_free_memory_alert_level * 1024 * 1024}"
-  evaluation_periods  = "1"
   alarm_description   = "Alert generated if the DB has less than a ${var.database_free_memory_alert_level}MB of memory left"
   alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
 

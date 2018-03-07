@@ -33,3 +33,10 @@ resource "aws_route" "public_internet_gateway" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${var.internet_gateway_id}"
 }
+
+# Associate subnets with route table to NAT gateway
+resource "aws_route_table_association" "private" {
+  count          = "${length(var.database_cidrs)}"
+  subnet_id      = "${element(var.database_subnet_ids, count.index)}"
+  route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
+}

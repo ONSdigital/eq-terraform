@@ -380,7 +380,31 @@ variable "author_api_min_tasks" {
 
 variable "publisher_min_tasks" {
   description = "The minimum number of Publisher tasks to run"
-  default     = "1"
+  default = "1"
+}
+
+variable "author_use_sentry" {
+  description   = "Use sentry for bug reporting."
+  default       = "true"
+}
+variable "author_use_fullstory" {
+  description   = "Use fullstory for capturing user sessions."
+  default       = "true"
+}
+
+variable "author_database_name" {
+  description = "The name of the author database"
+  default     = "author"
+}
+
+variable "author_database_user" {
+  description = "The name of the author database user"
+  default     = "author"
+}
+
+variable "author_database_password" {
+  description = "The password of the author database user"
+  default     = "digitaleq"
 }
 
 // Schema Validator

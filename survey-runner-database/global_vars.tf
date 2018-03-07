@@ -10,12 +10,6 @@ variable "aws_access_key" {
   description = "Amazon Web Service Access Key"
 }
 
-variable "availability_zones" {
-  type        = "list"
-  description = "The availability zones"
-  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-}
-
 variable "vpc_id" {
   description = "The survey runner VPC ID"
 }
@@ -28,11 +22,6 @@ variable "private_route_table_ids" {
 variable "application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
-}
-
-variable "database_cidrs" {
-  type        = "list"
-  description = "CIDR blocks for database subnets"
 }
 
 variable "database_allocated_storage" {
@@ -96,6 +85,18 @@ variable "snapshot_identifier" {
   default     = ""
 }
 
-variable "preferred_maintenance_window"{
+variable "preferred_maintenance_window" {
   default   = "Tue:02:00-Tue:02:30"
+}
+
+variable "db_subnet_group_name" {
+  description = "The name of the database subnet group."
+}
+
+variable "database_identifier" {
+  description = "An unique identifier for the database."
+}
+
+variable "rds_security_group_name" {
+  description = "The name of the security group for the rds database."
 }
