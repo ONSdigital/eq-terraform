@@ -278,7 +278,7 @@ module "survey-launcher-for-ecs" {
 }
 
 module "author" {
-  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
   env                              = "${var.env}"
   aws_access_key                   = "${var.aws_access_key}"
   aws_secret_key                   = "${var.aws_secret_key}"
@@ -286,6 +286,7 @@ module "author" {
   ecs_cluster_name                 = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
   aws_alb_arn                      = "${module.eq-ecs.aws_alb_arn}"
+  aws_alb_listener_arn             = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name                     = "author"
   listener_rule_priority           = 102
   docker_registry                  = "${var.author_registry}"
@@ -347,7 +348,7 @@ module "author" {
 }
 
 module "author-api" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -355,6 +356,7 @@ module "author-api" {
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "author-api"
   listener_rule_priority = 103
   docker_registry        = "${var.author_registry}"
@@ -374,7 +376,7 @@ module "author-api" {
 }
 
 module "publisher" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.4.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
   env                    = "${var.env}"
   aws_access_key         = "${var.aws_access_key}"
   aws_secret_key         = "${var.aws_secret_key}"
@@ -382,6 +384,7 @@ module "publisher" {
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "publisher"
   listener_rule_priority = 104
   docker_registry        = "${var.author_registry}"
