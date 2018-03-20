@@ -385,11 +385,12 @@ variable "publisher_min_tasks" {
 
 variable "author_use_sentry" {
   description   = "Use sentry for bug reporting."
-  default       = "true"
+  default       = "false"
 }
+
 variable "author_use_fullstory" {
   description   = "Use fullstory for capturing user sessions."
-  default       = "true"
+  default       = "false"
 }
 
 variable "author_database_name" {
