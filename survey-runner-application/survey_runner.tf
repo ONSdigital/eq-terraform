@@ -233,6 +233,21 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
     value     = "${var.submitted_responses_table_name}"
   }
   setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_NEW_RELIC_ENABLED"
+    value     = "${var.new_relic_enabled}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "NEW_RELIC_APP_NAME"
+    value     = "${var.new_relic_app_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "NEW_RELIC_LICENSE_KEY"
+    value     = "${var.new_relic_licence_key}"
+  }
+  setting {
     namespace = "aws:elasticbeanstalk:container:python"
     name      = "NumProcesses"
     value     = "${var.wsgi_number_of_processes}"
