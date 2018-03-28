@@ -42,6 +42,9 @@ module "survey-runner-on-beanstalk" {
   secrets_file_name              = "${var.survey_runner_secrets_file_name}"
   respondent_account_url         = "${var.respondent_account_url}"
   submitted_responses_table_name = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
+  new_relic_enabled              = "${var.survey_runner_new_relic_enabled}"
+  new_relic_app_name             = "${var.env} - ${var.survey_runner_new_relic_app_name} - Beanstalk"
+  new_relic_licence_key          = "${var.survey_runner_new_relic_licence_key}"
 }
 
 module "eq-ecs" {
@@ -140,7 +143,7 @@ module "survey-runner-on-ecs" {
       },
       {
         "name": "NEW_RELIC_APP_NAME",
-        "value": "${var.survey_runner_new_relic_app_name}"
+        "value": "${var.env} - ${var.survey_runner_new_relic_app_name} - ECS"
       },
       {
         "name": "NEW_RELIC_LICENSE_KEY",

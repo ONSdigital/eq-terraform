@@ -160,3 +160,19 @@ variable "message_queue_name" {
 variable "submitted_responses_table_name" {
   description = "Table name of table used for storing Submitted Responses"
 }
+
+# Survey Runner New Relic
+variable "new_relic_enabled" {
+  description = "Enable NewRelic monitoring"
+  default     = "False"
+}
+
+variable "new_relic_app_name" {
+  description = "NewRelic App Name"
+  default     = "Survey Runner"
+}
+
+variable "new_relic_licence_key" {
+  description = "NewRelic Licence Key"
+  default     = ""
+}
