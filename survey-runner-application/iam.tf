@@ -74,6 +74,22 @@ data "aws_iam_policy_document" "elasticbeanstalk_survey_runner" {
 
     "resources" = [
       "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.submitted_responses_table_name}",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.used_jti_claim_table_name}",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.questionnaire_state_table_name}",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.eq_session_table_name}",
+    ]
+  }
+
+  "statement" = {
+    "effect" = "Allow"
+
+    "actions" = [
+      "dynamodb:DeleteItem",
+    ]
+
+    "resources" = [
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.questionnaire_state_table_name}",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.eq_session_table_name}",
     ]
   }
 }

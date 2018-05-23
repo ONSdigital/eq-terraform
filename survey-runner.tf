@@ -42,6 +42,9 @@ module "survey-runner-on-beanstalk" {
   secrets_file_name              = "${var.survey_runner_secrets_file_name}"
   respondent_account_url         = "${var.respondent_account_url}"
   submitted_responses_table_name = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
+  questionnaire_state_table_name = "${module.survey-runner-dynamodb.questionnaire_state_table_name}"
+  eq_session_table_name          = "${module.survey-runner-dynamodb.eq_session_table_name}"
+  used_jti_claim_table_name      = "${module.survey-runner-dynamodb.used_jti_claim_table_name}"
   new_relic_enabled              = "${var.survey_runner_new_relic_enabled}"
   new_relic_app_name             = "${var.env} - ${var.survey_runner_new_relic_app_name} - Beanstalk"
   new_relic_licence_key          = "${var.survey_runner_new_relic_licence_key}"
@@ -85,6 +88,10 @@ module "survey-runner-on-ecs" {
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
+      {
+        "name": "EQ_DYNAMODB_ENABLED",
+        "value": "True"
+      },
       {
         "name": "EQ_RABBITMQ_HOST",
         "value": "${module.survey-runner-queue.rabbitmq_ip_prime}"
@@ -138,6 +145,18 @@ module "survey-runner-on-ecs" {
         "value": "${module.survey-runner-dynamodb.submitted_responses_table_name}"
       },
       {
+        "name": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.questionnaire_state_table_name}"
+      },
+      {
+        "name": "EQ_SESSION_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.eq_session_table_name}"
+      },
+      {
+        "name": "EQ_USED_JTI_CLAIM_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.used_jti_claim_table_name}"
+      },
+      {
         "name": "EQ_NEW_RELIC_ENABLED",
         "value": "${var.survey_runner_new_relic_enabled}"
       },
@@ -174,7 +193,37 @@ module "survey-runner-on-ecs" {
               "dynamodb:GetItem"
           ],
           "Resource": "${module.survey-runner-dynamodb.submitted_responses_table_arn}"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:DeleteItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.questionnaire_state_table_arn}"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:DeleteItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.eq_session_table_arn}"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.used_jti_claim_table_arn}"
       }
+
   ]
 }
   EOF
@@ -543,12 +592,18 @@ module "survey-runner-vpc" {
 }
 
 module "survey-runner-dynamodb" {
-  source                             = "github.com/ONSdigital/eq-terraform-dynamodb"
+  source                             = "github.com/ONSdigital/eq-terraform-dynamodb?ref=dynamo"
   env                                = "${var.env}"
   aws_access_key                     = "${var.aws_access_key}"
   aws_secret_key                     = "${var.aws_secret_key}"
   submitted_responses_read_capacity  = 1
   submitted_responses_write_capacity = 1
+  questionnaire_state_read_capacity  = 1
+  questionnaire_state_write_capacity = 1
+  eq_session_read_capacity  = 1
+  eq_session_write_capacity = 1
+  used_jti_claim_read_capacity  = 1
+  used_jti_claim_write_capacity = 1
 }
 
 output "survey_runner_beanstalk" {
