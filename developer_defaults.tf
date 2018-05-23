@@ -187,7 +187,37 @@ variable "survey_runner_log_level" {
   default     = "INFO"
 }
 
-  # Survey Runner New Relic
+variable "survey_runner_questionnaire_state_dynamo_read" {
+  description = "Whether survey runner should read from DynmoDB for Questionnaire State objects"
+  default     = "True"
+}
+
+variable "survey_runner_questionnaire_state_dynamo_write" {
+  description = "Whether survey runner should write to DynmoDB for Questionnaire State objects"
+  default     = "True"
+}
+
+variable "survey_runner_eq_session_dynamo_read" {
+  description = "Whether survey runner should read from DynmoDB for EQ Session objects"
+  default     = "True"
+}
+
+variable "survey_runner_eq_session_dynamo_write" {
+  description = "Whether survey runner should write to DynmoDB for EQ Session objects"
+  default     = "True"
+}
+
+variable "survey_runner_used_jti_claim_dynamo_read" {
+  description = "Whether survey runner should read from DynmoDB for Used JTI Claim objects"
+  default     = "True"
+}
+
+variable "survey_runner_used_jti_claim_dynamo_write" {
+  description = "Whether survey runner should write to DynmoDB for Used JTI Claim objects"
+  default     = "True"
+}
+
+# Survey Runner New Relic
 variable "survey_runner_new_relic_enabled" {
   description = "Enable NewRelic monitoring"
   default     = "False"
