@@ -161,6 +161,17 @@ variable "submitted_responses_table_name" {
   description = "Table name of table used for storing Submitted Responses"
 }
 
+variable "questionnaire_state_table_name" {
+  description = "Table name of table used for storing questionnaire state"
+}
+
+variable "eq_session_table_name" {
+  description = "Table name of table used for storing user sessions"
+}
+variable "used_jti_claim_table_name" {
+  description = "Table name of table used for storing used JTI claims"
+}
+
 # Survey Runner New Relic
 variable "new_relic_enabled" {
   description = "Enable NewRelic monitoring"

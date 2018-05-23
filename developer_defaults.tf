@@ -159,7 +159,7 @@ variable "survey_runner_docker_registry" {
 
 variable "survey_runner_tag" {
   description = "The tag for the Survey Runner image to run"
-  default     = "latest"
+  default     = "eq-2120-dynamodb-spike"
 }
 
 variable "survey_runner_min_tasks" {
