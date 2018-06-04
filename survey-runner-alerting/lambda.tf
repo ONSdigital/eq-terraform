@@ -16,6 +16,7 @@ resource "aws_lambda_function" "slack_alert" {
     variables = {
       slack_webhook_path = "${var.slack_webhook_path}"
       slack_channel = "${var.slack_channel}"
+      env_name = "${var.env}"
     }
   }
 }
