@@ -1,6 +1,5 @@
 var https = require( 'https' );
 exports.handler = function(event, context){
-    
     var options = {
         hostname: 'hooks.slack.com',
         port: 443,
@@ -8,26 +7,40 @@ exports.handler = function(event, context){
         method: 'POST'
      };
 
-     var alertState = JSON.parse(event.Records[0].Sns.Message);
+     var isSns = !!event.Records;
+     var alertState, preText, fallbackMsg, title, value;
+     if (isSns) {
+         alertState = JSON.parse(event.Records[0].Sns.Message);
+         preText = alertState.AlarmDescription;
+         fallbackMsg = alertState.AlarmDescription + ": " + alertState.NewStateReason,
+         title = alertState.AlarmDescription;
+         value = alertState.NewStateReason;
+     } else {
+         alertState = event.detail.state;
+         preText = process.env.env_var + " " + event['detail-type'];
+         fallbackMsg = process.env.env_var + " " + event['detail-type'] + ": " + event.detail.state + " (" + event.detail['instance-id'] + ")";
+         title = event.detail.state;
+         value = event.detail['instance-id'];
+     }
 
      console.log("Sending alert to Slack Channel: #" + process.env.slack_channel);
 
      var payload = JSON.stringify(
          {
             "channel": "#" + process.env.slack_channel,
-            "attachments": [{   
-                "fallback": alertState.AlarmDescription + ": " + alertState.NewStateReason,
+            "attachments": [{
+                "fallback": fallbackMsg,
                 "text" : "",
-                "pretext" : alertState.AlarmName,
+                "pretext" : preText,
                 "color": "#FF0000",
 	            "fields": [{
-		            "title": alertState.AlarmDescription,
-		            "value": alertState.NewStateReason,
-		            "short": false	
+		            "title": title,
+		            "value": value,
+		            "short": false
 		        }]
             }]
         });
-    
+
     var req = https.request(options, function(res) {
         res.on("data", function() {
             console.log("Successfully sent alert to Slack Channel: #" + process.env.slack_channel);
