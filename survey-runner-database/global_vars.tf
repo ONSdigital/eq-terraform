@@ -14,11 +14,6 @@ variable "vpc_id" {
   description = "The survey runner VPC ID"
 }
 
-variable "private_route_table_ids" {
-  type = "list"
-  description = "Route tables with route to NAT gateway"
-}
-
 variable "application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
