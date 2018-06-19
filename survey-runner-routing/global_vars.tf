@@ -23,11 +23,6 @@ variable "public_cidrs" {
   description = "CIDR blocks for public subnets"
 }
 
-variable "database_cidrs" {
-  type        = "list"
-  description = "CIDR blocks for database subnets"
-}
-
 variable "vpc_peer_connection_id" {
   description = "The conneciton id of the peered VPC, optional"
   default     = ""

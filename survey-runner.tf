@@ -528,7 +528,6 @@ module "survey-runner-routing" {
   vpc_id              = "${module.survey-runner-vpc.vpc_id}"
   internet_gateway_id = "${module.survey-runner-vpc.internet_gateway_id}"
   database_subnet_ids = "${module.survey-runner-vpc.database_subnet_ids}"
-  database_cidrs      = "${var.database_cidrs}"
 }
 
 module "survey-runner-vpc" {
