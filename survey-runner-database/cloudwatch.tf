@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "database_storage_alert" {
-  alarm_name          = "${var.env}-database-storage-alert"
+  alarm_name          = "${aws_db_instance.survey_runner_database.identifier}-database-storage-alert"
   evaluation_periods  = "1"
   comparison_operator = "LessThanOrEqualToThreshold"
   metric_name         = "FreeStorageSpace"
@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "database_storage_alert" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
-  alarm_name          = "${var.env}-database-cpu-alert"
+  alarm_name          = "${aws_db_instance.survey_runner_database.identifier}-database-cpu-alert"
   evaluation_periods  = "1"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   metric_name         = "CPUUtilization"
@@ -33,7 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "database_cpu_alert" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "database_free_memory_alert" {
-  alarm_name          = "${var.env}-database-free-memory-alert"
+  alarm_name          = "${aws_db_instance.survey_runner_database.identifier}-database-free-memory-alert"
   evaluation_periods  = "1"
   comparison_operator = "LessThanOrEqualToThreshold"
   metric_name         = "FreeableMemory"
