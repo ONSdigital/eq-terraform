@@ -36,7 +36,7 @@ resource "aws_route" "public_internet_gateway" {
 
 # Associate subnets with route table to NAT gateway
 resource "aws_route_table_association" "private" {
-  count          = "${length(var.database_cidrs)}"
+  count          = "${length(var.public_cidrs)}"
   subnet_id      = "${element(var.database_subnet_ids, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
