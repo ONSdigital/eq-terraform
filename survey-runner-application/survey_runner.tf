@@ -234,6 +234,51 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_QUESTIONNAIRE_STATE_TABLE_NAME"
+    value     = "${var.questionnaire_state_table_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_QUESTIONNAIRE_STATE_DYNAMO_READ"
+    value     = "${var.questionnaire_state_dynamo_read}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_QUESTIONNAIRE_STATE_DYNAMO_WRITE"
+    value     = "${var.questionnaire_state_dynamo_read}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SESSION_TABLE_NAME"
+    value     = "${var.eq_session_table_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SESSION_DYNAMO_READ"
+    value     = "${var.eq_session_dynamo_read}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_SESSION_DYNAMO_WRITE"
+    value     = "${var.eq_session_dynamo_write}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_USED_JTI_CLAIM_TABLE_NAME"
+    value     = "${var.used_jti_claim_table_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_USED_JTI_CLAIM_DYNAMO_READ"
+    value     = "${var.used_jti_claim_dynamo_read}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "EQ_USED_JTI_CLAIM_DYNAMO_WRITE"
+    value     = "${var.used_jti_claim_dynamo_write}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_NEW_RELIC_ENABLED"
     value     = "${var.new_relic_enabled}"
   }

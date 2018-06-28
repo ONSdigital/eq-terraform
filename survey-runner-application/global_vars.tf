@@ -161,6 +161,48 @@ variable "submitted_responses_table_name" {
   description = "Table name of table used for storing Submitted Responses"
 }
 
+variable "questionnaire_state_table_name" {
+  description = "Table name of table used for storing questionnaire state"
+}
+
+variable "questionnaire_state_dynamo_read" {
+  description = "Whether survey runner should read from DynmoDB for Questionnaire State objects"
+  default     = "False"
+}
+
+variable "questionnaire_state_dynamo_write" {
+  description = "Whether survey runner should write to DynmoDB for Questionnaire State objects"
+  default     = "False"
+}
+
+variable "eq_session_table_name" {
+  description = "Table name of table used for storing user sessions"
+}
+
+variable "eq_session_dynamo_read" {
+  description = "Whether survey runner should read from DynmoDB for EQ Session objects"
+  default     = "False"
+}
+
+variable "eq_session_dynamo_write" {
+  description = "Whether survey runner should write to DynmoDB for EQ Session objects"
+  default     = "False"
+}
+
+variable "used_jti_claim_table_name" {
+  description = "Table name of table used for storing used JTI claims"
+}
+
+variable "used_jti_claim_dynamo_read" {
+  description = "Whether survey runner should read from DynmoDB for Used JTI Claim objects"
+  default     = "False"
+}
+
+variable "used_jti_claim_dynamo_write" {
+  description = "Whether survey runner should write to DynmoDB for Used JTI Claim objects"
+  default     = "False"
+}
+
 # Survey Runner New Relic
 variable "new_relic_enabled" {
   description = "Enable NewRelic monitoring"

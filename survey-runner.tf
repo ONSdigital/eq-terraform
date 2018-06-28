@@ -17,34 +17,43 @@ module "survey-runner-alerting" {
 }
 
 module "survey-runner-on-beanstalk" {
-  source                         = "./survey-runner-application"
-  env                            = "${var.env}"
-  aws_access_key                 = "${var.aws_access_key}"
-  aws_secret_key                 = "${var.aws_secret_key}"
-  vpc_id                         = "${module.survey-runner-vpc.vpc_id}"
-  use_internal_elb               = "${var.use_internal_elb}"
-  eb_instance_type               = "${var.eb_instance_type}"
-  eb_min_size                    = "${var.eb_min_size}"
-  database_address               = "${module.survey-runner-database.database_address}"
-  database_port                  = "${module.survey-runner-database.database_port}"
-  database_name                  = "${var.database_name}"
-  application_cidrs              = "${var.application_cidrs}"
-  rabbitmq_ip_prime              = "${module.survey-runner-queue.rabbitmq_ip_prime}"
-  rabbitmq_ip_failover           = "${module.survey-runner-queue.rabbitmq_ip_failover}"
-  private_route_table_ids        = "${module.survey-runner-routing.private_route_table_ids}"
-  public_subnet_ids              = "${module.survey-runner-routing.public_subnet_ids}"
-  ons_access_ips                 = "${var.ons_access_ips}"
-  google_analytics_code          = "${var.google_analytics_code}"
-  certificate_arn                = "${var.certificate_arn}"
-  dns_zone_name                  = "${var.dns_zone_name}"
-  deployment_policy              = "${var.eb_deployment_policy}"
-  rolling_update_enabled         = "${var.eb_rolling_update_enabled}"
-  secrets_file_name              = "${var.survey_runner_secrets_file_name}"
-  respondent_account_url         = "${var.respondent_account_url}"
-  submitted_responses_table_name = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
-  new_relic_enabled              = "${var.survey_runner_new_relic_enabled}"
-  new_relic_app_name             = "${var.env} - ${var.survey_runner_new_relic_app_name} - Beanstalk"
-  new_relic_licence_key          = "${var.survey_runner_new_relic_licence_key}"
+  source                           = "./survey-runner-application"
+  env                              = "${var.env}"
+  aws_access_key                   = "${var.aws_access_key}"
+  aws_secret_key                   = "${var.aws_secret_key}"
+  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
+  use_internal_elb                 = "${var.use_internal_elb}"
+  eb_instance_type                 = "${var.eb_instance_type}"
+  eb_min_size                      = "${var.eb_min_size}"
+  database_address                 = "${module.survey-runner-database.database_address}"
+  database_port                    = "${module.survey-runner-database.database_port}"
+  database_name                    = "${var.database_name}"
+  application_cidrs                = "${var.application_cidrs}"
+  rabbitmq_ip_prime                = "${module.survey-runner-queue.rabbitmq_ip_prime}"
+  rabbitmq_ip_failover             = "${module.survey-runner-queue.rabbitmq_ip_failover}"
+  private_route_table_ids          = "${module.survey-runner-routing.private_route_table_ids}"
+  public_subnet_ids                = "${module.survey-runner-routing.public_subnet_ids}"
+  ons_access_ips                   = "${var.ons_access_ips}"
+  google_analytics_code            = "${var.google_analytics_code}"
+  certificate_arn                  = "${var.certificate_arn}"
+  dns_zone_name                    = "${var.dns_zone_name}"
+  deployment_policy                = "${var.eb_deployment_policy}"
+  rolling_update_enabled           = "${var.eb_rolling_update_enabled}"
+  secrets_file_name                = "${var.survey_runner_secrets_file_name}"
+  respondent_account_url           = "${var.respondent_account_url}"
+  submitted_responses_table_name   = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
+  questionnaire_state_table_name   = "${module.survey-runner-dynamodb.questionnaire_state_table_name}"
+  questionnaire_state_dynamo_read  = "${var.survey_runner_questionnaire_state_dynamo_read}"
+  questionnaire_state_dynamo_write = "${var.survey_runner_questionnaire_state_dynamo_write}"
+  eq_session_table_name            = "${module.survey-runner-dynamodb.eq_session_table_name}"
+  eq_session_dynamo_read           = "${var.survey_runner_eq_session_dynamo_read}"
+  eq_session_dynamo_write          = "${var.survey_runner_eq_session_dynamo_write}"
+  used_jti_claim_table_name        = "${module.survey-runner-dynamodb.used_jti_claim_table_name}"
+  used_jti_claim_dynamo_read       = "${var.survey_runner_used_jti_claim_dynamo_read}"
+  used_jti_claim_dynamo_write      = "${var.survey_runner_used_jti_claim_dynamo_write}"
+  new_relic_enabled                = "${var.survey_runner_new_relic_enabled}"
+  new_relic_app_name               = "${var.env} - ${var.survey_runner_new_relic_app_name} - Beanstalk"
+  new_relic_licence_key            = "${var.survey_runner_new_relic_licence_key}"
 }
 
 module "eq-ecs" {
@@ -138,6 +147,42 @@ module "survey-runner-on-ecs" {
         "value": "${module.survey-runner-dynamodb.submitted_responses_table_name}"
       },
       {
+        "name": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.questionnaire_state_table_name}"
+      },
+      {
+        "name": "EQ_QUESTIONNAIRE_STATE_DYNAMO_READ",
+        "value": "${var.survey_runner_questionnaire_state_dynamo_read}"
+      },
+      {
+        "name": "EQ_QUESTIONNAIRE_STATE_DYNAMO_WRITE",
+        "value": "${var.survey_runner_questionnaire_state_dynamo_write}"
+      },
+      {
+        "name": "EQ_SESSION_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.eq_session_table_name}"
+      },
+      {
+        "name": "EQ_SESSION_DYNAMO_READ",
+        "value": "${var.survey_runner_eq_session_dynamo_read}"
+      },
+      {
+        "name": "EQ_SESSION_DYNAMO_WRITE",
+        "value": "${var.survey_runner_eq_session_dynamo_write}"
+      },
+      {
+        "name": "EQ_USED_JTI_CLAIM_TABLE_NAME",
+        "value": "${module.survey-runner-dynamodb.used_jti_claim_table_name}"
+      },
+      {
+        "name": "EQ_USED_JTI_CLAIM_DYNAMO_READ",
+        "value": "${var.survey_runner_used_jti_claim_dynamo_read}"
+      },
+      {
+        "name": "EQ_USED_JTI_CLAIM_DYNAMO_WRITE",
+        "value": "${var.survey_runner_used_jti_claim_dynamo_write}"
+      },
+      {
         "name": "EQ_NEW_RELIC_ENABLED",
         "value": "${var.survey_runner_new_relic_enabled}"
       },
@@ -174,7 +219,36 @@ module "survey-runner-on-ecs" {
               "dynamodb:GetItem"
           ],
           "Resource": "${module.survey-runner-dynamodb.submitted_responses_table_arn}"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:DeleteItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.questionnaire_state_table_arn}"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:DeleteItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.eq_session_table_arn}"
+      },
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem"
+          ],
+          "Resource": "${module.survey-runner-dynamodb.used_jti_claim_table_arn}"
       }
+
   ]
 }
   EOF
@@ -540,12 +614,27 @@ module "survey-runner-vpc" {
 }
 
 module "survey-runner-dynamodb" {
-  source                             = "github.com/ONSdigital/eq-terraform-dynamodb"
-  env                                = "${var.env}"
-  aws_access_key                     = "${var.aws_access_key}"
-  aws_secret_key                     = "${var.aws_secret_key}"
-  submitted_responses_read_capacity  = 1
-  submitted_responses_write_capacity = 1
+  source                                 = "github.com/ONSdigital/eq-terraform-dynamodb"
+  env                                    = "${var.env}"
+  aws_access_key                         = "${var.aws_access_key}"
+  aws_secret_key                         = "${var.aws_secret_key}"
+  slack_alert_sns_arn                    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  submitted_responses_min_read_capacity  = 1
+  submitted_responses_max_read_capacity  = 100
+  submitted_responses_min_write_capacity = 1
+  submitted_responses_max_write_capacity = 100
+  questionnaire_state_min_read_capacity  = 1
+  questionnaire_state_max_read_capacity  = 100
+  questionnaire_state_min_write_capacity = 1
+  questionnaire_state_max_write_capacity = 100
+  eq_session_min_read_capacity           = 1
+  eq_session_max_read_capacity           = 100
+  eq_session_min_write_capacity          = 1
+  eq_session_max_write_capacity          = 100
+  used_jti_claim_min_read_capacity       = 1
+  used_jti_claim_max_read_capacity       = 100
+  used_jti_claim_min_write_capacity      = 1
+  used_jti_claim_max_write_capacity      = 100
 }
 
 output "survey_runner_beanstalk" {
