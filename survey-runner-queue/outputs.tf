@@ -1,7 +1,7 @@
 output "rabbitmq_ip_prime" {
-  value = "${aws_instance.rabbitmq.0.private_ip}"
+  value = "${element(aws_instance.rabbitmq.*.private_ip, 0)}"
 }
 
 output "rabbitmq_ip_failover" {
-  value = "${aws_instance.rabbitmq.1.private_ip}"
+  value = "${element(aws_instance.rabbitmq.*.private_ip, 1)}"
 }

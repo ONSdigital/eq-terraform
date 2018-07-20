@@ -8,19 +8,19 @@ terraform {
 }
 
 module "survey-runner-alerting" {
-  source             = "./survey-runner-alerting"
-  env                = "${var.env}"
-  aws_access_key     = "${var.aws_access_key}"
-  aws_secret_key     = "${var.aws_secret_key}"
-  slack_webhook_path = "${var.slack_webhook_path}"
-  slack_channel      = "eq-${var.env}-alerts"
+  source              = "./survey-runner-alerting"
+  env                 = "${var.env}"
+  aws_account_id      = "${var.aws_account_id}"
+  aws_assume_role_arn = "${var.aws_assume_role_arn}"
+  slack_webhook_path  = "${var.slack_webhook_path}"
+  slack_channel       = "eq-${var.env}-alerts"
 }
 
 module "survey-runner-on-beanstalk" {
   source                           = "./survey-runner-application"
   env                              = "${var.env}"
-  aws_access_key                   = "${var.aws_access_key}"
-  aws_secret_key                   = "${var.aws_secret_key}"
+  aws_account_id                   = "${var.aws_account_id}"
+  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
   vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
   use_internal_elb                 = "${var.use_internal_elb}"
   eb_instance_type                 = "${var.eb_instance_type}"
@@ -57,10 +57,10 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v4.0"
   env                      = "${var.env}"
-  aws_access_key           = "${var.aws_access_key}"
-  aws_secret_key           = "${var.aws_secret_key}"
+  aws_account_id           = "${var.aws_account_id}"
+  aws_assume_role_arn      = "${var.aws_assume_role_arn}"
   ecs_instance_type        = "${var.ecs_instance_type}"
   certificate_arn          = "${var.certificate_arn}"
   vpc_id                   = "${module.survey-runner-vpc.vpc_id}"
@@ -74,10 +74,10 @@ module "eq-ecs" {
 }
 
 module "survey-runner-on-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}-new"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
@@ -197,6 +197,7 @@ module "survey-runner-on-ecs" {
   EOF
 
   task_has_iam_policy = true
+
   task_iam_policy_json = <<EOF
 {
   "Version": "2012-10-17",
@@ -255,32 +256,32 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-runner-static-on-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
-  env                    = "${var.env}-new"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
-  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
-  dns_zone_name          = "${var.dns_zone_name}"
-  dns_record_name        = "${var.env}-new-surveys.${var.dns_zone_name}"
-  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
-  service_name           = "surveys-static"
-  listener_rule_priority = 5
-  docker_registry        = "${var.survey_runner_docker_registry}"
-  container_name         = "eq-survey-runner-static"
-  container_port         = 80
-  container_tag          = "${var.survey_runner_tag}"
-  application_min_tasks  = "${var.survey_runner_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  source                    = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  env                       = "${var.env}-new"
+  aws_account_id            = "${var.aws_account_id}"
+  aws_assume_role_arn       = "${var.aws_assume_role_arn}"
+  vpc_id                    = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name             = "${var.dns_zone_name}"
+  dns_record_name           = "${var.env}-new-surveys.${var.dns_zone_name}"
+  ecs_cluster_name          = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn               = "${module.eq-ecs.aws_alb_arn}"
+  aws_alb_listener_arn      = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name              = "surveys-static"
+  listener_rule_priority    = 5
+  docker_registry           = "${var.survey_runner_docker_registry}"
+  container_name            = "eq-survey-runner-static"
+  container_port            = 80
+  container_tag             = "${var.survey_runner_tag}"
+  application_min_tasks     = "${var.survey_runner_min_tasks}"
+  slack_alert_sns_arn       = "${module.survey-runner-alerting.slack_alert_sns_arn}"
   alb_listener_path_pattern = "/s/*"
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
@@ -316,10 +317,10 @@ module "survey-launcher-for-elastic-beanstalk" {
 }
 
 module "survey-launcher-for-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}-new"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
@@ -355,10 +356,10 @@ module "survey-launcher-for-ecs" {
 }
 
 module "author" {
-  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                              = "${var.env}"
-  aws_access_key                   = "${var.aws_access_key}"
-  aws_secret_key                   = "${var.aws_secret_key}"
+  aws_account_id                   = "${var.aws_account_id}"
+  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
   dns_zone_name                    = "${var.dns_zone_name}"
   ecs_cluster_name                 = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
@@ -425,10 +426,10 @@ module "author" {
 }
 
 module "author-api" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
@@ -453,10 +454,10 @@ module "author-api" {
 }
 
 module "publisher" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
@@ -485,10 +486,10 @@ module "publisher" {
 }
 
 module "schema-validator" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
@@ -506,10 +507,10 @@ module "schema-validator" {
 }
 
 module "survey-register" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v1.5.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}"
-  aws_access_key         = "${var.aws_access_key}"
-  aws_secret_key         = "${var.aws_secret_key}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
@@ -528,8 +529,8 @@ module "survey-register" {
 module "survey-runner-database" {
   source                           = "./survey-runner-database"
   env                              = "${var.env}"
-  aws_access_key                   = "${var.aws_access_key}"
-  aws_secret_key                   = "${var.aws_secret_key}"
+  aws_account_id                   = "${var.aws_account_id}"
+  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
   vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
   application_cidrs                = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
   multi_az                         = "${var.multi_az}"
@@ -549,8 +550,8 @@ module "survey-runner-database" {
 module "author-database" {
   source                           = "./survey-runner-database"
   env                              = "${var.env}"
-  aws_access_key                   = "${var.aws_access_key}"
-  aws_secret_key                   = "${var.aws_secret_key}"
+  aws_account_id                   = "${var.aws_account_id}"
+  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
   vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
   application_cidrs                = "${var.ecs_application_cidrs}"
   multi_az                         = "${var.multi_az}"
@@ -570,8 +571,8 @@ module "author-database" {
 module "survey-runner-queue" {
   source                       = "./survey-runner-queue"
   env                          = "${var.env}"
-  aws_access_key               = "${var.aws_access_key}"
-  aws_secret_key               = "${var.aws_secret_key}"
+  aws_account_id               = "${var.aws_account_id}"
+  aws_assume_role_arn          = "${var.aws_assume_role_arn}"
   vpc_id                       = "${module.survey-runner-vpc.vpc_id}"
   queue_cidrs                  = "${var.queue_cidrs}"
   application_cidrs            = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
@@ -596,8 +597,8 @@ module "survey-runner-queue" {
 module "survey-runner-routing" {
   source              = "./survey-runner-routing"
   env                 = "${var.env}"
-  aws_access_key      = "${var.aws_access_key}"
-  aws_secret_key      = "${var.aws_secret_key}"
+  aws_account_id      = "${var.aws_account_id}"
+  aws_assume_role_arn = "${var.aws_assume_role_arn}"
   public_cidrs        = "${var.public_cidrs}"
   vpc_id              = "${module.survey-runner-vpc.vpc_id}"
   internet_gateway_id = "${module.survey-runner-vpc.internet_gateway_id}"
@@ -605,19 +606,19 @@ module "survey-runner-routing" {
 }
 
 module "survey-runner-vpc" {
-  source         = "./survey-runner-vpc"
-  env            = "${var.env}"
-  aws_access_key = "${var.aws_access_key}"
-  aws_secret_key = "${var.aws_secret_key}"
-  vpc_cidr_block = "${var.vpc_cidr_block}"
-  database_cidrs = "${var.database_cidrs}"
+  source              = "./survey-runner-vpc"
+  env                 = "${var.env}"
+  aws_account_id      = "${var.aws_account_id}"
+  aws_assume_role_arn = "${var.aws_assume_role_arn}"
+  vpc_cidr_block      = "${var.vpc_cidr_block}"
+  database_cidrs      = "${var.database_cidrs}"
 }
 
 module "survey-runner-dynamodb" {
-  source                                 = "github.com/ONSdigital/eq-terraform-dynamodb"
+  source                                 = "github.com/ONSdigital/eq-terraform-dynamodb?ref=v2.0"
   env                                    = "${var.env}"
-  aws_access_key                         = "${var.aws_access_key}"
-  aws_secret_key                         = "${var.aws_secret_key}"
+  aws_account_id                         = "${var.aws_account_id}"
+  aws_assume_role_arn                    = "${var.aws_assume_role_arn}"
   slack_alert_sns_arn                    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
   submitted_responses_min_read_capacity  = 1
   submitted_responses_max_read_capacity  = 100
