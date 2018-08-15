@@ -468,3 +468,9 @@ variable "survey_register_min_tasks" {
   description = "The minimum number of Survey Register tasks to run"
   default     = "1"
 }
+
+// Suggest Cluster
+variable "suggest_api_tag" {
+  description = "The tag for the Suggest API image to run"
+  default     = "latest"
+}

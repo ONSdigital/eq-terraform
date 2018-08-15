@@ -526,6 +526,41 @@ module "survey-register" {
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
 }
 
+module "eq-elasticsearch" {
+  source              = "github.com/ONSdigital/eq-terraform-elasticsearch"
+  env                 = "${var.env}"
+  aws_account_id      = "${var.aws_account_id}"
+  aws_assume_role_arn = "${var.aws_assume_role_arn}"
+  access_list         = "${concat(module.survey-runner-routing.nat_gateway_ips, split(",", var.ons_access_ips))}"
+}
+
+module "eq-suggest-api" {
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  env                    = "${var.env}"
+  aws_account_id         = "${var.aws_account_id}"
+  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
+  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  service_name           = "lookup-api"
+  listener_rule_priority = 700
+  docker_registry        = "${var.survey_runner_docker_registry}"
+  container_name         = "eq-lookup-api"
+  container_port         = 5000
+  healthcheck_path       = "/status"
+  container_tag          = "${var.suggest_api_tag}"
+  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+
+  container_environment_variables = <<EOF
+      {
+        "name": "LOOKUP_URL",
+        "value": "https://${module.eq-elasticsearch.suggest-endpoint}/"
+      }
+  EOF
+}
+
 module "survey-runner-database" {
   source                           = "./survey-runner-database"
   env                              = "${var.env}"
