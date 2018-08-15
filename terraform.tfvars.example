@@ -1,8 +1,8 @@
 env=""
-aws_access_key=""
-aws_secret_key=""
-aws_key_pair = ""
+aws_account_id=""
+aws_assume_role_arn=""
+aws_key_pair=""
 
 ons_access_ips=""
 certificate_arn=""
-slack_webhook_path = ""
+slack_webhook_path=""

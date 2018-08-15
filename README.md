@@ -36,11 +36,11 @@ Install roles required by [eq-messaging](https://github.com/ONSdigital/eq-messag
 
 ```
 env="" # your name
-aws_access_key="" # your access key
-aws_secret_key="" # your secret
 aws_key_pair = "" # your name
 
 # ask somebody on the team to send these values to you
+aws_account_id=""
+aws_assume_role_arn=""
 ons_access_ips=""
 certificate_arn=""
 slack_webhook_path=""
