@@ -292,6 +292,7 @@ module "survey-launcher-for-elastic-beanstalk" {
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
   container_port         = 8000
+  healthcheck_path       = "/status"
   container_tag          = "${var.survey_launcher_tag}"
   application_min_tasks  = "${var.survey_launcher_min_tasks}"
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
@@ -300,6 +301,10 @@ module "survey-launcher-for-elastic-beanstalk" {
       {
         "name": "SURVEY_RUNNER_URL",
         "value": "https://${var.env}-surveys.${var.dns_zone_name}"
+      },
+      {
+        "name": "SCHEMA_VALIDATOR_URL",
+        "value": "${module.schema-validator.service_address}"
       },
       {
         "name": "JWT_ENCRYPTION_KEY_PATH",
@@ -331,6 +336,7 @@ module "survey-launcher-for-ecs" {
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
   container_port         = 8000
+  healthcheck_path       = "/status"
   container_tag          = "${var.survey_launcher_tag}"
   application_min_tasks  = "${var.survey_launcher_min_tasks}"
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
@@ -339,6 +345,10 @@ module "survey-launcher-for-ecs" {
       {
         "name": "SURVEY_RUNNER_URL",
         "value": "https://${var.env}-new-surveys.${var.dns_zone_name}"
+      },
+      {
+        "name": "SCHEMA_VALIDATOR_URL",
+        "value": "${module.schema-validator.service_address}"
       },
       {
         "name": "JWT_ENCRYPTION_KEY_PATH",
