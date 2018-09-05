@@ -95,3 +95,22 @@ Once Terraform has completed successfully, remove the security group `provision-
 1. If your build fails make sure the tmp directory has been deleted.
 1. If the build stalls on the ssh step waiting for user input set the following in your ~/.ssh/config file
     `UserKnownHostsFile /dev/null`
+
+## Runner VPC
+cidr_block = `10.30.20.0/24`
+
+| Subnet | CIDR | Size |
+| --- | --- | --- |
+| ENV-queue-subnet | `10.30.20.0/27` | 32 |
+| ENV-ecs-application-subnet-1 | `10.30.20.32/28` | 16 |
+| ENV-ecs-application-subnet-2 | `10.30.20.48/28` | 16 |
+| ENV-ecs-application-subnet-3 | `10.30.20.64/28` | 16 |
+| ENV-database-subnet-1 | `10.30.20.96/28` | 16 |
+| ENV-database-subnet-2 | `10.30.20.112/28` | 16 |
+| ENV-database-subnet-3 | `10.30.20.128/28` | 16 |
+| ENV-public-subnet-1 | `10.30.20.144/28` | 16 |
+| ENV-public-subnet-2 | `10.30.20.160/28` | 16 |
+| ENV-public-subnet-3 | `10.30.20.176/28` | 16 |
+| ENV-application-subnet-1 | `10.30.20.192/28` | 16 |
+| ENV-application-subnet-2 | `10.30.20.208/28` | 16 |
+| ENV-application-subnet-3 | `10.30.20.224/28` | 16 |

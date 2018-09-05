@@ -13,11 +13,12 @@ resource "aws_subnet" "database" {
 }
 
 resource "aws_db_subnet_group" "eq_rds" {
-  name        = "${var.env}-eq-rds"
+  name        = "${var.env}-eq-${var.db_subnet_group_identifier}rds"
   description = "Database subnet group"
   subnet_ids  = ["${aws_subnet.database.*.id}"]
 
   tags {
-    Name = "${var.env}-db-subnet-group"
+    Name = "${var.env}-${var.vpc_name}-db-subnet-group"
+    Environment = "${var.env}"
   }
 }
