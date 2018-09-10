@@ -28,14 +28,14 @@ Install roles required by [eq-messaging](https://github.com/ONSdigital/eq-messag
 
 1. Install [Terraform](https://terraform.io) - `tfenv install`
 
-1. Generate an SSH key pair in AWS (Services > EC2 > Key Pairs > Create Key Pair) with a unique name (e.g. your name) and save it to the top level (eq-terraform) directory
+1. In eu-west-1 (Ireland) region, generate an SSH key pair in AWS (Services > EC2 > Key Pairs > Create Key Pair) with a unique name (e.g. your name) and save it to the top level (eq-terraform) directory.
 
 1. Restrict access to the key - `chmod 400 mykey.pem`
 
 1. Copy `terraform.tfvars.example` to `terraform.tfvars`. 
 
 ```
-env="" # your name
+env="" # your name (Do not use underscore)
 aws_key_pair = "" # your name
 
 # ask somebody on the team to send these values to you
