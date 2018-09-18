@@ -666,7 +666,6 @@ module "survey-runner-dynamodb" {
   aws_assume_role_arn                    = "${var.aws_assume_role_arn}"
   slack_alert_sns_arn                    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
   submitted_responses_min_read_capacity  = 1
-  submitted_responses_min_read_capacity  = 1
   submitted_responses_min_write_capacity = 1
   questionnaire_state_min_read_capacity  = 5
   questionnaire_state_min_write_capacity = 5
