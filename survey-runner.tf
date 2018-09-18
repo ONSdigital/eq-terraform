@@ -666,21 +666,14 @@ module "survey-runner-dynamodb" {
   aws_assume_role_arn                    = "${var.aws_assume_role_arn}"
   slack_alert_sns_arn                    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
   submitted_responses_min_read_capacity  = 1
-  submitted_responses_max_read_capacity  = 100
+  submitted_responses_min_read_capacity  = 1
   submitted_responses_min_write_capacity = 1
-  submitted_responses_max_write_capacity = 100
   questionnaire_state_min_read_capacity  = 5
-  questionnaire_state_max_read_capacity  = 100
   questionnaire_state_min_write_capacity = 5
-  questionnaire_state_max_write_capacity = 100
   eq_session_min_read_capacity           = 5
-  eq_session_max_read_capacity           = 100
   eq_session_min_write_capacity          = 5
-  eq_session_max_write_capacity          = 100
   used_jti_claim_min_read_capacity       = 1
-  used_jti_claim_max_read_capacity       = 100
   used_jti_claim_min_write_capacity      = 1
-  used_jti_claim_max_write_capacity      = 100
 }
 
 output "survey_runner_beanstalk" {

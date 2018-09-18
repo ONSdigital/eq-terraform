@@ -84,7 +84,7 @@ variable "slack_webhook_path" {
 // ECS
 variable "ecs_instance_type" {
   description = "ECS Instance Type"
-  default     = "t2.medium"
+  default     = "t3.medium"
 }
 
 variable "ecs_cluster_min_size" {
