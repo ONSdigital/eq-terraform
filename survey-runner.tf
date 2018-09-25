@@ -382,7 +382,7 @@ module "author" {
   container_port                   = 3000
   container_tag                    = "${var.author_tag}"
   healthcheck_path                 = "/status.json"
-  healthcheck_grace_period_seconds = 60
+  healthcheck_grace_period_seconds = 120
   slack_alert_sns_arn              = "${module.survey-runner-alerting.slack_alert_sns_arn}"
   application_min_tasks            = "${var.author_min_tasks}"
   high_cpu_threshold               = 80
