@@ -401,12 +401,8 @@ module "author" {
         "value": "${module.author-api.service_address}/graphql"
       },
       {
-        "name": "REACT_APP_PUBLISHER_URL",
-        "value": "${module.publisher.service_address}/publish"
-      },
-      {
-        "name": "REACT_APP_GO_LAUNCH_A_SURVEY_URL",
-        "value": "${module.survey-launcher-for-ecs.service_address}/quick-launch"
+        "name": "REACT_APP_LAUNCH_URL",
+        "value": "${module.author-api.service_address}/launch"
       },
       {
         "name": "REACT_APP_USE_FULLSTORY",
@@ -459,6 +455,14 @@ module "author-api" {
       {
         "name": "DB_CONNECTION_URI",
         "value": "postgres://${var.author_database_user}:${var.author_database_password}@${module.author-database.database_address}:${module.author-database.database_port}/${var.author_database_name}"
+      },
+      {
+        "name": "RUNNER_SESSION_URL",
+        "value": "${module.survey-runner-on-ecs.service_address}/session?token="
+      },
+      {
+        "name": "PUBLISHER_URL",
+        "value": "${module.publisher.service_address}/publish/"
       }
   EOF
 }
