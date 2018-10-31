@@ -680,7 +680,7 @@ module "survey-runner-dynamodb" {
 }
 
 output "survey_runner_beanstalk" {
-  value = "${module.survey-runner-on-beanstalk.survey_runner_elb_address}"
+  value = "https://${module.survey-runner-on-beanstalk.survey_runner_elb_address}"
 }
 
 output "survey_launcher_for_beanstalk" {

@@ -245,7 +245,7 @@ resource "aws_elastic_beanstalk_environment" "survey_runner_prime" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "EQ_QUESTIONNAIRE_STATE_DYNAMO_WRITE"
-    value     = "${var.questionnaire_state_dynamo_read}"
+    value     = "${var.questionnaire_state_dynamo_write}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
