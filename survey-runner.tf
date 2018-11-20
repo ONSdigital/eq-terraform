@@ -1,6 +1,4 @@
 terraform {
-  required_version = ">= 0.10.0, < 0.11.0"
-
   backend "s3" {
     bucket = "eq-terraform-state"
     region = "eu-west-1"
@@ -74,7 +72,7 @@ module "eq-ecs" {
 }
 
 module "survey-runner-on-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}-new"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -84,7 +82,7 @@ module "survey-runner-on-ecs" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "surveys"
-  listener_rule_priority = 10
+  listener_rule_priority = 100
   docker_registry        = "${var.survey_runner_docker_registry}"
   container_name         = "eq-survey-runner"
   container_port         = 5000
@@ -256,7 +254,7 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-runner-static-on-ecs" {
-  source                    = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                    = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                       = "${var.env}-new"
   aws_account_id            = "${var.aws_account_id}"
   aws_assume_role_arn       = "${var.aws_assume_role_arn}"
@@ -274,11 +272,11 @@ module "survey-runner-static-on-ecs" {
   container_tag             = "${var.survey_runner_tag}"
   application_min_tasks     = "${var.survey_runner_min_tasks}"
   slack_alert_sns_arn       = "${module.survey-runner-alerting.slack_alert_sns_arn}"
-  alb_listener_path_pattern = "/s/*"
+  alb_listener_path_pattern = ["/s/*"]
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -288,7 +286,7 @@ module "survey-launcher-for-elastic-beanstalk" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "surveys-launch"
-  listener_rule_priority = 100
+  listener_rule_priority = 200
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
   container_port         = 8000
@@ -322,7 +320,7 @@ module "survey-launcher-for-elastic-beanstalk" {
 }
 
 module "survey-launcher-for-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}-new"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -332,7 +330,7 @@ module "survey-launcher-for-ecs" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "surveys-launch"
-  listener_rule_priority = 15
+  listener_rule_priority = 300
   docker_registry        = "${var.survey_launcher_registry}"
   container_name         = "go-launch-a-survey"
   container_port         = 8000
@@ -366,7 +364,7 @@ module "survey-launcher-for-ecs" {
 }
 
 module "author" {
-  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                              = "${var.env}"
   aws_account_id                   = "${var.aws_account_id}"
   aws_assume_role_arn              = "${var.aws_assume_role_arn}"
@@ -376,7 +374,7 @@ module "author" {
   aws_alb_arn                      = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn             = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name                     = "author"
-  listener_rule_priority           = 102
+  listener_rule_priority           = 104
   docker_registry                  = "${var.author_registry}"
   container_name                   = "eq-author"
   container_port                   = 3000
@@ -398,11 +396,11 @@ module "author" {
       },
       {
         "name": "REACT_APP_API_URL",
-        "value": "${module.author-api.service_address}/graphql"
+        "value": "/graphql"
       },
       {
         "name": "REACT_APP_LAUNCH_URL",
-        "value": "${module.author-api.service_address}/launch"
+        "value": "/launch"
       },
       {
         "name": "REACT_APP_USE_FULLSTORY",
@@ -432,17 +430,18 @@ module "author" {
 }
 
 module "author-api" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
-  dns_zone_name          = "${var.dns_zone_name}"
-  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name          = "${var.dns_zone_name}"
+  dns_record_name        = "${var.env}-author.${var.dns_zone_name}"
+  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "author-api"
-  listener_rule_priority = 103
+  listener_rule_priority = 400
   docker_registry        = "${var.author_registry}"
   container_name         = "eq-author-api"
   container_port         = 4000
@@ -450,6 +449,7 @@ module "author-api" {
   healthcheck_path       = "/status"
   application_min_tasks  = "${var.author_api_min_tasks}"
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  alb_listener_path_pattern = ["/graphql*", "/launch*"]
 
   container_environment_variables = <<EOF
       {
@@ -468,17 +468,18 @@ module "author-api" {
 }
 
 module "publisher" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   dns_zone_name          = "${var.dns_zone_name}"
+  dns_record_name        = "${var.env}-author.${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "publisher"
-  listener_rule_priority = 104
+  listener_rule_priority = 500
   docker_registry        = "${var.author_registry}"
   container_name         = "eq-publisher"
   container_port         = 9000
@@ -486,6 +487,7 @@ module "publisher" {
   healthcheck_path       = "/status"
   application_min_tasks  = "${var.publisher_min_tasks}"
   slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  alb_listener_path_pattern = ["/publish*"]
 
   container_environment_variables = <<EOF
       {
@@ -500,7 +502,7 @@ module "publisher" {
 }
 
 module "schema-validator" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -510,7 +512,7 @@ module "schema-validator" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "schema-validator"
-  listener_rule_priority = 500
+  listener_rule_priority = 600
   docker_registry        = "${var.schema_validator_registry}"
   container_name         = "eq-schema-validator"
   container_port         = 5000
@@ -521,7 +523,7 @@ module "schema-validator" {
 }
 
 module "survey-register" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -531,7 +533,7 @@ module "survey-register" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "survey-register"
-  listener_rule_priority = 600
+  listener_rule_priority = 700
   docker_registry        = "${var.survey_register_registry}"
   container_name         = "eq-survey-register"
   container_port         = 8080
@@ -549,7 +551,7 @@ module "eq-elasticsearch" {
 }
 
 module "eq-suggest-api" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=upgrade-version"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -559,7 +561,7 @@ module "eq-suggest-api" {
   aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
   aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
   service_name           = "lookup-api"
-  listener_rule_priority = 700
+  listener_rule_priority = 800
   docker_registry        = "${var.survey_runner_docker_registry}"
   container_name         = "eq-lookup-api"
   container_port         = 5000
@@ -679,9 +681,9 @@ module "survey-runner-dynamodb" {
   used_jti_claim_min_write_capacity      = 1
 }
 
-output "survey_runner_beanstalk" {
-  value = "https://${module.survey-runner-on-beanstalk.survey_runner_elb_address}"
-}
+//output "survey_runner_beanstalk" {
+//  value = "https://${module.survey-runner-on-beanstalk.survey_runner_elb_address}"
+//}
 
 output "survey_launcher_for_beanstalk" {
   value = "${module.survey-launcher-for-elastic-beanstalk.service_address}"

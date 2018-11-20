@@ -9,7 +9,6 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {
-  current = true
 }
 
 data "aws_route53_zone" "dns_zone" {
@@ -17,7 +16,7 @@ data "aws_route53_zone" "dns_zone" {
 }
 
 terraform {
-  required_version = ">= 0.10.0, < 0.11.0"
+//  required_version = ">= 0.10.0, < 0.11.0"
 
   backend "s3" {
     region = "eu-west-1"
