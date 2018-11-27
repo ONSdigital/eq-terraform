@@ -45,6 +45,22 @@ resource "aws_cloudwatch_metric_alarm" "4xx_errors" {
   }
 }
 
+resource "aws_cloudwatch_metric_alarm" "elb_5xx_errors" {
+  alarm_name = "${var.env}-survey-runner-elb-5xx-errors"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods = "1"
+  metric_name = "HTTPCode_ELB_5XX"
+  namespace = "AWS/ELB"
+  period = "60"
+  statistic = "Sum"
+  threshold = "1"
+  alarm_description = "There have been at least 1 5xx errors from the ELB in the past 60 seconds"
+  alarm_actions       = ["arn:aws:sns:eu-west-1:${data.aws_caller_identity.current.account_id}:${var.env}-slack-alert"]
+  dimensions {
+    LoadBalancerName = "${aws_elastic_beanstalk_environment.survey_runner_prime.load_balancers[0]}"
+  }
+}
+
 resource "aws_cloudwatch_metric_alarm" "max_host_count" {
   alarm_name = "${var.env}-survey-runner-max_host_count"
   comparison_operator = "GreaterThanOrEqualToThreshold"
