@@ -4,7 +4,7 @@ resource "aws_vpc" "survey_runner" {
   enable_dns_support = true
 
   tags {
-    Name = "${var.env}-vpc"
+    Name = "${var.env}-${var.vpc_name}-vpc"
   }
 }
 
@@ -12,6 +12,6 @@ resource "aws_internet_gateway" "igw" {
   count  = 1
   vpc_id = "${aws_vpc.survey_runner.id}"
   tags {
-    Name = "${var.env}-internet-gateway"
+    Name = "${var.env}-${var.vpc_name}-internet-gateway"
   }
 }

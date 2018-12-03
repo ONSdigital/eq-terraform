@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-module "survey-runner-alerting" {
+module "eq-alerting" {
   source              = "./survey-runner-alerting"
   env                 = "${var.env}"
   aws_account_id      = "${var.aws_account_id}"
@@ -57,8 +57,9 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v4.0"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v5.0"
   env                      = "${var.env}"
+  ecs_cluster_name         = "eq-runner"
   aws_account_id           = "${var.aws_account_id}"
   aws_assume_role_arn      = "${var.aws_assume_role_arn}"
   ecs_instance_type        = "${var.ecs_instance_type}"
@@ -70,7 +71,7 @@ module "eq-ecs" {
   ecs_cluster_min_size     = "${var.ecs_cluster_min_size}"
   auto_deploy_updated_tags = "${var.auto_deploy_updated_tags}"
   ons_access_ips           = ["${split(",", var.ons_access_ips)}"]
-  eq_gateway_ips           = ["${module.survey-runner-routing.nat_gateway_ips}"]
+  gateway_ips              = ["${module.survey-runner-routing.nat_gateway_ips}"]
 }
 
 module "survey-runner-on-ecs" {
@@ -91,7 +92,7 @@ module "survey-runner-on-ecs" {
   healthcheck_path       = "/status"
   container_tag          = "${var.survey_runner_tag}"
   application_min_tasks  = "${var.survey_runner_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
       {
@@ -273,7 +274,7 @@ module "survey-runner-static-on-ecs" {
   container_port            = 80
   container_tag             = "${var.survey_runner_tag}"
   application_min_tasks     = "${var.survey_runner_min_tasks}"
-  slack_alert_sns_arn       = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn       = "${module.eq-alerting.slack_alert_sns_arn}"
   alb_listener_path_pattern = "/s/*"
 }
 
@@ -295,7 +296,7 @@ module "survey-launcher-for-elastic-beanstalk" {
   healthcheck_path       = "/status"
   container_tag          = "${var.survey_launcher_tag}"
   application_min_tasks  = "${var.survey_launcher_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
       {
@@ -339,7 +340,7 @@ module "survey-launcher-for-ecs" {
   healthcheck_path       = "/status"
   container_tag          = "${var.survey_launcher_tag}"
   application_min_tasks  = "${var.survey_launcher_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
       {
@@ -365,140 +366,6 @@ module "survey-launcher-for-ecs" {
   EOF
 }
 
-module "author" {
-  source                           = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
-  env                              = "${var.env}"
-  aws_account_id                   = "${var.aws_account_id}"
-  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
-  dns_zone_name                    = "${var.dns_zone_name}"
-  ecs_cluster_name                 = "${module.eq-ecs.ecs_cluster_name}"
-  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
-  aws_alb_arn                      = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn             = "${module.eq-ecs.aws_alb_listener_arn}"
-  service_name                     = "author"
-  listener_rule_priority           = 102
-  docker_registry                  = "${var.author_registry}"
-  container_name                   = "eq-author"
-  container_port                   = 3000
-  container_tag                    = "${var.author_tag}"
-  healthcheck_path                 = "/status.json"
-  healthcheck_grace_period_seconds = 120
-  slack_alert_sns_arn              = "${module.survey-runner-alerting.slack_alert_sns_arn}"
-  application_min_tasks            = "${var.author_min_tasks}"
-  high_cpu_threshold               = 80
-
-  container_environment_variables = <<EOF
-      {
-        "name": "REACT_APP_BASE_NAME",
-        "value": "/eq-author"
-      },
-      {
-        "name": "REACT_APP_USE_MOCK_API",
-        "value": "false"
-      },
-      {
-        "name": "REACT_APP_API_URL",
-        "value": "${module.author-api.service_address}/graphql"
-      },
-      {
-        "name": "REACT_APP_LAUNCH_URL",
-        "value": "${module.author-api.service_address}/launch"
-      },
-      {
-        "name": "REACT_APP_USE_FULLSTORY",
-        "value": "${var.author_use_fullstory}"
-      },
-      {
-        "name": "REACT_APP_USE_SENTRY",
-        "value": "${var.author_use_sentry}"
-      },
-      {
-        "name": "REACT_APP_ENABLE_AUTH",
-        "value": "${var.author_enable_auth}"
-      },
-      {
-        "name": "REACT_APP_FIREBASE_PROJECT_ID",
-        "value": "${var.author_firebase_project_id}"
-      },
-      {
-        "name": "REACT_APP_FIREBASE_API_KEY",
-        "value": "${var.author_firebase_api_key}"
-      },
-      {
-        "name": "REACT_APP_FIREBASE_MESSAGING_SENDER_ID",
-        "value": "${var.author_firebase_messaging_sender_id}"
-      }
-  EOF
-}
-
-module "author-api" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
-  env                    = "${var.env}"
-  aws_account_id         = "${var.aws_account_id}"
-  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
-  dns_zone_name          = "${var.dns_zone_name}"
-  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
-  service_name           = "author-api"
-  listener_rule_priority = 103
-  docker_registry        = "${var.author_registry}"
-  container_name         = "eq-author-api"
-  container_port         = 4000
-  container_tag          = "${var.author_api_tag}"
-  healthcheck_path       = "/status"
-  application_min_tasks  = "${var.author_api_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
-
-  container_environment_variables = <<EOF
-      {
-        "name": "DB_CONNECTION_URI",
-        "value": "postgres://${var.author_database_user}:${var.author_database_password}@${module.author-database.database_address}:${module.author-database.database_port}/${var.author_database_name}"
-      },
-      {
-        "name": "RUNNER_SESSION_URL",
-        "value": "${module.survey-runner-on-ecs.service_address}/session?token="
-      },
-      {
-        "name": "PUBLISHER_URL",
-        "value": "${module.publisher.service_address}/publish/"
-      }
-  EOF
-}
-
-module "publisher" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
-  env                    = "${var.env}"
-  aws_account_id         = "${var.aws_account_id}"
-  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
-  dns_zone_name          = "${var.dns_zone_name}"
-  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
-  service_name           = "publisher"
-  listener_rule_priority = 104
-  docker_registry        = "${var.author_registry}"
-  container_name         = "eq-publisher"
-  container_port         = 9000
-  container_tag          = "${var.publisher_tag}"
-  healthcheck_path       = "/status"
-  application_min_tasks  = "${var.publisher_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
-
-  container_environment_variables = <<EOF
-      {
-        "name": "EQ_AUTHOR_API_URL",
-        "value": "${module.author-api.service_address}/graphql"
-      },
-      {
-        "name": "EQ_SCHEMA_VALIDATOR_URL",
-        "value": "${module.schema-validator.service_address}/validate"
-      }
-  EOF
-}
-
 module "schema-validator" {
   source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
   env                    = "${var.env}"
@@ -517,7 +384,7 @@ module "schema-validator" {
   container_tag          = "${var.schema_validator_tag}"
   healthcheck_path       = "/status"
   application_min_tasks  = "${var.schema_validator_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
 }
 
 module "survey-register" {
@@ -537,7 +404,7 @@ module "survey-register" {
   container_port         = 8080
   container_tag          = "${var.survey_register_tag}"
   application_min_tasks  = "${var.survey_register_min_tasks}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
 }
 
 module "eq-elasticsearch" {
@@ -565,7 +432,7 @@ module "eq-suggest-api" {
   container_port         = 5000
   healthcheck_path       = "/status"
   container_tag          = "${var.suggest_api_tag}"
-  slack_alert_sns_arn    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
 
   container_environment_variables = <<EOF
       {
@@ -594,27 +461,6 @@ module "survey-runner-database" {
   db_subnet_group_name             = "${module.survey-runner-vpc.database_subnet_group_name}"
   database_identifier              = "${var.env}-digitaleqrds"
   rds_security_group_name          = "${var.env}-rds-access"
-}
-
-module "author-database" {
-  source                           = "./survey-runner-database"
-  env                              = "${var.env}"
-  aws_account_id                   = "${var.aws_account_id}"
-  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
-  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
-  application_cidrs                = "${var.ecs_application_cidrs}"
-  multi_az                         = "${var.multi_az}"
-  backup_retention_period          = "${var.backup_retention_period}"
-  database_apply_immediately       = "${var.database_apply_immediately}"
-  database_instance_class          = "${var.database_instance_class}"
-  database_allocated_storage       = "${var.database_allocated_storage}"
-  database_free_memory_alert_level = "${var.database_free_memory_alert_level}"
-  database_name                    = "${var.author_database_name}"
-  database_user                    = "${var.author_database_user}"
-  database_password                = "${var.author_database_password}"
-  db_subnet_group_name             = "${module.survey-runner-vpc.database_subnet_group_name}"
-  database_identifier              = "${var.env}-authorrds"
-  rds_security_group_name          = "${var.env}-author-rds-access"
 }
 
 module "survey-runner-queue" {
@@ -659,6 +505,7 @@ module "survey-runner-vpc" {
   env                 = "${var.env}"
   aws_account_id      = "${var.aws_account_id}"
   aws_assume_role_arn = "${var.aws_assume_role_arn}"
+  vpc_name            = "runner"
   vpc_cidr_block      = "${var.vpc_cidr_block}"
   database_cidrs      = "${var.database_cidrs}"
 }
@@ -668,7 +515,7 @@ module "survey-runner-dynamodb" {
   env                                    = "${var.env}"
   aws_account_id                         = "${var.aws_account_id}"
   aws_assume_role_arn                    = "${var.aws_assume_role_arn}"
-  slack_alert_sns_arn                    = "${module.survey-runner-alerting.slack_alert_sns_arn}"
+  slack_alert_sns_arn                    = "${module.eq-alerting.slack_alert_sns_arn}"
   submitted_responses_min_read_capacity  = 1
   submitted_responses_min_write_capacity = 1
   questionnaire_state_min_read_capacity  = 5
@@ -693,8 +540,4 @@ output "survey_runner_ecs" {
 
 output "survey_launcher_for_ecs" {
   value = "${module.survey-launcher-for-ecs.service_address}"
-}
-
-output "author_address" {
-  value = "${module.author.service_address}"
 }

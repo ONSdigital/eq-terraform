@@ -24,3 +24,12 @@ variable "availability_zones" {
   description = "The availability zones"
   default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
+
+variable "vpc_name" {
+  description = "An unique name for the vpc"
+}
+
+variable "db_subnet_group_identifier" {
+  description = "A unique identifier to use for aws_db_subnet_group"
+  default = ""
+}
