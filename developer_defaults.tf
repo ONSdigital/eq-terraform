@@ -82,6 +82,16 @@ variable "slack_webhook_path" {
 }
 
 // ECS
+variable "create_ecs_external_elb" {
+  description = "Deploy an external load balancer for ECS"
+  default     = true
+}
+
+variable "create_ecs_internal_elb" {
+  description = "Deploy an internal load balancer for ECS"
+  default     = false
+}
+
 variable "ecs_instance_type" {
   description = "ECS Instance Type"
   default     = "t3.medium"

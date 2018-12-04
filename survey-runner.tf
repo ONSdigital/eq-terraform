@@ -57,7 +57,7 @@ module "survey-runner-on-beanstalk" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v5.0"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v7.0"
   env                      = "${var.env}"
   ecs_cluster_name         = "eq-runner"
   aws_account_id           = "${var.aws_account_id}"
@@ -72,6 +72,8 @@ module "eq-ecs" {
   auto_deploy_updated_tags = "${var.auto_deploy_updated_tags}"
   ons_access_ips           = ["${split(",", var.ons_access_ips)}"]
   gateway_ips              = ["${module.survey-runner-routing.nat_gateway_ips}"]
+  create_external_elb      = "${var.create_ecs_external_elb}"
+  create_internal_elb      = "${var.create_ecs_internal_elb}"
 }
 
 module "survey-runner-on-ecs" {
@@ -82,8 +84,8 @@ module "survey-runner-on-ecs" {
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name           = "surveys"
   listener_rule_priority = 10
   docker_registry        = "${var.survey_runner_docker_registry}"
@@ -265,8 +267,8 @@ module "survey-runner-static-on-ecs" {
   dns_zone_name             = "${var.dns_zone_name}"
   dns_record_name           = "${var.env}-new-surveys.${var.dns_zone_name}"
   ecs_cluster_name          = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn               = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn      = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn               = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn      = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name              = "surveys-static"
   listener_rule_priority    = 5
   docker_registry           = "${var.survey_runner_docker_registry}"
@@ -286,8 +288,8 @@ module "survey-launcher-for-elastic-beanstalk" {
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name           = "surveys-launch"
   listener_rule_priority = 100
   docker_registry        = "${var.survey_launcher_registry}"
@@ -330,8 +332,8 @@ module "survey-launcher-for-ecs" {
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name           = "surveys-launch"
   listener_rule_priority = 15
   docker_registry        = "${var.survey_launcher_registry}"
@@ -374,8 +376,8 @@ module "schema-validator" {
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name           = "schema-validator"
   listener_rule_priority = 500
   docker_registry        = "${var.schema_validator_registry}"
@@ -395,8 +397,8 @@ module "survey-register" {
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name           = "survey-register"
   listener_rule_priority = 600
   docker_registry        = "${var.survey_register_registry}"
@@ -423,8 +425,8 @@ module "eq-suggest-api" {
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name          = "${var.dns_zone_name}"
   ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_alb_listener_arn}"
+  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
   service_name           = "lookup-api"
   listener_rule_priority = 700
   docker_registry        = "${var.survey_runner_docker_registry}"
