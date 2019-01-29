@@ -77,24 +77,25 @@ module "eq-ecs" {
 }
 
 module "survey-runner-on-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
-  env                    = "${var.env}-new"
-  aws_account_id         = "${var.aws_account_id}"
-  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
-  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
-  dns_zone_name          = "${var.dns_zone_name}"
-  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
-  service_name           = "surveys"
-  listener_rule_priority = 10
-  docker_registry        = "${var.survey_runner_docker_registry}"
-  container_name         = "eq-survey-runner"
-  container_port         = 5000
-  healthcheck_path       = "/status"
-  container_tag          = "${var.survey_runner_tag}"
-  application_min_tasks  = "${var.survey_runner_min_tasks}"
-  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
+  source                     = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
+  env                        = "${var.env}-new"
+  aws_account_id             = "${var.aws_account_id}"
+  aws_assume_role_arn        = "${var.aws_assume_role_arn}"
+  vpc_id                     = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name              = "${var.dns_zone_name}"
+  ecs_cluster_name           = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn                = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn       = "${module.eq-ecs.aws_external_alb_listener_arn}"
+  service_name               = "surveys"
+  listener_rule_priority     = 1000
+  docker_registry            = "${var.survey_runner_docker_registry}"
+  container_name             = "eq-survey-runner"
+  container_port             = 5000
+  healthcheck_path           = "/status"
+  container_tag              = "${var.survey_runner_tag}"
+  application_min_tasks      = "${var.survey_runner_min_tasks}"
+  slack_alert_sns_arn        = "${module.eq-alerting.slack_alert_sns_arn}"
+  aws_alb_use_host_header    = false
 
   container_environment_variables = <<EOF
       {
@@ -259,29 +260,30 @@ module "survey-runner-on-ecs" {
 }
 
 module "survey-runner-static-on-ecs" {
-  source                    = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
-  env                       = "${var.env}-new"
-  aws_account_id            = "${var.aws_account_id}"
-  aws_assume_role_arn       = "${var.aws_assume_role_arn}"
-  vpc_id                    = "${module.survey-runner-vpc.vpc_id}"
-  dns_zone_name             = "${var.dns_zone_name}"
-  dns_record_name           = "${var.env}-new-surveys.${var.dns_zone_name}"
-  ecs_cluster_name          = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn               = "${module.eq-ecs.aws_external_alb_arn}"
-  aws_alb_listener_arn      = "${module.eq-ecs.aws_external_alb_listener_arn}"
-  service_name              = "surveys-static"
-  listener_rule_priority    = 5
-  docker_registry           = "${var.survey_runner_docker_registry}"
-  container_name            = "eq-survey-runner-static"
-  container_port            = 80
-  container_tag             = "${var.survey_runner_tag}"
-  application_min_tasks     = "${var.survey_runner_min_tasks}"
-  slack_alert_sns_arn       = "${module.eq-alerting.slack_alert_sns_arn}"
-  alb_listener_path_pattern = "/s/*"
+  source                     = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
+  env                        = "${var.env}-new"
+  aws_account_id             = "${var.aws_account_id}"
+  aws_assume_role_arn        = "${var.aws_assume_role_arn}"
+  vpc_id                     = "${module.survey-runner-vpc.vpc_id}"
+  dns_zone_name              = "${var.dns_zone_name}"
+  dns_record_name            = "${var.env}-new-surveys.${var.dns_zone_name}"
+  ecs_cluster_name           = "${module.eq-ecs.ecs_cluster_name}"
+  aws_alb_arn                = "${module.eq-ecs.aws_external_alb_arn}"
+  aws_alb_listener_arn       = "${module.eq-ecs.aws_external_alb_listener_arn}"
+  service_name               = "surveys-static"
+  listener_rule_priority     = 995
+  docker_registry            = "${var.survey_runner_docker_registry}"
+  container_name             = "eq-survey-runner-static"
+  container_port             = 80
+  container_tag              = "${var.survey_runner_tag}"
+  application_min_tasks      = "${var.survey_runner_min_tasks}"
+  slack_alert_sns_arn        = "${module.eq-alerting.slack_alert_sns_arn}"
+  alb_listener_path_patterns = ["/s/*"]
+  aws_alb_use_host_header    = false
 }
 
 module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -325,7 +327,7 @@ module "survey-launcher-for-elastic-beanstalk" {
 }
 
 module "survey-launcher-for-ecs" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
   env                    = "${var.env}-new"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -369,7 +371,7 @@ module "survey-launcher-for-ecs" {
 }
 
 module "schema-validator" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -390,7 +392,7 @@ module "schema-validator" {
 }
 
 module "survey-register" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
@@ -418,7 +420,7 @@ module "eq-elasticsearch" {
 }
 
 module "eq-suggest-api" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v2.0"
+  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
   env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"

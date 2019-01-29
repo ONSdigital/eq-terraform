@@ -199,12 +199,12 @@ variable "survey_runner_log_level" {
 
 variable "survey_runner_questionnaire_state_dynamo_read" {
   description = "Whether survey runner should read from DynmoDB for Questionnaire State objects"
-  default     = "False"
+  default     = "True"
 }
 
 variable "survey_runner_questionnaire_state_dynamo_write" {
   description = "Whether survey runner should write to DynmoDB for Questionnaire State objects"
-  default     = "False"
+  default     = "True"
 }
 
 variable "survey_runner_eq_session_dynamo_read" {
