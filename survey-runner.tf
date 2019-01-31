@@ -513,19 +513,11 @@ module "survey-runner-vpc" {
 }
 
 module "survey-runner-dynamodb" {
-  source                                 = "github.com/ONSdigital/eq-terraform-dynamodb?ref=v2.0"
+  source                                 = "github.com/ONSdigital/eq-terraform-dynamodb?ref=v2.2"
   env                                    = "${var.env}"
   aws_account_id                         = "${var.aws_account_id}"
   aws_assume_role_arn                    = "${var.aws_assume_role_arn}"
   slack_alert_sns_arn                    = "${module.eq-alerting.slack_alert_sns_arn}"
-  submitted_responses_min_read_capacity  = 1
-  submitted_responses_min_write_capacity = 1
-  questionnaire_state_min_read_capacity  = 5
-  questionnaire_state_min_write_capacity = 5
-  eq_session_min_read_capacity           = 5
-  eq_session_min_write_capacity          = 5
-  used_jti_claim_min_read_capacity       = 1
-  used_jti_claim_min_write_capacity      = 1
 }
 
 output "survey_runner_beanstalk" {
