@@ -26,7 +26,7 @@ variable "database_allocated_storage" {
 
 variable "database_engine_version" {
   description = "The Postgres database engine version"
-  default     = "9.4.15"
+  default     = "9.4"
 }
 
 variable "allow_major_version_upgrade" {
