@@ -16,46 +16,6 @@ module "eq-alerting" {
   slack_channel       = "eq-${var.env}-alerts"
 }
 
-module "survey-runner-on-beanstalk" {
-  source                           = "./survey-runner-application"
-  env                              = "${var.env}"
-  aws_account_id                   = "${var.aws_account_id}"
-  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
-  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
-  use_internal_elb                 = "${var.use_internal_elb}"
-  eb_instance_type                 = "${var.eb_instance_type}"
-  eb_min_size                      = "${var.eb_min_size}"
-  database_address                 = "${module.survey-runner-database.database_address}"
-  database_port                    = "${module.survey-runner-database.database_port}"
-  database_name                    = "${var.database_name}"
-  application_cidrs                = "${var.application_cidrs}"
-  rabbitmq_ip_prime                = "${module.survey-runner-queue.rabbitmq_ip_prime}"
-  rabbitmq_ip_failover             = "${module.survey-runner-queue.rabbitmq_ip_failover}"
-  private_route_table_ids          = "${module.survey-runner-routing.private_route_table_ids}"
-  public_subnet_ids                = "${module.survey-runner-routing.public_subnet_ids}"
-  ons_access_ips                   = "${var.ons_access_ips}"
-  google_analytics_code            = "${var.google_analytics_code}"
-  certificate_arn                  = "${var.certificate_arn}"
-  dns_zone_name                    = "${var.dns_zone_name}"
-  deployment_policy                = "${var.eb_deployment_policy}"
-  rolling_update_enabled           = "${var.eb_rolling_update_enabled}"
-  secrets_file_name                = "${var.survey_runner_secrets_file_name}"
-  respondent_account_url           = "${var.respondent_account_url}"
-  submitted_responses_table_name   = "${module.survey-runner-dynamodb.submitted_responses_table_name}"
-  questionnaire_state_table_name   = "${module.survey-runner-dynamodb.questionnaire_state_table_name}"
-  questionnaire_state_dynamo_read  = "${var.survey_runner_questionnaire_state_dynamo_read}"
-  questionnaire_state_dynamo_write = "${var.survey_runner_questionnaire_state_dynamo_write}"
-  eq_session_table_name            = "${module.survey-runner-dynamodb.eq_session_table_name}"
-  eq_session_dynamo_read           = "${var.survey_runner_eq_session_dynamo_read}"
-  eq_session_dynamo_write          = "${var.survey_runner_eq_session_dynamo_write}"
-  used_jti_claim_table_name        = "${module.survey-runner-dynamodb.used_jti_claim_table_name}"
-  used_jti_claim_dynamo_read       = "${var.survey_runner_used_jti_claim_dynamo_read}"
-  used_jti_claim_dynamo_write      = "${var.survey_runner_used_jti_claim_dynamo_write}"
-  new_relic_enabled                = "${var.survey_runner_new_relic_enabled}"
-  new_relic_app_name               = "${var.env} - ${var.survey_runner_new_relic_app_name} - Beanstalk"
-  new_relic_licence_key            = "${var.survey_runner_new_relic_licence_key}"
-}
-
 module "eq-ecs" {
   source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v7.0"
   env                      = "${var.env}"
@@ -78,7 +38,7 @@ module "eq-ecs" {
 
 module "survey-runner-on-ecs" {
   source                     = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
-  env                        = "${var.env}-new"
+  env                        = "${var.env}"
   aws_account_id             = "${var.aws_account_id}"
   aws_assume_role_arn        = "${var.aws_assume_role_arn}"
   vpc_id                     = "${module.survey-runner-vpc.vpc_id}"
@@ -261,12 +221,12 @@ module "survey-runner-on-ecs" {
 
 module "survey-runner-static-on-ecs" {
   source                     = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
-  env                        = "${var.env}-new"
+  env                        = "${var.env}"
   aws_account_id             = "${var.aws_account_id}"
   aws_assume_role_arn        = "${var.aws_assume_role_arn}"
   vpc_id                     = "${module.survey-runner-vpc.vpc_id}"
   dns_zone_name              = "${var.dns_zone_name}"
-  dns_record_name            = "${var.env}-new-surveys.${var.dns_zone_name}"
+  dns_record_name            = "${var.env}-surveys.${var.dns_zone_name}"
   ecs_cluster_name           = "${module.eq-ecs.ecs_cluster_name}"
   aws_alb_arn                = "${module.eq-ecs.aws_external_alb_arn}"
   aws_alb_listener_arn       = "${module.eq-ecs.aws_external_alb_listener_arn}"
@@ -282,53 +242,9 @@ module "survey-runner-static-on-ecs" {
   aws_alb_use_host_header    = false
 }
 
-module "survey-launcher-for-elastic-beanstalk" {
-  source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
-  env                    = "${var.env}"
-  aws_account_id         = "${var.aws_account_id}"
-  aws_assume_role_arn    = "${var.aws_assume_role_arn}"
-  vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
-  dns_zone_name          = "${var.dns_zone_name}"
-  ecs_cluster_name       = "${module.eq-ecs.ecs_cluster_name}"
-  aws_alb_arn            = "${module.eq-ecs.aws_external_alb_arn}"
-  aws_alb_listener_arn   = "${module.eq-ecs.aws_external_alb_listener_arn}"
-  service_name           = "surveys-launch"
-  listener_rule_priority = 100
-  docker_registry        = "${var.survey_launcher_registry}"
-  container_name         = "go-launch-a-survey"
-  container_port         = 8000
-  healthcheck_path       = "/status"
-  container_tag          = "${var.survey_launcher_tag}"
-  application_min_tasks  = "${var.survey_launcher_min_tasks}"
-  slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
-
-  container_environment_variables = <<EOF
-      {
-        "name": "SURVEY_RUNNER_URL",
-        "value": "https://${var.env}-surveys.${var.dns_zone_name}"
-      },
-      {
-        "name": "SCHEMA_VALIDATOR_URL",
-        "value": "${module.schema-validator.service_address}"
-      },
-      {
-        "name": "JWT_ENCRYPTION_KEY_PATH",
-        "value": "${var.survey_launcher_jwt_encryption_key_path}"
-      },
-      {
-        "name": "JWT_SIGNING_KEY_PATH",
-        "value": "${var.survey_launcher_jwt_signing_key_path}"
-      },
-      {
-        "name": "SECRETS_S3_BUCKET",
-        "value": "${var.survey_launcher_s3_secrets_bucket}"
-      }
-  EOF
-}
-
 module "survey-launcher-for-ecs" {
   source                 = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
-  env                    = "${var.env}-new"
+  env                    = "${var.env}"
   aws_account_id         = "${var.aws_account_id}"
   aws_assume_role_arn    = "${var.aws_assume_role_arn}"
   vpc_id                 = "${module.survey-runner-vpc.vpc_id}"
@@ -349,7 +265,7 @@ module "survey-launcher-for-ecs" {
   container_environment_variables = <<EOF
       {
         "name": "SURVEY_RUNNER_URL",
-        "value": "https://${var.env}-new-surveys.${var.dns_zone_name}"
+        "value": "https://${var.env}-surveys.${var.dns_zone_name}"
       },
       {
         "name": "SCHEMA_VALIDATOR_URL",
@@ -520,14 +436,6 @@ module "survey-runner-dynamodb" {
   aws_account_id                         = "${var.aws_account_id}"
   aws_assume_role_arn                    = "${var.aws_assume_role_arn}"
   slack_alert_sns_arn                    = "${module.eq-alerting.slack_alert_sns_arn}"
-}
-
-output "survey_runner_beanstalk" {
-  value = "https://${module.survey-runner-on-beanstalk.survey_runner_elb_address}"
-}
-
-output "survey_launcher_for_beanstalk" {
-  value = "${module.survey-launcher-for-elastic-beanstalk.service_address}"
 }
 
 output "survey_runner_ecs" {
