@@ -1,5 +1,5 @@
 module "ebs_bckup" {
-  source = "github.com/ONSdigital/ebs_bckup"
+  source           = "github.com/ONSdigital/ebs_bckup"
   EC2_INSTANCE_TAG = "${var.env}-RabbitMQ"
   RETENTION_DAYS   = "${var.ebs_snapshot_retention_days}"
   unique_name      = "rabbitmq_ebs_snapshot"

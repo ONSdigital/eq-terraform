@@ -16,64 +16,27 @@ variable "dns_zone_name" {
   default     = "dev.eq.ons.digital"
 }
 
-variable "aws_key_pair" {
-  description = "AWS key pair for queue servers"
-}
-
 variable "vpc_cidr_block" {
   description = "VPC CIDR block"
-  default     = "10.30.20.0/24"
-}
-
-variable "queue_cidrs" {
-  type        = "list"
-  description = "CIDR blocks for queue subnets"
-  default     = ["10.30.20.0/27"]
+  default     = "10.0.0.0/16"
 }
 
 variable "ecs_application_cidrs" {
   type        = "list"
   description = "CIDR blocks for application subnets"
-  default     = ["10.30.20.32/28", "10.30.20.48/28", "10.30.20.64/28"]
+  default     = ["10.0.64.0/18", "10.0.128.0/18", "10.0.192.0/18"]
 }
 
 variable "database_cidrs" {
   type        = "list"
   description = "CIDR blocks for database subnets"
-  default     = ["10.30.20.96/28", "10.30.20.112/28", "10.30.20.128/28"]
+  default     = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
 }
 
 variable "public_cidrs" {
   type        = "list"
   description = "CIDR blocks for public subnets"
-  default     = ["10.30.20.144/28", "10.30.20.160/28", "10.30.20.176/28"]
-}
-
-variable "application_cidrs" {
-  type        = "list"
-  description = "CIDR blocks for application subnets"
-  default     = ["10.30.20.192/28", "10.30.20.208/28", "10.30.20.224/28"]
-}
-
-variable "sdx_cidrs" {
-  type        = "list"
-  description = "CIDR blocks of the sdx system"
-  default     = ["10.99.0.1/32"]
-}
-
-variable "rsyslogd_server_ip" {
-  description = "The IP of the centralised syslog service."
-  default     = "10.99.0.2"
-}
-
-variable "logserver_cidr" {
-  description = "CIDR block of the centralised logging service"
-  default     = "10.99.0.3/32"
-}
-
-variable "audit_cidr" {
-  description = "CIDR block of the centralised auditing service."
-  default     = "10.99.0.4/32"
+  default     = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
 }
 
 // Alerting
@@ -169,12 +132,12 @@ variable "survey_runner_docker_registry" {
 
 variable "survey_runner_tag" {
   description = "The tag for the Survey Runner image to run"
-  default     = "latest"
+  default     = "v3"
 }
 
 variable "survey_runner_min_tasks" {
   description = "The minimum number of Survey Runner tasks to run"
-  default     = "1"
+  default     = "10"
 }
 
 variable "survey_runner_static_min_tasks" {
@@ -348,7 +311,7 @@ variable "survey_launcher_tag" {
 
 variable "survey_launcher_min_tasks" {
   description = "The minimum number of Survey Launcher tasks to run"
-  default     = "1"
+  default     = "5"
 }
 
 variable "survey_launcher_s3_secrets_bucket" {

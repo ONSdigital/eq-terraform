@@ -12,7 +12,7 @@ resource "aws_subnet" "queue" {
 }
 
 resource "aws_route_table" "queue" {
-  vpc_id = "${var.vpc_id}"
+  vpc_id           = "${var.vpc_id}"
   propagating_vgws = "${var.virtual_private_gateway_id}"
 
   tags {

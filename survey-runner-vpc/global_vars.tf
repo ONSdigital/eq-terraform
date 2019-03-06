@@ -31,5 +31,5 @@ variable "vpc_name" {
 
 variable "db_subnet_group_identifier" {
   description = "A unique identifier to use for aws_db_subnet_group"
-  default = ""
+  default     = ""
 }

@@ -40,9 +40,9 @@ variable "internet_gateway_id" {
 }
 
 variable "virtual_private_gateway_id" {
-  type = "list"
+  type        = "list"
   description = "An existing Virtual Private Gateway ID"
-  default = []
+  default     = []
 }
 
 # DNS
@@ -57,20 +57,20 @@ variable "rabbitmq_instance_type" {
   default     = "t2.medium"
 }
 
-variable "ebs_snapshot_cron"{
-    description = "Timescale for when the job is to be run"
-    default = "0 0 * * ? *"
+variable "ebs_snapshot_cron" {
+  description = "Timescale for when the job is to be run"
+  default     = "0 0 * * ? *"
 }
 
 variable "ebs_snapshot_retention_days" {
-    description = "How many days to keep backups of volumes"
-    default   = 10
+  description = "How many days to keep backups of volumes"
+  default     = 10
 }
 
 variable "rabbitmq_ips" {
   type        = "list"
   description = "Static IPs of rabbitmq servers (prime,secondary)"
-  default = ["10.30.20.15","10.30.20.16"]
+  default     = ["10.30.20.15", "10.30.20.16"]
 }
 
 variable "aws_key_pair" {

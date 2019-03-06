@@ -77,11 +77,11 @@ variable "database_free_storage_alert_level" {
 }
 
 variable "snapshot_identifier" {
-  default     = ""
+  default = ""
 }
 
 variable "preferred_maintenance_window" {
-  default   = "Tue:02:00-Tue:02:30"
+  default = "Tue:02:00-Tue:02:30"
 }
 
 variable "db_subnet_group_name" {

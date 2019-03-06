@@ -30,9 +30,9 @@ resource "aws_route" "private_nat_gateway_route" {
 }
 
 resource "aws_route" "private_vpc_peering_route" {
-  count                  = "${(var.vpc_peer_connection_id == "" ? 0 : 1) * length(var.public_cidrs)}"
-  route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
-  destination_cidr_block = "${var.vpc_peer_cidr_block}"
+  count                     = "${(var.vpc_peer_connection_id == "" ? 0 : 1) * length(var.public_cidrs)}"
+  route_table_id            = "${element(aws_route_table.private.*.id, count.index)}"
+  destination_cidr_block    = "${var.vpc_peer_cidr_block}"
   vpc_peering_connection_id = "${var.vpc_peer_connection_id}"
-  depends_on             = ["aws_route_table.private"]
+  depends_on                = ["aws_route_table.private"]
 }
