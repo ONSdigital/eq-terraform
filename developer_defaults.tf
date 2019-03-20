@@ -311,7 +311,7 @@ variable "survey_launcher_tag" {
 
 variable "survey_launcher_min_tasks" {
   description = "The minimum number of Survey Launcher tasks to run"
-  default     = "5"
+  default     = "1"
 }
 
 variable "survey_launcher_s3_secrets_bucket" {
