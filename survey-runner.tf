@@ -17,7 +17,7 @@ module "eq-alerting" {
 }
 
 module "eq-ecs" {
-  source                  = "github.com/ONSdigital/eq-terraform-ecs?ref=v7.0"
+  source                  = "github.com/ONSdigital/eq-terraform-ecs?ref=v7.2"
   env                     = "${var.env}"
   ecs_cluster_name        = "eq-runner"
   aws_account_id          = "${var.aws_account_id}"
