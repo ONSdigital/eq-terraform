@@ -137,7 +137,7 @@ variable "survey_runner_tag" {
 
 variable "survey_runner_min_tasks" {
   description = "The minimum number of Survey Runner tasks to run"
-  default     = "10"
+  default     = "3"
 }
 
 variable "survey_runner_static_min_tasks" {
