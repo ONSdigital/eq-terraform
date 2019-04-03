@@ -139,6 +139,10 @@ module "survey-runner-on-ecs" {
       {
         "name": "EQ_SUBMISSION_BACKEND",
         "value": "log"
+      },
+      {
+        "name": "GUNICORN_WORKERS",
+        "value": "9"
       }
   EOF
 
