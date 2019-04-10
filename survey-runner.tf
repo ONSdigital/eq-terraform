@@ -296,7 +296,7 @@ module "survey-runner-dynamodb" {
 }
 
 resource "aws_elasticache_cluster" "memory-store" {
-  cluster_id                   = "${var.env}-memory-store"
+  cluster_id                   = "${var.env}-redis"
   engine                       = "redis"
   node_type                    = "cache.t2.small"
   num_cache_nodes              = 1
