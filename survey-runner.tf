@@ -7,6 +7,16 @@ terraform {
   }
 }
 
+provider "aws" {
+  allowed_account_ids = ["${var.aws_account_id}"]
+
+  assume_role {
+    role_arn = "${var.aws_assume_role_arn}"
+  }
+
+  region = "eu-west-1"
+}
+
 module "eq-alerting" {
   source              = "./survey-runner-alerting"
   env                 = "${var.env}"
@@ -143,6 +153,14 @@ module "survey-runner-on-ecs" {
       {
         "name": "GUNICORN_WORKERS",
         "value": "9"
+      },
+      {
+        "name": "EQ_REDIS_HOST",
+        "value": "${aws_elasticache_cluster.memory-store.cache_nodes.0.address}"
+      },
+      {
+        "name": "EQ_REDIS_PORT",
+        "value": "${aws_elasticache_cluster.memory-store.cache_nodes.0.port}"
       }
   EOF
 
@@ -275,6 +293,41 @@ module "survey-runner-dynamodb" {
   aws_account_id      = "${var.aws_account_id}"
   aws_assume_role_arn = "${var.aws_assume_role_arn}"
   slack_alert_sns_arn = "${module.eq-alerting.slack_alert_sns_arn}"
+}
+
+resource "aws_elasticache_cluster" "memory-store" {
+  cluster_id                   = "${var.env}-memory-store"
+  engine                       = "redis"
+  node_type                    = "cache.t2.small"
+  num_cache_nodes              = 1
+  parameter_group_name         = "default.redis5.0"
+  engine_version               = "5.0.3"
+  subnet_group_name            = "${aws_elasticache_subnet_group.memory-store.name}"
+  security_group_ids           = ["${aws_security_group.memory-store-access.id}"]
+  availability_zone            = "eu-west-1a"
+  port                         = 6379
+}
+
+resource "aws_elasticache_subnet_group" "memory-store" {
+  name       = "${var.env}-memory-store-subnet-group"
+  subnet_ids = ["${module.survey-runner-vpc.database_subnet_ids}"]
+}
+
+resource "aws_security_group" "memory-store-access" {
+  name        = "${var.env}-memory-store-access"
+  description = "Redis access from the application subnet"
+  vpc_id      = "${module.survey-runner-vpc.vpc_id}"
+
+  ingress {
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    cidr_blocks = "${var.ecs_application_cidrs}"
+  }
+
+  tags {
+    Name = "${var.env}-memory-store-security-group"
+  }
 }
 
 output "survey_runner_ecs" {
