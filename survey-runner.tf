@@ -48,7 +48,7 @@ module "eq-ecs" {
 }
 
 module "survey-runner-on-ecs" {
-  source                  = "github.com/ONSdigital/eq-ecs-deploy?ref=v4.1"
+  source                  = "github.com/ONSdigital/eq-ecs-deploy?ref=xray"
   env                     = "${var.env}"
   aws_account_id          = "${var.aws_account_id}"
   aws_assume_role_arn     = "${var.aws_assume_role_arn}"
@@ -170,6 +170,14 @@ module "survey-runner-on-ecs" {
 {
   "Version": "2012-10-17",
   "Statement": [
+      {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+              "xray:*"
+          ],
+          "Resource": "*"
+      },
       {
           "Sid": "",
           "Effect": "Allow",

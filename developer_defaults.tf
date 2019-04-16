@@ -326,7 +326,7 @@ variable "survey_launcher_jwt_encryption_key_path" {
 
 variable "survey_launcher_jwt_signing_key_path" {
   description = "Path to the JWT Signing Key (PEM format)"
-  default     = "jwt-test-keys/sdc-user-authentication-signing-rrm-private-key.pem"
+  default     = "jwt-test-keys/sdc-user-authentication-signing-launcher-private-key.pem"
 }
 
 // Schema Validator
