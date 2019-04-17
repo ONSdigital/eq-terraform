@@ -1,10 +1,10 @@
 resource "aws_eip" "nat_eip" {
-  count = "${length(var.public_cidrs)}"
+  count = "${var.use_nat_gateway == "False" ? 0 : length(var.public_cidrs)}"
   vpc   = true
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  count         = "${length(var.public_cidrs)}"
+  count         = "${var.use_nat_gateway == "False" ? 0 : length(var.public_cidrs)}"
   allocation_id = "${element(aws_eip.nat_eip.*.id, count.index)}"
   subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
   depends_on    = ["aws_eip.nat_eip"]
@@ -22,7 +22,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private_nat_gateway_route" {
-  count                  = "${length(var.public_cidrs)}"
+  count                  = "${var.use_nat_gateway == "False" ? 0 : length(var.public_cidrs)}"
   route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
   destination_cidr_block = "0.0.0.0/0"
   depends_on             = ["aws_route_table.private"]

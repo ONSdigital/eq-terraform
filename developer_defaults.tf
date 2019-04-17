@@ -89,7 +89,7 @@ variable "create_ecs_external_elb" {
 
 variable "create_ecs_internal_elb" {
   description = "Deploy an internal load balancer for ECS"
-  default     = false
+  default     = true
 }
 
 variable "ecs_instance_type" {
@@ -164,12 +164,12 @@ variable "survey_runner_keys_file_name" {
 
 variable "survey_runner_docker_registry" {
   description = "The docker repository for the Survey Runner image"
-  default     = "onsdigital"
+  default     = "853958762481.dkr.ecr.eu-west-1.amazonaws.com"
 }
 
 variable "survey_runner_tag" {
   description = "The tag for the Survey Runner image to run"
-  default     = "latest"
+  default     = "0b36de4bf37796eba198ce475a6170317ea7ce05"
 }
 
 variable "survey_runner_min_tasks" {
@@ -338,12 +338,12 @@ variable "backup_retention_period" {
 // ECS Launcher
 variable "survey_launcher_registry" {
   description = "The docker repository for the Survey Launcher image to run"
-  default     = "onsdigital"
+  default     = "853958762481.dkr.ecr.eu-west-1.amazonaws.com"
 }
 
 variable "survey_launcher_tag" {
   description = "The tag for the Survey Launcher image to run"
-  default     = "latest"
+  default     = "f99de55a57924424fdb5e4a3c6fbfbc6a470d563"
 }
 
 variable "survey_launcher_min_tasks" {
@@ -369,12 +369,12 @@ variable "survey_launcher_jwt_signing_key_path" {
 // Schema Validator
 variable "schema_validator_registry" {
   description = "The docker repository for the Schema Validator image to run"
-  default     = "onsdigital"
+  default     = "853958762481.dkr.ecr.eu-west-1.amazonaws.com"
 }
 
 variable "schema_validator_tag" {
   description = "The tag for the Schema Validator image to run"
-  default     = "latest"
+  default     = "v1.0.0"
 }
 
 variable "schema_validator_min_tasks" {
@@ -385,7 +385,7 @@ variable "schema_validator_min_tasks" {
 // Survey Register
 variable "survey_register_registry" {
   description = "The docker repository for the Survey Register image to run"
-  default     = "onsdigital"
+  default     = "853958762481.dkr.ecr.eu-west-1.amazonaws.com"
 }
 
 variable "survey_register_tag" {

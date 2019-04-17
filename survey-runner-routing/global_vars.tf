@@ -43,3 +43,8 @@ variable "database_subnet_ids" {
   type        = "list"
   description = "Ids of the database subnets"
 }
+
+variable "use_nat_gateway" {
+  description = "Should a NAT gateway be deployed"
+  default = "False"
+}
