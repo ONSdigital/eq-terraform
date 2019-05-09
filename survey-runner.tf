@@ -91,6 +91,14 @@ module "survey-runner-on-ecs" {
         "value": "${var.google_analytics_code}"
       },
       {
+        "name": "EQ_GTM_ID",
+        "value": "${var.google_tag_manager_id"
+      },
+      {
+        "name": "EQ_GTM_ENV_ID",
+        "value": "${var.google_tag_manager_environment_id}"
+      },
+      {
         "name": "SECRETS_S3_BUCKET",
         "value": "${var.survey_runner_s3_secrets_bucket}"
       },
