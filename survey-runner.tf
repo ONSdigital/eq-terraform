@@ -328,7 +328,7 @@ module "survey-register" {
 }
 
 module "eq-elasticsearch" {
-  source              = "github.com/ONSdigital/eq-terraform-elasticsearch"
+  source              = "github.com/ONSdigital/eq-terraform-elasticsearch?ref=955b52967daaa3da696b6812cc0de9f837dbc81d"
   env                 = "${var.env}"
   aws_account_id      = "${var.aws_account_id}"
   aws_assume_role_arn = "${var.aws_assume_role_arn}"
