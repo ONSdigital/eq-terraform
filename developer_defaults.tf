@@ -132,6 +132,16 @@ variable "google_analytics_code" {
   default     = ""
 }
 
+variable "google_tag_manager_id" {
+  description = "The google tag manager workspace id"
+  default     = ""
+}
+
+variable "google_tag_manager_environment_id" {
+  description = "The google tag manager environment id"
+  default     = ""
+}
+
 variable "certificate_arn" {
   description = "ARN of the IAM loaded TLS certificate for public ELB"
 }
