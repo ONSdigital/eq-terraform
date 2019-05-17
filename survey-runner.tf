@@ -92,7 +92,7 @@ module "survey-runner-on-ecs" {
       },
       {
         "name": "EQ_GTM_ID",
-        "value": "${var.google_tag_manager_id"
+        "value": "${var.google_tag_manager_id}"
       },
       {
         "name": "EQ_GTM_ENV_ID",
