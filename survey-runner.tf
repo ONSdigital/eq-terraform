@@ -244,7 +244,7 @@ module "survey-launcher-for-ecs" {
   service_name           = "surveys-launch"
   listener_rule_priority = 15
   docker_registry        = "${var.survey_launcher_registry}"
-  container_name         = "go-launch-a-survey"
+  container_name         = "eq-questionnaire-launcher"
   container_port         = 8000
   healthcheck_path       = "/status"
   container_tag          = "${var.survey_launcher_tag}"
