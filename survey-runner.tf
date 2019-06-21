@@ -87,10 +87,6 @@ module "survey-runner-on-ecs" {
         "value": "${var.survey_runner_log_level}"
       },
       {
-        "name": "EQ_UA_ID",
-        "value": "${var.google_analytics_code}"
-      },
-      {
         "name": "EQ_GTM_ID",
         "value": "${var.google_tag_manager_id}"
       },

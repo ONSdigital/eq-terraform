@@ -127,11 +127,6 @@ variable "ons_access_ips" {
   description = "List of IP's or IP ranges to allow access to eQ"
 }
 
-variable "google_analytics_code" {
-  description = "The google analytics UA Code"
-  default     = ""
-}
-
 variable "google_tag_manager_id" {
   description = "The google tag manager workspace id"
   default     = ""
