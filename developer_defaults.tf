@@ -392,22 +392,6 @@ variable "schema_validator_min_tasks" {
   default     = "1"
 }
 
-// Survey Register
-variable "survey_register_registry" {
-  description = "The docker repository for the Survey Register image to run"
-  default     = "onsdigital"
-}
-
-variable "survey_register_tag" {
-  description = "The tag for the Survey Register image to run"
-  default     = "latest"
-}
-
-variable "survey_register_min_tasks" {
-  description = "The minimum number of Survey Register tasks to run"
-  default     = "1"
-}
-
 // Suggest Cluster
 variable "suggest_api_tag" {
   description = "The tag for the Suggest API image to run"
