@@ -117,12 +117,12 @@ variable "survey_runner_s3_secrets_bucket" {
 
 variable "survey_runner_secrets_file_name" {
   description = "The filename of the file containing the application secrets"
-  default     = "docker-secrets.yml"
+  default     = "dev-secrets.yml"
 }
 
 variable "survey_runner_keys_file_name" {
   description = "The filename of the file containing the application keys"
-  default     = "docker-keys.yml"
+  default     = "dev-keys.yml"
 }
 
 variable "survey_runner_docker_registry" {
