@@ -9,7 +9,7 @@ resource "aws_lambda_function" "slack_alert" {
   function_name = "${var.env}-slack-alert"
   role = "${aws_iam_role.iam_for_slack_alert.arn}"
   handler = "index.handler"
-  runtime = "nodejs8.10"
+  runtime = "nodejs12.x"
   timeout = "3"
   source_code_hash = "${data.archive_file.slack_alert_zip.output_base64sha256}"
   environment {
