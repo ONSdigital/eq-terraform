@@ -276,10 +276,6 @@ module "survey-launcher-for-ecs" {
         "value": "https://${var.env}-surveys.${var.dns_zone_name}"
       },
       {
-        "name": "SURVEY_REGISTER_URL",
-        "value": "https://${var.env}-author-survey-register.${var.dns_zone_name}"
-      },
-      {
         "name": "SCHEMA_VALIDATOR_URL",
         "value": "${module.schema-validator.service_address}"
       },
