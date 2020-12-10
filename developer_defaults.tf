@@ -157,6 +157,12 @@ variable "eb_rolling_update_enabled" {
 }
 
 # Survey Runner on ECS
+
+variable "survey_runner_database_connection_string" {
+  description = "A database connction sring for sql achecmy"
+  default     = "sqlite:////tmp/questionnaire.db"
+}
+
 variable "survey_runner_s3_secrets_bucket" {
   description = "The S3 bucket that contains the secrets"
   default     = ""
