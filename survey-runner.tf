@@ -71,16 +71,8 @@ module "survey-runner-on-ecs" {
         "value": "${var.survey_runner_message_queue_name}"
       },
       {
-        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_HOST",
-        "value": "${module.survey-runner-database.database_address}"
-      },
-      {
-        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_PORT",
-        "value": "${module.survey-runner-database.database_port}"
-      },
-      {
-        "name": "EQ_SERVER_SIDE_STORAGE_DATABASE_NAME",
-        "value": "${var.database_name}"
+        "name": "SQLALCHEMY_DATABASE_URI",
+        "value": "${var.survey_runner_database_connection_string}"
       },
       {
         "name": "EQ_LOG_LEVEL",
@@ -317,27 +309,6 @@ module "schema-validator" {
   healthcheck_path       = "/status"
   application_min_tasks  = "${var.schema_validator_min_tasks}"
   slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
-}
-
-module "survey-runner-database" {
-  source                           = "./survey-runner-database"
-  env                              = "${var.env}"
-  aws_account_id                   = "${var.aws_account_id}"
-  aws_assume_role_arn              = "${var.aws_assume_role_arn}"
-  vpc_id                           = "${module.survey-runner-vpc.vpc_id}"
-  application_cidrs                = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
-  multi_az                         = "${var.multi_az}"
-  backup_retention_period          = "${var.backup_retention_period}"
-  database_apply_immediately       = "${var.database_apply_immediately}"
-  database_instance_class          = "${var.database_instance_class}"
-  database_allocated_storage       = "${var.database_allocated_storage}"
-  database_free_memory_alert_level = "${var.database_free_memory_alert_level}"
-  database_name                    = "${var.database_name}"
-  database_user                    = "${var.database_user}"
-  database_password                = "${var.database_password}"
-  db_subnet_group_name             = "${module.survey-runner-vpc.database_subnet_group_name}"
-  database_identifier              = "${var.env}-digitaleqrds"
-  rds_security_group_name          = "${var.env}-rds-access"
 }
 
 module "survey-runner-queue" {
