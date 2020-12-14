@@ -11,7 +11,7 @@ resource "aws_security_group" "database_access" {
   }
 
   tags {
-    Name = "${var.env}-documentb-security-group"
+    Name = "${var.documentdb_security_group_name}"
   }
 }
 
