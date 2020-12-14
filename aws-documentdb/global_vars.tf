@@ -17,12 +17,10 @@ variable "availability_zones" {
 }
 
 variable "master_username" {
-  type        = "list"
   description = "CIDR blocks for applications"
 }
 
 variable "master_password" {
-  type        = "list"
   description = "CIDR blocks for applications"
 }
 
