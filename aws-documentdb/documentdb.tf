@@ -17,7 +17,7 @@ resource "aws_security_group" "database_access" {
 
 resource "aws_docdb_cluster_parameter_group" "paramter_group" {
   family      = "docdb4.0"
-  name        = "paramter_group"
+  name        = "paramter-group"
   description = "docdb cluster parameter group"
 
   parameter {
@@ -28,7 +28,7 @@ resource "aws_docdb_cluster_parameter_group" "paramter_group" {
 
 resource "aws_docdb_cluster" "docdb" {
   cluster_identifier      = "${var.env}-${var.documentdb_cluster_name}-cluster"
-  availability_zones      = "${var.availability_zones[count.index]}"
+  availability_zones      = "${var.availability_zones}"
   engine                  = "docdb"
   master_username         = "foo"
   master_password         = "mustbeeightchars"
