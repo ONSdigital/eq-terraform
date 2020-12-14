@@ -16,6 +16,16 @@ variable "availability_zones" {
   default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
 
+variable "master_username" {
+  type        = "list"
+  description = "CIDR blocks for applications"
+}
+
+variable "master_password" {
+  type        = "list"
+  description = "CIDR blocks for applications"
+}
+
 variable "vpc_id" {
   description = "The survey runner VPC ID"
 }
