@@ -45,5 +45,5 @@ resource "aws_docdb_cluster_instance" "cluster_instances" {
   count              = 3
   identifier         = "${var.env}-${var.documentdb_cluster_name}-cluster-instance-${count.index}"
   cluster_identifier = "${aws_docdb_cluster.docdb.id}"
-  instance_class     = "db.t3.medium"
+  instance_class     = "${var.documentdb_instance_size}"
 }

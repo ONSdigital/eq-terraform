@@ -36,6 +36,11 @@ variable "documentdb_cluster_name" {
   description = "database security group name"
 }
 
+variable "documentdb_instance_size" {
+  description = "instance size for db"
+  default     = "db.t3.medium"
+}
+
 variable "documentdb_subnet_group_identifier" {
   description = "name for subnet group"
 }
