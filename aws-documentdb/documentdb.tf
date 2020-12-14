@@ -30,6 +30,7 @@ resource "aws_docdb_cluster" "docdb" {
   cluster_identifier      = "${var.env}-${var.documentdb_cluster_name}-cluster"
   availability_zones      = "${var.availability_zones}"
   engine                  = "docdb"
+  engine_version          = "4.0.0"
   master_username         = "foo"
   master_password         = "mustbeeightchars"
   backup_retention_period = 5
