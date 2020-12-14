@@ -17,7 +17,7 @@ resource "aws_security_group" "database_access" {
 
 resource "aws_docdb_cluster_parameter_group" "paramter_group" {
   family      = "docdb4.0"
-  name        = "paramter-group"
+  name        = "${var.env}-paramter-group"
   description = "docdb cluster parameter group"
 
   parameter {
