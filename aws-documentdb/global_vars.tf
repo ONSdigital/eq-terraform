@@ -17,17 +17,14 @@ variable "availability_zones" {
 }
 
 variable "documentdb_security_group_name" {
-  type = string
   description = "database security group name"
 }
 
 variable "documentdb_cluster_name" {
-  type = string
   description = "database security group name"
 }
 
 variable "documentdb_subnet_group_identifier" {
-  type = string
   description = "name for subnet group"
 }
 
