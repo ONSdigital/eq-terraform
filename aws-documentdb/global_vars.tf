@@ -16,6 +16,10 @@ variable "availability_zones" {
   default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
 
+variable "vpc_id" {
+  description = "The survey runner VPC ID"
+}
+
 variable "documentdb_security_group_name" {
   description = "database security group name"
 }
