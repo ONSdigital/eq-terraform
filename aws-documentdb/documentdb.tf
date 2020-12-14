@@ -36,7 +36,7 @@ resource "aws_docdb_cluster" "docdb" {
   backup_retention_period = 5
   preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
-  db_subnet_group_name    = "${var.env}-eq-${var.documentdb_subnet_group_identifier}database"
+  db_subnet_group_name    = "${var.documentdb_subnet_group_name}"
   vpc_security_group_ids  = ["${aws_security_group.database_access.id}"]
   db_cluster_parameter_group_name = "${aws_docdb_cluster_parameter_group.paramter_group.name}"
 }

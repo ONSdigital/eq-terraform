@@ -41,7 +41,7 @@ variable "documentdb_instance_size" {
   default     = "db.t3.medium"
 }
 
-variable "documentdb_subnet_group_identifier" {
+variable "documentdb_subnet_group_name" {
   description = "name for subnet group"
 }
 
