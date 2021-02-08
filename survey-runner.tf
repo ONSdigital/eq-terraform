@@ -59,16 +59,16 @@ module "survey-runner-on-ecs" {
 
   container_environment_variables = <<EOF
       {
+        "name": "EQ_RABBITMQ_ENABLED",
+        "value": "False"
+      },
+      {
         "name": "EQ_RABBITMQ_HOST",
-        "value": "${module.survey-runner-queue.rabbitmq_ip_prime}"
+        "value": ""
       },
       {
         "name": "EQ_RABBITMQ_HOST_SECONDARY",
-        "value": "${module.survey-runner-queue.rabbitmq_ip_failover}"
-      },
-      {
-        "name": "EQ_RABBITMQ_QUEUE_NAME",
-        "value": "${var.survey_runner_message_queue_name}"
+        "value": ""
       },
       {
         "name": "SQLALCHEMY_DATABASE_URI",
@@ -309,32 +309,6 @@ module "schema-validator" {
   healthcheck_path       = "/status"
   application_min_tasks  = "${var.schema_validator_min_tasks}"
   slack_alert_sns_arn    = "${module.eq-alerting.slack_alert_sns_arn}"
-}
-
-module "survey-runner-queue" {
-  source                       = "./survey-runner-queue"
-  env                          = "${var.env}"
-  aws_account_id               = "${var.aws_account_id}"
-  aws_assume_role_arn          = "${var.aws_assume_role_arn}"
-  vpc_id                       = "${module.survey-runner-vpc.vpc_id}"
-  queue_cidrs                  = "${var.queue_cidrs}"
-  application_cidrs            = "${concat(var.ecs_application_cidrs, var.application_cidrs)}"
-  sdx_cidrs                    = "${var.sdx_cidrs}"
-  audit_cidr                   = "${var.audit_cidr}"
-  rsyslogd_server_ip           = "${var.rsyslogd_server_ip}"
-  logserver_cidr               = "${var.logserver_cidr}"
-  rabbitmq_instance_type       = "${var.rabbitmq_instance_type}"
-  rabbitmq_admin_user          = "${var.rabbitmq_admin_user}"
-  rabbitmq_admin_password      = "${var.rabbitmq_admin_password}"
-  rabbitmq_write_user          = "${var.rabbitmq_write_user}"
-  rabbitmq_write_password      = "${var.rabbitmq_write_password}"
-  rabbitmq_read_user           = "${var.rabbitmq_read_user}"
-  rabbitmq_read_password       = "${var.rabbitmq_read_password}"
-  dns_zone_name                = "${var.dns_zone_name}"
-  aws_key_pair                 = "${var.aws_key_pair}"
-  internet_gateway_id          = "${module.survey-runner-vpc.internet_gateway_id}"
-  ebs_snapshot_retention_days  = "${var.rabbitmq_ebs_snapshot_retention_days}"
-  delete_volume_on_termination = "${var.rabbitmq_delete_volume_on_termination}"
 }
 
 module "survey-runner-routing" {
