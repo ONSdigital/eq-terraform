@@ -7,6 +7,16 @@ provider "aws" {
   region     = "eu-west-1"
 }
 
+provider "archive" {
+  version = "~> 1.3"
+}
+provider "null" {
+  version = "~> 2.1"
+}
+provider "template" {
+  version = "~> 2.2"
+}
+
 data "aws_caller_identity" "current" {}
 
 terraform {
