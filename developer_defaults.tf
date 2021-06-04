@@ -403,3 +403,29 @@ variable "suggest_api_tag" {
   description = "The tag for the Suggest API image to run"
   default     = "latest"
 }
+
+// pubsub
+variable "pubsub_enabled" {
+  description = "enable pubsub"
+  default     = "False"
+}
+
+variable "publisher_backend" {
+  description = "pubsub backend target (log || pubsub)"
+  default     = "log"
+}
+
+variable "pubsub_project_id" {
+  description = "pubsub project id"
+  default     = "my-dummy-project"
+}
+
+variable "pubsub_topic_id" {
+  description = "pubsub topic"
+  default     = "runner-submit-queue"
+}
+
+variable "pubsub_credentials_file" {
+  description = "pubsub credentials"
+  default     = "gcp-credentials.yaml"
+}
