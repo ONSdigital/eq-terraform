@@ -157,6 +157,26 @@ module "survey-runner-on-ecs" {
       {
         "name": "NEW_RELIC_LICENSE_KEY",
         "value": "${var.survey_runner_new_relic_licence_key}"
+      },
+      {
+        "name": "EQ_PUBSUB_ENABLED",
+        "value": "${var.pubsub_enabled}"
+      },
+      {
+        "name": "EQ_PUBLISHER_BACKEND",
+        "value": "${var.publisher_backend}"
+      },
+      {
+        "name": "EQ_PUBSUB_PROJECT_ID",
+        "value": "${var.pubsub_project_id}"
+      },
+      {
+        "name": "EQ_PUBSUB_TOPIC_ID",
+        "value": "${var.pubsub_topic_id}"
+      },
+      {
+        "name": "PUBSUB_CREDENTIALS_FILE",
+        "value": "${var.pubsub_credentials_file}"
       }
   EOF
 
