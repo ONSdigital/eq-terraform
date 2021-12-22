@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.10.0, < 0.11.0"
+  required_version = ">= 0.10.0, < 0.11.16"
 
   backend "s3" {
     bucket = "eq-terraform-state"
@@ -17,7 +17,7 @@ module "eq-alerting" {
 }
 
 module "eq-ecs" {
-  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v7.2"
+  source                   = "github.com/ONSdigital/eq-terraform-ecs?ref=v7.4"
   env                      = "${var.env}"
   ecs_cluster_name         = "eq-runner"
   aws_account_id           = "${var.aws_account_id}"
